@@ -1,4 +1,4 @@
-# Single-cell transformers
+# Transformers in Single-Cell Omics
 
 > **Note**
 > :construction: This repository is under construction.
