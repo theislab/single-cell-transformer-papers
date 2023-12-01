@@ -7,7 +7,7 @@
 This repository accompanies [Transformers in Single-Cell Omics:
 A Review and New Perspectives](TBA). Please refer to the manuscript for the details.
 
-We provide a curated list of single-cell transformers and their evaluation results. We skip models that work only on bulk or images of slides data and those where transformers are used only as a part of the model. Models focusing on sequential data, such as DNA or protein sequences are omitted too.
+We provide a curated list of single-cell transformers and their evaluation results. We skip models that work only on bulk or images of slides data and those where transformers are used only as a part of the model. Models focusing on sequential data, such as DNA or protein sequences are omitted too. New entries are added at the top of the corresponding table.
 
 We welcome contributions to this repository. Please open a pull request or an issue if you want to add or edit an entry.
 ## Single-cell transformers
