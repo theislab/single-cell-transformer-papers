@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Transformer LLMs
-permalink: /transformer-llms
+permalink: transformer-llms
 ---
 
 <div id="transformer-llms-root"></div>
