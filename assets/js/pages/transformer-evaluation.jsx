@@ -45,12 +45,14 @@ function TransformerEvaluation() {
     if (!data?.length) return <div className="p-4">No data available</div>;
 
     return (
-        <div className="max-w-7xl mx-auto px-4">
-            <h1 className="text-3xl font-bold mb-8">Transformer Evaluation</h1>
-            <FilterableTable 
-                data={data}
-                columns={Object.keys(data[0] || {})}
-            />
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold mb-8 text-center">Transformer Evaluation</h1>
+            <div className="w-full overflow-x-auto">
+                <FilterableTable 
+                    data={data}
+                    columns={Object.keys(data[0] || {})}
+                />
+            </div>
         </div>
     );
 }

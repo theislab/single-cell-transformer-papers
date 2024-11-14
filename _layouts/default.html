@@ -2,7 +2,7 @@
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Transformers in Single-Cell Omics</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -216,22 +216,98 @@
         html.dark .citation-block {
             background-color: #161b22;
         }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .content {
+                padding: 1rem;
+                margin-top: 4rem;
+            }
+
+            header {
+                padding: 0.5rem;
+            }
+
+            /* Make the navigation menu collapsible on mobile */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background);
+                padding: 1rem;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+
+            .nav-links.show {
+                display: block;
+            }
+
+            /* Add hamburger menu */
+            .menu-button {
+                display: block;
+            }
+
+            /* Adjust table display for mobile */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Adjust dropdown positioning */
+            .dropdown {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: auto;
+            }
+        }
+
+        /* Add styles for the hamburger menu */
+        .menu-button {
+            display: none;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-button {
+                display: block;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 h-16 flex items-center justify-between px-4 border-b border-gray-200">
-        <!-- Site Title -->
-        <a href="{{ site.baseurl }}/" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 text-xl font-semibold">
-            Transformers in Single-Cell Omics
-        </a>
-        
-        <!-- Navigation Links -->
-        <div class="flex items-center space-x-4">
-            <a href="{{ site.baseurl }}/single-cell-transformers" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Single Cell Transformers</a>
-            <a href="{{ site.baseurl }}/transformer-llms" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Transformer LLMs</a>
-            <a href="{{ site.baseurl }}/transformer-evaluation" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Transformer Evaluation</a>
+    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 flex items-center justify-between px-4 py-2 border-b border-gray-200">
+        <div class="flex items-center">
+            <button class="menu-button md:hidden" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="{{ site.baseurl }}/" class="text-xl font-semibold ml-2">
+                Transformers in Single-Cell Omics
+            </a>
         </div>
-        
+
+        <!-- Navigation Links -->
+        <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+            <a href="{{ site.baseurl }}/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
+            <a href="{{ site.baseurl }}/transformer-llms" class="nav-link">Transformer LLMs</a>
+            <a href="{{ site.baseurl }}/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
+        </div>
+
         <div class="flex items-center space-x-6">
             <!-- GitHub Dropdown -->
             <div class="relative">
@@ -252,18 +328,10 @@
             </div>
 
             <!-- Download Button -->
-            <div class="relative">
-                <button id="download-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                    <i class="fas fa-download text-xl"></i>
+            <div class="relative" id="download-btn">
+                <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                    <i class="fas fa-download"></i>
                 </button>
-                <div id="download-dropdown" class="dropdown right-0 mt-2 w-48">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-file-code mr-2"></i>.ipynb
-                    </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-file-pdf mr-2"></i>.pdf
-                    </a>
-                </div>
             </div>
 
             <!-- Theme Toggle -->
@@ -293,6 +361,20 @@
     </main>
 
     <script>
+        // Add this helper function at the top of your script section
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
+                isError ? 'bg-red-500' : 'bg-green-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
@@ -345,8 +427,8 @@
         setupDropdown('download-btn', 'download-dropdown');
 
         // GitHub functionality
-        const REPO_URL = 'https://github.com/YourUsername/YourRepo'; // Update this!
-        
+        const REPO_URL = 'https://github.com/theislab/single-cell-transformer-papers';
+
         document.querySelector('#github-dropdown').addEventListener('click', (e) => {
             e.preventDefault();
             const action = e.target.closest('a')?.textContent.trim();
@@ -357,7 +439,12 @@
                         window.open(REPO_URL, '_blank');
                         break;
                     case 'Suggest edit':
-                        window.open(`${REPO_URL}/edit/main/${window.location.pathname}`, '_blank');
+                        // Get current page path and construct the edit URL
+                        const path = window.location.pathname;
+                        const editPath = path === '/' ? 'README.md' : 
+                            path.replace(/\/$/, '').split('/').pop() + '.md';
+                        const editUrl = `${REPO_URL}/edit/main/${editPath}`;
+                        window.open(editUrl, '_blank');
                         break;
                     case 'Open issue':
                         window.open(`${REPO_URL}/issues/new`, '_blank');
@@ -366,23 +453,93 @@
             }
         });
 
-        // Download functionality
-        document.querySelector('#download-dropdown').addEventListener('click', (e) => {
+        // Download (Print) functionality
+        document.getElementById('download-btn').addEventListener('click', (e) => {
             e.preventDefault();
-            const format = e.target.closest('a')?.textContent.trim();
             
-            if (format) {
-                const currentPath = window.location.pathname.replace(/\/$/, '');
-                const filename = currentPath.split('/').pop() || 'index';
-                
-                switch(format) {
-                    case '.ipynb':
-                        window.open(`/notebooks/${filename}.ipynb`, '_blank');
-                        break;
-                    case '.pdf':
-                        window.open(`/pdfs/${filename}.pdf`, '_blank');
-                        break;
+            // Create a style element for print-specific CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @media print {
+                    /* Hide navigation and buttons during print */
+                    header, 
+                    #github-btn,
+                    #download-btn,
+                    #theme-toggle,
+                    .filter-button,
+                    .menu-button {
+                        display: none !important;
+                    }
+                    
+                    /* Ensure dark mode doesn't affect printing */
+                    body {
+                        color: black !important;
+                        background: white !important;
+                    }
+                    
+                    /* Ensure table is readable */
+                    table {
+                        width: 100% !important;
+                        break-inside: auto !important;
+                    }
+                    
+                    tr {
+                        break-inside: avoid !important;
+                        break-after: auto !important;
+                    }
+                    
+                    th, td {
+                        padding: 8px !important;
+                        border: 1px solid #ddd !important;
+                    }
+                    
+                    /* Ensure links are readable */
+                    a {
+                        color: #0366d6 !important;
+                        text-decoration: underline !important;
+                    }
+                    
+                    /* Add URL after links */
+                    a[href]:after {
+                        content: " (" attr(href) ")";
+                        font-size: 90%;
+                        color: #666;
+                    }
+                    
+                    /* Ensure proper margins */
+                    .content {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    
+                    /* Ensure proper page breaks */
+                    h1, h2, h3 {
+                        break-after: avoid !important;
+                    }
                 }
+            `;
+            
+            // Add the style element
+            document.head.appendChild(style);
+            
+            // Trigger print
+            window.print();
+            
+            // Remove the style element after printing
+            setTimeout(() => {
+                document.head.removeChild(style);
+            }, 1000);
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menu-toggle')?.addEventListener('click', () => {
+            document.getElementById('nav-links')?.classList.toggle('show');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#menu-toggle') && !e.target.closest('#nav-links')) {
+                document.getElementById('nav-links')?.classList.remove('show');
             }
         });
     </script>

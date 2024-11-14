@@ -45,12 +45,14 @@ function TransformerLLMs() {
     if (!data?.length) return <div className="p-4">No data available</div>;
 
     return (
-        <div className="max-w-7xl mx-auto px-4">
-            <h1 className="text-3xl font-bold mb-8">Transformer LLMs</h1>
-            <FilterableTable 
-                data={data}
-                columns={Object.keys(data[0] || {})}
-            />
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold mb-8 text-center">Transformer LLMs</h1>
+            <div className="w-full overflow-x-auto">
+                <FilterableTable 
+                    data={data}
+                    columns={Object.keys(data[0] || {})}
+                />
+            </div>
         </div>
     );
 }
@@ -104,7 +106,14 @@ function parseTable(lines) {
         if (cells.length === headers.length) {
             const rowData = {};
             headers.forEach((header, index) => {
-                rowData[header.toLowerCase()] = cells[index];  // Convert header to lowercase when setting as key
+                const cellContent = cells[index];
+                if (header.toLowerCase() === 'architecture') {
+                    rowData[header.toLowerCase()] = cellContent.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+                        return `[${text.trim()}](${url.trim()})`;
+                    });
+                } else {
+                    rowData[header.toLowerCase()] = cellContent;
+                }
             });
             data.push(rowData);
         }

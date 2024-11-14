@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { Filter, FileText, Github, X } from 'lucide-react';
+import FilterSidebar from './FilterSidebar';
 
 const FilterableTable = ({ data = [], columns = [] }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [filters, setFilters] = useState({
+    papers: [],
+    codeType: [],
+    inputEmbedding: [],
+    architecture: [],
+    modalities: []
+  });
 
   // Inline SVG Icon Components
   const PreprintIcon = () => (
@@ -55,93 +63,150 @@ const FilterableTable = ({ data = [], columns = [] }) => {
     }
   };
 
-  const formatCell = (content, column, row) => {
+  // Add this function to handle input embedding links
+  const formatInputEmbedding = (content) => {
     if (!content) return '';
-
-    if (column.toLowerCase() === 'pre-training dataset') {
-      const links = content.match(/\[(.*?)\]\((.*?)\)/g) || [];
-      return (
-        <div className="space-y-1">
-          {links.map((link, index) => {
-            const [_, text, url] = link.match(/\[(.*?)\]\((.*?)\)/) || [];
+    
+    // Split by commas, but preserve markdown links
+    const parts = content.split(/,(?![^\[]*\])/);
+    
+    return (
+      <div className="space-y-1">
+        {parts.map((part, index) => {
+          const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
+          if (linkMatch) {
+            const [_, text, url] = linkMatch;
             return (
               <div key={index} className="flex items-center gap-2">
-                <FileText className="w-4 h-4 shrink-0 text-gray-400" />
                 <a 
-                  href={url}
+                  href={url.trim()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800"
                 >
-                  {text}
+                  {text.trim()}
                 </a>
               </div>
             );
-          })}
-          {content.replace(/\[(.*?)\]\((.*?)\)/g, '')}
-        </div>
-      );
-    }
+          }
+          return <div key={index}>{part.trim()}</div>;
+        })}
+      </div>
+    );
+  };
 
-    if (column.toLowerCase() === 'paper') {
-      const paperMatch = content.match(/\[(.*?)\]\((.*?)\)/);
-      if (paperMatch) {
-        const [_, text, url] = paperMatch;
-        const journalMatch = text.match(/\((.*?)\)\[(.*?)\]/);
-        
+  // Modify the formatCell function
+  const formatCell = (content, column, row) => {
+    if (!content) return '';
+
+    switch (column.toLowerCase()) {
+      case 'input embedding':
+        return formatInputEmbedding(content);
+      case 'pre-training dataset':
+        const links = content.match(/\[(.*?)\]\((.*?)\)/g) || [];
         return (
-          <div className="flex items-center gap-2">
-            <div className="text-gray-600">
-              <PaperTypeIcon type={row.paperType || 'publication'} />
-            </div>
-            <a 
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800"
-            >
-              {journalMatch ? (
-                <>
-                  <span className="text-gray-600">{journalMatch[1]}</span>
-                  <span className="mx-1">·</span>
-                  <span>{journalMatch[2]}</span>
-                </>
-              ) : text}
-            </a>
+          <div className="space-y-1">
+            {links.map((link, index) => {
+              const [_, text, url] = link.match(/\[(.*?)\]\((.*?)\)/) || [];
+              return (
+                <div key={index} className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 shrink-0 text-gray-400" />
+                  <a 
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    {text}
+                  </a>
+                </div>
+              );
+            })}
+            {content.replace(/\[(.*?)\]\((.*?)\)/g, '')}
           </div>
         );
-      }
-    }
-
-    if (column.toLowerCase() === 'code') {
-      if (content.includes('http')) {
+      case 'paper':
+        const paperMatch = content.match(/\[(.*?)\]\((.*?)\)/);
+        if (paperMatch) {
+          const [_, text, url] = paperMatch;
+          const journalMatch = text.match(/\((.*?)\)\[(.*?)\]/);
+          
+          return (
+            <div className="flex items-center gap-2">
+              <div className="text-gray-600">
+                <PaperTypeIcon type={row.paperType || 'publication'} />
+              </div>
+              <a 
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800"
+              >
+                {journalMatch ? (
+                  <>
+                    <span className="text-gray-600">{journalMatch[1]}</span>
+                    <span className="mx-1">·</span>
+                    <span>{journalMatch[2]}</span>
+                  </>
+                ) : text}
+              </a>
+            </div>
+          );
+        }
+        break;
+      case 'code':
+        if (content.includes('http')) {
+          return (
+            <div className="flex items-center gap-2">
+              <div className="text-gray-600">
+                <CodeTypeIcon type={row.codeType || 'reproducible'} />
+              </div>
+              <a 
+                href={content}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800"
+              >
+                GitHub
+              </a>
+            </div>
+          );
+        }
         return (
           <div className="flex items-center gap-2">
             <div className="text-gray-600">
               <CodeTypeIcon type={row.codeType || 'reproducible'} />
             </div>
-            <a 
-              href={content}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800"
-            >
-              GitHub
-            </a>
+            <span>{content}</span>
           </div>
         );
-      }
-      return (
-        <div className="flex items-center gap-2">
-          <div className="text-gray-600">
-            <CodeTypeIcon type={row.codeType || 'reproducible'} />
+      case 'architecture':
+        return (
+          <div className="space-y-1">
+            {content.split(/,\s*/).map((part, index) => {
+              const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
+              if (linkMatch) {
+                const [_, text, url] = linkMatch;
+                return (
+                  <div key={index} className="flex items-center gap-2">
+                    <a 
+                      href={url.trim()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      {text.trim()}
+                    </a>
+                  </div>
+                );
+              }
+              return <div key={index}>{part.trim()}</div>;
+            })}
           </div>
-          <span>{content}</span>
-        </div>
-      );
+        );
+      default:
+        return content;
     }
-
-    return content;
   };
 
   return (
@@ -156,6 +221,14 @@ const FilterableTable = ({ data = [], columns = [] }) => {
           Filter
         </button>
       </div>
+
+      {/* Add FilterSidebar component */}
+      <FilterSidebar
+        isOpen={showSidebar}
+        onClose={() => setShowSidebar(false)}
+        filters={filters}
+        onFilterChange={setFilters}
+      />
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
