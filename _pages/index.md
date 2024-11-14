@@ -3,6 +3,13 @@ layout: default
 title: Home
 ---
 
+<div class="nav" style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+  <a href="single-cell-transformers" style="padding: 10px 20px; background: #0066cc; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Single Cell Transformers</a>
+  <a href="transformer-llms" style="padding: 10px 20px; background: #0066cc; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Transformer LLMs</a>
+  <a href="transformer-evaluation" style="padding: 10px 20px; background: #0066cc; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Transformer Evaluation</a>
+</div>
+
+
 # Transformers in Single-Cell Omics
 
 This repository accompanies [Transformers in Single-Cell Omics: A Review and New Perspectives](https://doi.org/10.1038/s41592-024-02353-z). Please refer to the manuscript for the details.
