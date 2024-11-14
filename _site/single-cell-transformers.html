@@ -3,10 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Single-cell Transformers</title>
+    <title>Transformers in Single-Cell Omics</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Add this to your existing styles */
+        .nav-link {
+            color: var(--primary-text);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(107, 70, 193, 0.1);
+        }
+        
+        .site-title {
+            color: var(--primary-text);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
         /* Base styles */
         :root {
             --primary-text: #24292e;
@@ -78,9 +97,8 @@
         /* Navigation and Layout */
         /* Change this in your CSS section */
         .sidebar {
-            width: 320px; /* Increased from 250px */
-            transition: all 0.3s;
-            background-color: var(--sidebar-bg);
+            width: 0px; /* Increased from 250px */
+            display:none;
         }
 
         .sidebar.collapsed {
@@ -88,8 +106,8 @@
         }
 
         .content.expanded {
-            margin-left: 320px; /* Match the new width */
-            width: calc(100% - 320px);
+            margin-left: 0px; /* Match the new width */
+            width: 100%;
             padding-right: 24px;
         }
 
@@ -107,10 +125,25 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border-radius: 4px;
             z-index: 1000;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .dropdown.show {
+        .dropdown a {
             display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: var(--primary-text);
+        }
+
+        .dropdown a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .show {
+            display: block !important;
         }
 
         /* Dark mode dropdown items */
@@ -186,11 +219,18 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 h-16 flex items-center justify-between px-4 border-b border-gray-200">
-        <button id="sidebar-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-            <i class="fas fa-bars text-xl"></i>
-        </button>
+        <!-- Site Title -->
+        <a href="/" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 text-xl font-semibold">
+            Transformers in Single-Cell Omics
+        </a>
+        
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-4">
+            <a href="/single-cell-transformers" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Single Cell Transformers</a>
+            <a href="/transformer-llms" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Transformer LLMs</a>
+            <a href="/transformer-evaluation" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 px-3 py-2 rounded-md">Transformer Evaluation</a>
+        </div>
         
         <div class="flex items-center space-x-6">
             <!-- GitHub Dropdown -->
@@ -246,7 +286,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="content expanded pt-20 px-8">
+    <main class="content pt-20 px-8 w-full">
         <div class="w-full mx-auto markdown-content">
             <div id="single-cell-transformers-root"></div>
 
@@ -263,57 +303,11 @@
     </main>
 
     <script>
-        // Sidebar Toggle
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.querySelector('.content');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            content.classList.toggle('expanded');
-        });
-
-        // Dropdowns
-        let activeDropdown = null;
-
-        function setupDropdown(btnId, dropdownId) {
-            const btn = document.getElementById(btnId);
-            const dropdown = document.getElementById(dropdownId);
-
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                
-                // Close active dropdown if it's different from the current one
-                if (activeDropdown && activeDropdown !== dropdown) {
-                    activeDropdown.classList.remove('show');
-                }
-                
-                dropdown.classList.toggle('show');
-                activeDropdown = dropdown.classList.contains('show') ? dropdown : null;
-            });
-        }
-
-        setupDropdown('github-btn', 'github-dropdown');
-        setupDropdown('download-btn', 'download-dropdown');
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            if (activeDropdown) {
-                activeDropdown.classList.remove('show');
-                activeDropdown = null;
-            }
-        });
-
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
         const html = document.documentElement;
         
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.classList.add(savedTheme);
-        updateThemeIcon(savedTheme === 'dark');
-
         function updateThemeIcon(isDark) {
             themeIcon.classList.remove('fa-sun', 'fa-moon');
             themeIcon.classList.add(isDark ? 'fa-moon' : 'fa-sun');
@@ -325,37 +319,78 @@
             updateThemeIcon(isDark);
         });
 
-        // Download functionality
-        document.querySelector('#download-dropdown').addEventListener('click', async (e) => {
-            if (e.target.closest('a')) {
-                e.preventDefault();
-                const format = e.target.closest('a').textContent.trim();
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.add(savedTheme);
+        updateThemeIcon(savedTheme === 'dark');
+
+        // Dropdown functionality
+        function setupDropdown(btnId, dropdownId) {
+            const btn = document.getElementById(btnId);
+            const dropdown = document.getElementById(dropdownId);
+
+            if (!btn || !dropdown) return;
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isVisible = dropdown.classList.contains('show');
                 
-                // Example implementation - adjust paths according to your repository
-                if (format === '.pdf') {
-                    window.location.href = '/path-to-your-pdf/document.pdf';
-                } else if (format === '.ipynb') {
-                    window.location.href = '/path-to-your-notebook/notebook.ipynb';
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+                
+                // Toggle current dropdown
+                if (!isVisible) {
+                    dropdown.classList.add('show');
+                }
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+        });
+
+        // Initialize dropdowns
+        setupDropdown('github-btn', 'github-dropdown');
+        setupDropdown('download-btn', 'download-dropdown');
+
+        // GitHub functionality
+        const REPO_URL = 'https://github.com/YourUsername/YourRepo'; // Update this!
+        
+        document.querySelector('#github-dropdown').addEventListener('click', (e) => {
+            e.preventDefault();
+            const action = e.target.closest('a')?.textContent.trim();
+            
+            if (action) {
+                switch(action) {
+                    case 'Repository':
+                        window.open(REPO_URL, '_blank');
+                        break;
+                    case 'Suggest edit':
+                        window.open(`${REPO_URL}/edit/main/${window.location.pathname}`, '_blank');
+                        break;
+                    case 'Open issue':
+                        window.open(`${REPO_URL}/issues/new`, '_blank');
+                        break;
                 }
             }
         });
 
-        // GitHub functionality
-        const REPO_URL = 'https://github.com/your-username/your-repo';
-        document.querySelector('#github-dropdown').addEventListener('click', (e) => {
-            if (e.target.closest('a')) {
-                e.preventDefault();
-                const action = e.target.closest('a').textContent.trim();
+        // Download functionality
+        document.querySelector('#download-dropdown').addEventListener('click', (e) => {
+            e.preventDefault();
+            const format = e.target.closest('a')?.textContent.trim();
+            
+            if (format) {
+                const currentPath = window.location.pathname.replace(/\/$/, '');
+                const filename = currentPath.split('/').pop() || 'index';
                 
-                switch(action) {
-                    case 'Repository':
-                        window.location.href = REPO_URL;
+                switch(format) {
+                    case '.ipynb':
+                        window.open(`/notebooks/${filename}.ipynb`, '_blank');
                         break;
-                    case 'Suggest edit':
-                        window.location.href = `${REPO_URL}/edit/main/index.md`;
-                        break;
-                    case 'Open issue':
-                        window.location.href = `${REPO_URL}/issues/new`;
+                    case '.pdf':
+                        window.open(`/pdfs/${filename}.pdf`, '_blank');
                         break;
                 }
             }
@@ -363,3 +398,4 @@
     </script>
 </body>
 </html>
+

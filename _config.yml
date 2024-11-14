@@ -9,20 +9,35 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-permalink: pretty
+# Remove trailing slashes
+permalink: "/:title"
 trailing_slash: false
+
+# Default layout settings
+defaults:
+  -
+    scope:
+      path: "" # Apply to all files
+    values:
+      layout: "default"
+  -
+    scope:
+      path: "index.md"
+    values:
+      layout: "default"
 
 # Collections
 collections:
   pages:
     output: true
-    permalink: pretty
+    permalink: /:title
 
 # Include directories and files
 include:
   - _pages
   - assets
   - assets/js/dist
+  - _posts
 
 # Exclude from processing
 exclude:
