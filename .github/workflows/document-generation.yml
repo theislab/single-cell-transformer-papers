@@ -1,0 +1,60 @@
+name: Document Generation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      # Setup Python for notebook conversion
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jupytext nbconvert WeasyPrint markdown
+          
+      # Convert Markdown to Notebook
+      - name: Convert to Notebook
+        run: |
+          for f in _pages/*.md; do
+            jupytext --to notebook "${f}" -o "${f%.md}.ipynb"
+          done
+          
+      # Generate PDF
+      - name: Generate PDF
+        run: |
+          for f in _pages/*.md; do
+            markdown_path="${f}"
+            pdf_path="${f%.md}.pdf"
+            python -c "
+            import markdown
+            import weasyprint
+            with open('$markdown_path', 'r') as md_file:
+                html = markdown.markdown(md_file.read())
+            weasyprint.HTML(string=html).write_pdf('$pdf_path')
+            "
+          done
+          
+      # Upload artifacts
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pdfs
+          path: _pages/*.pdf
+          
+      - name: Upload Notebook artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: notebooks
+          path: _pages/*.ipynb

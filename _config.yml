@@ -1,0 +1,32 @@
+title: Transformers in Single-Cell Omics
+description: A curated collection of papers on transformers in single-cell analysis
+baseurl: ""
+url: "https://Paulos2411.github.io"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  pages:
+    output: true
+    permalink: /:path
+
+# Include directories and files
+include:
+  - _pages
+  - assets
+  - assets/js/dist
+
+# Exclude from processing
+exclude:
+  - node_modules
+  - webpack.config.js
+  - package.json
+  - package-lock.json
+  - README.md
+  - Gemfile
+  - Gemfile.lock
