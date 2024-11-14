@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Single-cell Transformers
+permalink: /single-cell-transformers
 ---
 
 

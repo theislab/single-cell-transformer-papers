@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Transformer Evaluation
+permalink: /transformer-evaluation
 ---
 
 <div id="transformer-evaluation-root"></div>
