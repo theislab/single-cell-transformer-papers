@@ -1,7 +1,5 @@
 # ignore everything in this directory
 node_modules/
-build/
-dist/
 .env
 .env.local
 *.log
