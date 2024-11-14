@@ -9,14 +9,14 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-permalink: title
+permalink: pretty
 trailing_slash: false
 
 # Collections
 collections:
   pages:
     output: true
-    permalink: title
+    permalink: pretty
 
 # Include directories and files
 include:
