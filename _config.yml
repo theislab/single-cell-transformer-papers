@@ -13,7 +13,7 @@ plugins:
 collections:
   pages:
     output: true
-    permalink: title
+    permalink: /:title
 
 # Include directories and files
 include:
