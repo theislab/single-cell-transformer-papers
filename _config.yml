@@ -10,6 +10,7 @@ plugins:
   - jekyll-seo-tag
 
 permalink: title
+trailing_slash: false
 
 # Collections
 collections:
