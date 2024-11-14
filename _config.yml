@@ -9,13 +9,13 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-permalink: /:title
+permalink: title
 
 # Collections
 collections:
   pages:
     output: true
-    permalink: /:title
+    permalink: title
 
 # Include directories and files
 include:
