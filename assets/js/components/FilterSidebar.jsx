@@ -3,7 +3,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 
-const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
+const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange, iconTypes }) => {
   if (!isOpen) return null;
 
   const updateFilters = (category, value) => {
@@ -42,13 +42,24 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
     </div>
   );
 
+  const filterOptions = {
+    papers: [
+      { label: `${iconTypes.PREPRINT} Preprint`, value: 'preprint' },
+      { label: `${iconTypes.PUBLICATION} Publication`, value: 'publication' }
+    ],
+    codeType: [
+      { label: `${iconTypes.REPRODUCIBLE} Reproducible`, value: 'reproducible' },
+      { label: `${iconTypes.EVALUATION} Evaluation`, value: 'evaluation' },
+      { label: `${iconTypes.RETRACTED} Retracted`, value: 'retracted' },
+      { label: `${iconTypes.HUGGINGFACE} HuggingFace`, value: 'huggingface' }
+    ],
+    // ... other filter options ...
+  };
+
   return (
-    <>
-      <div 
-        className="fixed inset-0 bg-black/30 z-40 transition-opacity"
-        onClick={onClose}
-      />
-      <div className="fixed right-0 top-0 h-full w-[320px] bg-white dark:bg-gray-900 shadow-lg z-50 overflow-y-auto transform transition-transform">
+    <div className={`fixed inset-0 z-50 ${isOpen ? '' : 'hidden'}`}>
+      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div className="absolute right-0 top-0 h-full w-full md:w-80 bg-white shadow-xl">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <h2 className="text-lg font-semibold dark:text-white">Apply filters</h2>
           <button 
@@ -63,12 +74,12 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
           <FilterGroup
             title="Papers"
             category="papers"
-            options={['Preprint', 'Publication']}
+            options={filterOptions.papers}
           />
           <FilterGroup
             title="Code Type"
             category="codeType"
-            options={['Reproducible', 'Evaluation only', 'Partial', 'None']}
+            options={filterOptions.codeType}
           />
           <FilterGroup
             title="Input Embedding"
@@ -105,7 +116,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

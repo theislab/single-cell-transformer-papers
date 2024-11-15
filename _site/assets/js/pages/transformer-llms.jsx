@@ -45,13 +45,17 @@ function TransformerLLMs() {
     if (!data?.length) return <div className="p-4">No data available</div>;
 
     return (
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold mb-8 text-center">Transformer LLMs</h1>
-            <div className="w-full overflow-x-auto">
-                <FilterableTable 
-                    data={data}
-                    columns={Object.keys(data[0] || {})}
-                />
+        <div className="w-full px-2 md:px-4 lg:px-8">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">
+                Transformer LLMs
+            </h1>
+            <div className="w-full overflow-hidden">
+                <div className="overflow-x-auto -mx-2 md:mx-0">
+                    <FilterableTable 
+                        data={data}
+                        columns={Object.keys(data[0] || {})}
+                    />
+                </div>
             </div>
         </div>
     );
@@ -106,14 +110,7 @@ function parseTable(lines) {
         if (cells.length === headers.length) {
             const rowData = {};
             headers.forEach((header, index) => {
-                const cellContent = cells[index];
-                if (header.toLowerCase() === 'architecture') {
-                    rowData[header.toLowerCase()] = cellContent.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
-                        return `[${text.trim()}](${url.trim()})`;
-                    });
-                } else {
-                    rowData[header.toLowerCase()] = cellContent;
-                }
+                rowData[header.toLowerCase()] = cells[index];
             });
             data.push(rowData);
         }
