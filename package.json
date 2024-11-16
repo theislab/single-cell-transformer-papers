@@ -15,7 +15,10 @@
     "@radix-ui/react-dialog": "^1.0.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "emoji-regex": "^10.4.0",
+    "js-yaml": "^4.1.0",
     "lucide-react": "^0.263.1",
+    "node-emoji": "^2.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.5.4",
@@ -30,6 +33,7 @@
     "@babel/preset-react": "^7.25.9",
     "@babel/runtime": "^7.26.0",
     "babel-loader": "^9.1.3",
+    "resolve": "^1.22.8",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   }

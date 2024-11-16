@@ -49,33 +49,69 @@ const parseMarkdownTables = (markdown) => {
 const parseTable = (lines) => {
     if (!lines || lines.length < 3) return [];
     
+    // Find the header line
     const headerLine = lines.find(line => line.trim().length > 0);
     if (!headerLine) return [];
     
+    // Parse headers
     const headers = headerLine.split('|')
         .map(h => h.trim())
         .filter(Boolean);
     
     const data = [];
+    let currentRow = null;
+    let multilineContent = '';
     
     for (let i = 2; i < lines.length; i++) {
         const line = lines[i].trim();
-        if (!line || line.startsWith('###')) break;
+        if (!line || line.startsWith('###')) {
+            // If we have a pending row with multiline content, add it
+            if (currentRow && multilineContent) {
+                currentRow['Pre-Training Dataset'] = multilineContent.trim();
+                data.push(currentRow);
+                currentRow = null;
+                multilineContent = '';
+            }
+            break;
+        }
         
+        // Split the line into cells
         const cells = line.split('|')
             .map(cell => cell.trim())
             .filter(Boolean);
             
         if (cells.length === headers.length) {
-            const rowData = {};
+            // If we have a pending row with multiline content, add it
+            if (currentRow && multilineContent) {
+                currentRow['Pre-Training Dataset'] = multilineContent.trim();
+                data.push(currentRow);
+                multilineContent = '';
+            }
+            
+            // Start a new row
+            currentRow = {};
             headers.forEach((header, index) => {
-                rowData[header] = cells[index];
+                currentRow[header] = cells[index];
             });
-            data.push(rowData);
+            data.push(currentRow);
+        } else if (currentRow && cells.length > 0) {
+            // This might be continuation of Pre-Training Dataset
+            multilineContent += ' ' + cells.join(' ');
         }
     }
     
     return data;
 }
 
-module.exports = { fetchGitHubData };
+// Helper function to clean up pre-training dataset text
+const cleanPreTrainingText = (text) => {
+    if (!text || text === 'None' || text.trim() === '') {
+        return '-';
+    }
+    return text.trim();
+};
+
+module.exports = { 
+    fetchGitHubData,
+    cleanPreTrainingText 
+};

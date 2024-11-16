@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'assets/js/dist'),
         filename: '[name].bundle.js',
-        publicPath: '/assets/js/dist/'
+        publicPath: '{{ site.baseurl }}/assets/js/dist/'
     },
     module: {
         rules: [
@@ -31,6 +31,11 @@ module.exports = {
                         plugins: ['@babel/plugin-transform-runtime']
                     }
                 }
+            },
+            {
+                test: /\.ya?ml$/,
+                use: 'yaml-loader',
+                type: 'json'
             }
         ]
     },

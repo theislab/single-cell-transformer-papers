@@ -25,6 +25,11 @@ defaults:
       path: "index.md"
     values:
       layout: "default"
+  - scope:
+      path: "assets/_data"
+      type: "yml"
+    values:
+      layout: null  # Prevent Jekyll from wrapping YAML files in the default layout
 
 # Collections
 collections:
@@ -35,9 +40,9 @@ collections:
 # Include directories and files
 include:
   - _pages
+  - _data
   - assets
   - assets/js/dist
-  - _posts
 
 # Exclude from processing
 exclude:
@@ -48,3 +53,6 @@ exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
+
+# Explicitly set data directory
+data_dir: _data

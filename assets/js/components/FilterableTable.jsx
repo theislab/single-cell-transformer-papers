@@ -1,177 +1,201 @@
 import React, { useState } from 'react';
 import { Filter } from 'lucide-react';
-import FilterSidebar from './FilterSidebar';
+import FilterPanel from './FilterPanel';
 
 const ICONS = {
-    PREPRINT: '📝',      // Changed back: 📝 for preprints (arXiv/bioRxiv)
-    PUBLICATION: '📄',   // Changed back: 📄 for peer-reviewed publications
-    REPRODUCIBLE: '🛠️',  // Fully reproducible code
-    EVALUATION: '🔍',    // Evaluation only code
-    RETRACTED: '❌'      // Retracted papers
+    preprint: '📝',
+    peer_reviewed: '📄',
+    reproducible: '🛠️',
+    evaluation_only: '🔍',
 };
 
-const FilterableTable = ({ data = [], columns = [] }) => {
-    const [showSidebar, setShowSidebar] = useState(false);
-    const [filters, setFilters] = useState({
-        papers: [],
-        codeType: [],
-        inputEmbedding: [],
-        architecture: [],
-        modalities: []
-    });
-
-    // Function to determine paper type and icon
-    const getPaperTypeAndIcon = (content) => {
-        if (!content) return { type: 'publication', icon: ICONS.PUBLICATION };
-        const lowerContent = content.toLowerCase();
-        if (lowerContent.includes('preprint') || lowerContent.includes('arxiv') || lowerContent.includes('biorxiv')) {
-            return { type: 'preprint', icon: ICONS.PREPRINT };
-        }
-        return { type: 'publication', icon: ICONS.PUBLICATION };
+const TableCell = ({ content, column }) => {
+    // Helper function to process links in text
+    const processLinks = (text) => {
+        if (!text) return '-';
+        // Match URLs in text like [ESM-2](https://...)
+        const linkRegex = /\[(.*?)\]\((.*?)\)/g;
+        return text.replace(linkRegex, (match, text, url) => {
+            return `<a href="${url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${text}</a>`;
+        });
     };
 
-    // Function to determine code type and icon
-    const getCodeTypeAndIcon = (content) => {
-        if (!content) return { type: 'none', icon: '' };
-        const lowerContent = content.toLowerCase();
-        
-        if (lowerContent.includes('huggingface')) {
-            return { type: 'huggingface', icon: ICONS.HUGGINGFACE };
+    // Helper function to extract value from YAML structure
+    const extractValue = (content) => {
+        if (typeof content === 'object' && content !== null) {
+            if (content.text) return content.text;
+            if (content.value) return content.value;
+            return Object.values(content).join(', ');
         }
-        if (lowerContent.includes('evaluation')) {
-            return { type: 'evaluation', icon: ICONS.EVALUATION };
-        }
-        if (lowerContent.includes('retracted')) {
-            return { type: 'retracted', icon: ICONS.RETRACTED };
-        }
-        if (lowerContent.includes('github') || lowerContent.startsWith('http')) {
-            return { type: 'reproducible', icon: ICONS.REPRODUCIBLE };
-        }
-        return { type: 'none', icon: '' };
+        return content;
     };
 
-    // Format cell content with proper icons and links
-    const formatCell = (content, column) => {
-        if (!content) return 'None';
+    // Handle empty or null content
+    if (!content || content === 'None' || content === '') {
+        return <td className="px-4 py-2">-</td>;
+    }
 
-        switch (column.toLowerCase()) {
-            case 'paper':
-                const paperMatch = content.match(/\[(.*?)\]\((.*?)\)/);
-                if (paperMatch) {
-                    const [_, text, url] = paperMatch;
-                    let icon = ICONS.PREPRINT;
-                    if (text.includes('Zhao et al')) {
-                        icon = ICONS.PUBLICATION;
-                    } else if (text.includes('Galkin et al')) {
-                        icon = ICONS.PREPRINT;
-                    }
-                    return (
-                        <div className="flex items-center gap-2">
-                            <span>{icon}</span>
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                                {text}
-                            </a>
-                        </div>
-                    );
-                }
-                return content;
+    // Special handling for columns that might contain links
+    if (column === 'INPUT EMBEDDING' || column === 'PRE-TRAINING DATASET') {
+        const processedContent = processLinks(content);
+        return (
+            <td 
+                className="px-4 py-2"
+                dangerouslySetInnerHTML={{ __html: processedContent }}
+            />
+        );
+    }
 
-            case 'code':
-                // Handle any markdown-style links with the wrench icon
-                const codeMatch = content.match(/\[(.*?)\]\((.*?)\)/);
-                if (codeMatch) {
-                    const [_, text, url] = codeMatch;
-                    return (
-                        <div className="flex items-center gap-2">
-                            <span>🛠️</span>
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                                [link]
-                            </a>
-                        </div>
-                    );
-                }
-
-                // Handle GitHub cases
-                if (content.includes('GitHub') || content.includes('Github')) {
-                    const githubMatch = content.match(/\((.*?)\)/);
-                    const url = githubMatch ? githubMatch[1] : '';
-                    return (
-                        <div className="flex items-center gap-2">
-                            <span>🛠️</span>
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                                GitHub
-                            </a>
-                        </div>
-                    );
-                }
-                return content;
-
-            case 'architecture':
-            case 'input embedding':
-            case 'input embeddings':
-            case 'pre-training dataset':
-                const markdownMatch = content.match(/\[(.*?)\]\((.*?)\)/);
-                if (markdownMatch) {
-                    const [_, text, url] = markdownMatch;
-                    return (
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                            {text}
-                        </a>
-                    );
-                }
-                return content;
-
-            default:
-                return content;
+    // Special handling for Paper column
+    if (column === 'PAPER') {
+        const paperContent = content.text || content;
+        const paperType = content.type || 'preprint';
+        const match = paperContent.match(/\[(.*?)\]\((.*?)\)/);
+        if (match) {
+            const [_, title, url] = match;
+            return (
+                <td className="px-4 py-2">
+                    <span className="mr-2">{ICONS[paperType]}</span>
+                    <a href={url} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                        {title}
+                    </a>
+                </td>
+            );
         }
+    }
+
+    // Special handling for Code column
+    if (column === 'CODE') {
+        const codeContent = content.text || content;
+        const codeType = content.type || 'evaluation_only';
+        const match = codeContent?.match(/\[(.*?)\]\((.*?)\)/);
+        if (match) {
+            const [_, __, url] = match;
+            return (
+                <td className="px-4 py-2">
+                    <a href={url} className="text-gray-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
+                        {ICONS[codeType]}
+                    </a>
+                </td>
+            );
+        }
+        return <td className="px-4 py-2">-</td>;
+    }
+
+    // Special handling for Pre-Training Dataset
+    if (column === 'PRE-TRAINING DATASET') {
+        return <td className="px-4 py-2">{content === '' ? '-' : content}</td>;
+    }
+
+    // Handle special columns that might be nested
+    const specialColumns = [
+        'OMIC MODALITIES',
+        'PRE-TRAINING DATASET',
+        'INPUT EMBEDDING',
+        'ARCHITECTURE',
+        'SSL TASKS',
+        'SUPERVISED TASKS',
+        'ZERO-SHOT TASKS'
+    ];
+
+    if (specialColumns.includes(column)) {
+        const value = extractValue(content);
+        return <td className="px-4 py-2">{value || '-'}</td>;
+    }
+
+    // Default handling for other columns
+    return <td className="px-4 py-2">{extractValue(content)}</td>;
+};
+
+const FilterableTable = ({ data, columns }) => {
+    const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+    const [filteredData, setFilteredData] = useState(data);
+
+    const handleFilterClick = () => {
+        setIsFilterPanelOpen(!isFilterPanelOpen);
     };
 
-    // Filter the data
-    const filteredData = React.useMemo(() => {
-        return data.filter(row => {
-            // Add your filtering logic here if needed
+    const handleApplyFilters = (filters) => {
+        const filtered = data.filter(item => {
+            // Paper type filter
+            if (filters.paper?.length > 0) {
+                const paperType = item.Paper?.type;
+                if (!filters.paper.includes(paperType)) return false;
+            }
+
+            // Code type filter
+            if (filters.code?.length > 0) {
+                const codeType = item.Code?.type;
+                if (!filters.code.includes(codeType)) return false;
+            }
+
+            // Omic modalities filter
+            if (filters.omicModalities?.length > 0) {
+                const modalitiesStr = String(item['Omic Modalities'] || '').toLowerCase();
+                const hasMatchingModality = filters.omicModalities.some(modality =>
+                    modalitiesStr.includes(modality.toLowerCase())
+                );
+                if (!hasMatchingModality) return false;
+            }
+
+            // Input embeddings filter
+            if (filters.inputEmbeddings?.length > 0) {
+                const embedding = String(item['Input Embedding'] || '').toLowerCase();
+                const hasMatchingEmbedding = filters.inputEmbeddings.some(emb =>
+                    embedding.includes(emb.toLowerCase())
+                );
+                if (!hasMatchingEmbedding) return false;
+            }
+
+            // Architecture filter
+            if (filters.architecture?.length > 0) {
+                const architecture = String(item.Architecture || '').toLowerCase();
+                const hasMatchingArchitecture = filters.architecture.some(arch =>
+                    architecture.includes(arch.toLowerCase())
+                );
+                if (!hasMatchingArchitecture) return false;
+            }
+
             return true;
         });
-    }, [data, filters]);
+
+        setFilteredData(filtered);
+        setIsFilterPanelOpen(false);
+    };
 
     return (
         <div className="w-full">
-            {/* Filter Button */}
             <div className="flex justify-end mb-4">
                 <button 
-                    onClick={() => setShowSidebar(true)}
-                    className="inline-flex items-center px-3 py-1.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                    onClick={handleFilterClick}
+                    className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md"
+                    data-testid="filter-button"
                 >
                     <Filter className="w-4 h-4" />
-                    <span className="ml-2">Filter</span>
+                    Filter
                 </button>
             </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
-                <table className="min-w-full border-collapse">
+            <div className={`transition-all duration-300 ${isFilterPanelOpen ? 'mr-80' : ''}`}>
+                <table className="min-w-full">
                     <thead>
                         <tr>
-                            {columns.map((column) => (
-                                <th
-                                    key={column}
-                                    className="border p-4 bg-gray-50 text-left font-medium text-gray-500 uppercase tracking-wider"
-                                >
+                            {columns.map(column => (
+                                <th key={column} className="px-4 py-2 text-left bg-gray-100 font-medium">
                                     {column}
                                 </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {data.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {columns.map((column) => (
-                                    <td
-                                        key={column}
-                                        className="border p-4 text-sm text-gray-900"
-                                    >
-                                        {formatCell(row[column.toLowerCase()], column)}
-                                    </td>
+                    <tbody>
+                        {(filteredData || data).map((row, index) => (
+                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                {columns.map(column => (
+                                    <TableCell 
+                                        key={column} 
+                                        content={row[column]} 
+                                        column={column.toUpperCase()}
+                                    />
                                 ))}
                             </tr>
                         ))}
@@ -179,12 +203,10 @@ const FilterableTable = ({ data = [], columns = [] }) => {
                 </table>
             </div>
 
-            {/* Filter Sidebar */}
-            <FilterSidebar
-                isOpen={showSidebar}
-                onClose={() => setShowSidebar(false)}
-                filters={filters}
-                onFilterChange={setFilters}
+            <FilterPanel
+                isOpen={isFilterPanelOpen}
+                onClose={() => setIsFilterPanelOpen(false)}
+                onApplyFilters={handleApplyFilters}
             />
         </div>
     );

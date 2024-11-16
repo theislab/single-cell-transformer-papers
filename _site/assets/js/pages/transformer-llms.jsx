@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import FilterableTable from '../components/FilterableTable';
 import { mountReactComponent } from '../utils/mount';
+import FilterButton from '../components/FilterButton';
+import FilterPanel from '../components/FilterPanel';
+
 
 function TransformerLLMs() {
     const [data, setData] = useState(null);
@@ -8,122 +11,100 @@ function TransformerLLMs() {
     const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
-        console.log('Component mounted');
-        fetch('https://api.github.com/repos/theislab/single-cell-transformer-papers/contents/README.md', {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        })
-        .then(response => {
-            console.log('Got response:', response.status);
-            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Got data:', data);
-            const content = atob(data.content);
-            const tables = parseMarkdownTables(content);
-            console.log('Parsed tables:', tables);
-            if (tables?.llms) {
-                setData(tables.llms);
+        try {
+            if (typeof window.transformerLLMs !== 'undefined') {
+                const processedData = window.transformerLLMs.map(item => {
+                    const processEmptyValue = (value) => {
+                        if (value === '' || value === null || value === undefined || value === 'None' || value === '-') {
+                            return '-';
+                        }
+                        return value;
+                    };
+
+                    console.log('Processing item architecture:', item.architecture);
+
+                    return {
+                        Model: item.model,
+                        Paper: {
+                            text: item.paper.text,
+                            type: item.paper.type
+                        },
+                        Code: {
+                            text: item.code.text,
+                            type: item.code.type
+                        },
+                        'Omic Modalities': Array.isArray(item.omic_modalities) 
+                            ? item.omic_modalities.join(', ') 
+                            : processEmptyValue(item.omic_modalities),
+                        'Pre-Training Dataset': processEmptyValue(item.pre_training_dataset),
+                        'Input Embedding': processEmptyValue(item.input_embedding),
+                        Architecture: (() => {
+                            const arch = item.architecture;
+                            if (!arch) return '-';
+                            
+                            const linkMatch = arch.match(/\[(.*?)\]\((.*?)\)/);
+                            if (linkMatch) {
+                                return {
+                                    text: linkMatch[1],
+                                    url: linkMatch[2],
+                                    type: 'link'
+                                };
+                            }
+                            
+                            return arch;
+                        })(),
+                        'SSL Tasks': processEmptyValue(item.ssl_tasks),
+                        'Supervised Tasks': processEmptyValue(item.supervised_tasks),
+                        'Zero-Shot Tasks': processEmptyValue(item.zero_shot_tasks)
+                    };
+                });
+                
+                setData(processedData);
             } else {
-                throw new Error('No LLMs data available');
+                setError('Data not available');
             }
-        })
-        .catch(err => {
-            console.error('Error loading data:', err);
-            setError(err.message || 'Failed to load data');
-        })
-        .finally(() => {
-            console.log('Request completed');
+        } catch (err) {
+            console.error('Error accessing data:', err);
+            setError(err.message);
+        } finally {
             setIsLoading(false);
-        });
+        }
     }, []);
 
+    console.log('Rendering state:', { isLoading, error, hasData: !!data });
+
     if (isLoading) return <div className="p-4">Loading...</div>;
-    if (error) return <div className="p-4 text-red-600">{error}</div>;
+    if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
     if (!data?.length) return <div className="p-4">No data available</div>;
 
     return (
-        <div className="w-full px-2 md:px-4 lg:px-8">
-            <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">
-                Transformer LLMs
-            </h1>
+        <div className="w-full">
+            <h1 className="text-2xl font-normal mb-4 text-center">Transformer LLMs</h1>
             <div className="w-full overflow-hidden">
-                <div className="overflow-x-auto -mx-2 md:mx-0">
-                    <FilterableTable 
-                        data={data}
-                        columns={Object.keys(data[0] || {})}
-                    />
-                </div>
+                <FilterableTable 
+                    data={data}
+                    columns={[
+                        'Model',
+                        'Paper',
+                        'Code',
+                        'Omic Modalities',
+                        'Pre-Training Dataset',
+                        'Input Embedding',
+                        'Architecture',
+                        'SSL Tasks',
+                        'Supervised Tasks',
+                        'Zero-Shot Tasks'
+                    ]}
+                />
             </div>
         </div>
     );
 }
 
-function parseMarkdownTables(markdown) {
-    if (!markdown) return null;
-    
-    const tables = {
-        transformers: [],
-        llms: [],
-        evaluation: []
-    };
-    
-    const sections = markdown.split('##');
-    sections.forEach((section) => {
-        const lines = section.trim().split('\n');
-        const title = lines[0].trim().toLowerCase();
-        
-        if (title.includes('single-cell transformers')) {
-            tables.transformers = parseTable(lines.slice(2));
-        } else if (title.includes('transformer llms')) {
-            tables.llms = parseTable(lines.slice(2));
-        } else if (title.includes('transformer evaluation')) {
-            tables.evaluation = parseTable(lines.slice(2));
-        }
-    });
-    
-    return tables;
-}
-
-function parseTable(lines) {
-    if (!lines || lines.length < 3) return [];
-    
-    const headerLine = lines.find(line => line.trim().length > 0);
-    if (!headerLine) return [];
-    
-    const headers = headerLine.split('|')
-        .map(h => h.trim())
-        .filter(Boolean);
-    
-    const data = [];
-    
-    for (let i = 2; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line || line.startsWith('###')) break;
-        
-        const cells = line.split('|')
-            .map(cell => cell.trim())
-            .filter(Boolean);
-            
-        if (cells.length === headers.length) {
-            const rowData = {};
-            headers.forEach((header, index) => {
-                rowData[header.toLowerCase()] = cells[index];
-            });
-            data.push(rowData);
-        }
-    }
-    
-    return data;
-}
-
-// Mount component
-if (typeof document !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
-        mountReactComponent('transformer-llms-root', TransformerLLMs);
-    });
-}
-
 export default TransformerLLMs;
+
+if (document.getElementById('transformer-llms-root')) {
+    console.log('Mounting TransformerLLMs component');
+    const root = ReactDOM.createRoot(document.getElementById('transformer-llms-root'));
+    root.render(<TransformerLLMs />);
+}

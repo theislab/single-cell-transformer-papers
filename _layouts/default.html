@@ -288,6 +288,79 @@
                 padding: 0.5rem 0;
             }
         }
+
+        /* Add this to your print media query */
+        @media print {
+            @page {
+                size: landscape !important;
+                margin: 0.5cm !important;
+            }
+
+            /* Force all table columns to be visible */
+            table {
+                width: 100% !important;
+                display: table !important;
+                table-layout: auto !important;
+                font-size: 8pt !important;
+            }
+
+            th, td {
+                display: table-cell !important;
+                visibility: visible !important;
+                white-space: normal !important;
+                min-width: auto !important;
+                max-width: none !important;
+                overflow: visible !important;
+                padding: 4px !important;
+                font-size: inherit !important;
+            }
+
+            /* Ensure no columns are hidden */
+            .hidden, 
+            [hidden], 
+            [style*="display: none"], 
+            [style*="visibility: hidden"] {
+                display: table-cell !important;
+                visibility: visible !important;
+            }
+
+            /* Adjust content wrapping */
+            td > * {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+
+            /* Hide UI elements */
+            .filter-button,
+            header,
+            .sidebar,
+            #github-btn,
+            #download-btn,
+            #theme-toggle,
+            .menu-button {
+                display: none !important;
+            }
+
+            /* Center the title */
+            h1 {
+                text-align: center !important;
+                margin-bottom: 20px !important;
+                font-size: 16pt !important;
+            }
+
+            /* Ensure content starts at the top of the page */
+            .content {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+            /* Force background colors and images to print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -453,82 +526,80 @@
             }
         });
 
-        // Download (Print) functionality
-        document.getElementById('download-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            // Create a style element for print-specific CSS
+        // Update the print preparation function
+        function prepareForPrint() {
             const style = document.createElement('style');
             style.textContent = `
-                @media print {
-                    /* Hide navigation and buttons during print */
-                    header, 
-                    #github-btn,
-                    #download-btn,
-                    #theme-toggle,
-                    .filter-button,
-                    .menu-button {
-                        display: none !important;
-                    }
-                    
-                    /* Ensure dark mode doesn't affect printing */
-                    body {
-                        color: black !important;
-                        background: white !important;
-                    }
-                    
-                    /* Ensure table is readable */
-                    table {
-                        width: 100% !important;
-                        break-inside: auto !important;
-                    }
-                    
-                    tr {
-                        break-inside: avoid !important;
-                        break-after: auto !important;
-                    }
-                    
-                    th, td {
-                        padding: 8px !important;
-                        border: 1px solid #ddd !important;
-                    }
-                    
-                    /* Ensure links are readable */
-                    a {
-                        color: #0366d6 !important;
-                        text-decoration: underline !important;
-                    }
-                    
-                    /* Add URL after links */
-                    a[href]:after {
-                        content: " (" attr(href) ")";
-                        font-size: 90%;
-                        color: #666;
-                    }
-                    
-                    /* Ensure proper margins */
-                    .content {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                    
-                    /* Ensure proper page breaks */
-                    h1, h2, h3 {
-                        break-after: avoid !important;
-                    }
+                @page {
+                    size: landscape !important;
+                    margin: 0.5cm !important;
+                }
+                
+                /* Force all columns to be visible */
+                table {
+                    width: 100% !important;
+                    display: table !important;
+                    table-layout: auto !important;
+                    font-size: 8pt !important;
+                }
+                
+                th, td {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                    white-space: normal !important;
+                    min-width: auto !important;
+                    max-width: none !important;
+                    overflow: visible !important;
+                    padding: 4px !important;
+                }
+
+                /* Show all columns */
+                .hidden, 
+                [hidden], 
+                [style*="display: none"], 
+                [style*="visibility: hidden"] {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                }
+
+                /* Adjust content wrapping */
+                td > * {
+                    white-space: normal !important;
+                    word-wrap: break-word !important;
                 }
             `;
             
-            // Add the style element
             document.head.appendChild(style);
-            
-            // Trigger print
+
+            // Force all columns to be visible
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                // Show all columns
+                const columns = table.querySelectorAll('th, td');
+                columns.forEach(col => {
+                    col.style.cssText = `
+                        display: table-cell !important;
+                        visibility: visible !important;
+                        white-space: normal !important;
+                        min-width: auto !important;
+                        max-width: none !important;
+                        overflow: visible !important;
+                    `;
+                });
+            });
+
             window.print();
-            
-            // Remove the style element after printing
+
+            // Cleanup
             setTimeout(() => {
                 document.head.removeChild(style);
             }, 1000);
+        }
+
+        // Update the download button click handler
+        document.getElementById('download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            prepareForPrint();
         });
 
         // Mobile menu toggle
@@ -543,6 +614,26 @@
             }
         });
     </script>
+    <!-- Load React and ReactDOM first -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Include the data directly -->
+    <script type="text/javascript">
+        window.singleCellTransformers = {{ site.data.single-cell-transformers | jsonify }};
+        window.transformerLLMs = {{ site.data.transformer-llms | jsonify }};
+        window.transformerEvaluation = {{ site.data.transformer-evaluation | jsonify }};
+    </script>
+
+    <!-- Then load your bundles -->
+    <script src="{{ site.baseurl }}/assets/js/dist/single-cell-transformers.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-llms.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-evaluation.bundle.js"></script>
+
+    <!-- Add these divs where you want the tables to appear -->
+    <div id="single-cell-transformers"></div>
+    <div id="transformer-llms"></div>
+    <div id="transformer-evaluation"></div>
 </body>
 </html>
 
