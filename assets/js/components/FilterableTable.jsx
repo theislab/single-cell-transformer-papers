@@ -167,16 +167,17 @@ const FilterableTable = ({ data, columns }) => {
         <div className="w-full">
             <div className="flex justify-end mb-4">
                 <button 
-                    onClick={handleFilterClick}
-                    className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md"
+                    onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 
+                             rounded-md transition-colors"
                     data-testid="filter-button"
                 >
                     <Filter className="w-4 h-4" />
-                    Filter
+                    <span className="hidden sm:inline">Filter</span>
                 </button>
             </div>
 
-            <div className={`transition-all duration-300 ${isFilterPanelOpen ? 'mr-80' : ''}`}>
+            <div className={`transition-all duration-300 ${isFilterPanelOpen ? 'sm:mr-96 md:mr-80' : ''}`}>
                 <table className="min-w-full">
                     <thead>
                         <tr>
