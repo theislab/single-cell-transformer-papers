@@ -32,19 +32,25 @@ jobs:
           done
           
       # Generate PDF
-      - name: Generate PDF
+      - name: Create conversion script
         run: |
-          for f in _pages/*.md; do
-            markdown_path="${f}"
-            pdf_path="${f%.md}.pdf"
-            python -c "
-            import markdown
-            import weasyprint
-            with open('$markdown_path', 'r') as md_file:
-                html = markdown.markdown(md_file.read())
-            weasyprint.HTML(string=html).write_pdf('$pdf_path')
-            "
-          done
+          cat > convert.py << 'EOF'
+          import os
+          import markdown
+          import weasyprint
+          
+          for filename in os.listdir('_pages'):
+              if filename.endswith('.md'):
+                  md_path = os.path.join('_pages', filename)
+                  pdf_path = md_path.replace('.md', '.pdf')
+                  
+                  with open(md_path, 'r', encoding='utf-8') as md_file:
+                      html = markdown.markdown(md_file.read())
+                  weasyprint.HTML(string=html).write_pdf(pdf_path)
+          EOF
+
+      - name: Generate PDF
+        run: python convert.py
           
       # Upload artifacts
       - name: Upload PDF artifacts
