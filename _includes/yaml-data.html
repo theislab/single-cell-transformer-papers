@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  (function() {
+    window.singleCellTransformers = JSON.parse('{{ site.data.single-cell-transformers | jsonify | replace: "'", "\\'" }}');
+    window.transformerLLMs = JSON.parse('{{ site.data.transformer-llms | jsonify | replace: "'", "\\'" }}');
+    window.transformerEvaluation = JSON.parse('{{ site.data.transformer-evaluation | jsonify | replace: "'", "\\'" }}');
+  })();
+</script> 

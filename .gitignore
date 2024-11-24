@@ -1,0 +1,6 @@
+# ignore everything in this directory
+node_modules/
+.env
+.env.local
+*.log
+.cache/
