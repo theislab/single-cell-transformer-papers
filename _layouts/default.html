@@ -831,10 +831,21 @@
                         window.open(REPO_URL, '_blank');
                         break;
                     case 'Suggest edit':
-                        // Get current page path and construct the edit URL
+                        // Get current page path
                         const path = window.location.pathname;
-                        const editPath = path === '/' ? 'README.md' : 
-                            path.replace(/\/$/, '').split('/').pop() + '.md';
+                        let editPath;
+                        
+                        // Check if we're on a table page
+                        if (path.includes('single-cell-transformers') || 
+                            path.includes('transformer-llms') || 
+                            path.includes('transformer-evaluation')) {
+                            editPath = 'README.md';
+                        } else {
+                            // For any other page, use the default logic
+                            editPath = path === '/' ? 'README.md' : 
+                                path.replace(/\/$/, '').split('/').pop() + '.md';
+                        }
+                        
                         const editUrl = `${REPO_URL}/edit/main/${editPath}`;
                         window.open(editUrl, '_blank');
                         break;
