@@ -419,12 +419,23 @@
 
         /* Update button styles */
         html.dark button {
-            background-color: #2a2d3d;
+            background-color: transparent !important;
+            border: none !important;
             color: var(--primary-text);
         }
 
         html.dark button:hover {
-            background-color: #374151;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Specifically target the header buttons */
+        html.dark header button {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        html.dark header button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
         }
 
         /* Add these dark mode styles */

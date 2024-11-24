@@ -13,11 +13,11 @@ const FILTER_OPTIONS = {
     { value: 'none', label: 'None' },
   ],
   omicModalities: [
-    { value: 'Bulk/scRNA-seq', label: 'Bulk/scRNA-seq' },
+    { value: 'Bulk RNA-seq', label: 'Bulk RNA-seq' },
+    { value: 'scRNA-seq', label: 'scRNA-seq' },
     { value: 'DNAm', label: 'DNAm' },
     { value: 'proteomics', label: 'Proteomics' },
     { value: 'natural language', label: 'Natural Language' },
-    { value: 'scRNA-seq', label: 'scRNA-seq' },
     { value: 'scATAC-seq', label: 'scATAC-seq' },
     { value: 'CITE-seq', label: 'CITE-seq' },
     { value: 'Spatial transcriptomics', label: 'Spatial Transcriptomics' },
@@ -54,7 +54,9 @@ const FilterSidebar = ({ filters, setFilters, visible }) => {
       {Object.entries(FILTER_OPTIONS).map(([filterType, options]) => (
         <FilterGroup
           key={filterType}
-          title={filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+          title={filterType === 'omicModalities' ? 'OMIC-MODALITIES' : 
+                 filterType === 'inputEmbeddings' ? 'INPUT EMBEDDINGS' :
+                 filterType.charAt(0).toUpperCase() + filterType.slice(1)}
           options={options}
           selectedOptions={filters[filterType] || []}
           onChange={(selectedValues) => handleFilterChange(filterType, selectedValues)}

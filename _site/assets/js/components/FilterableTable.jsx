@@ -132,9 +132,14 @@ const FilterableTable = ({ data, columns }) => {
             // Omic modalities filter
             if (filters.omicModalities?.length > 0) {
                 const modalitiesStr = String(item['Omic Modalities'] || '').toLowerCase();
-                const hasMatchingModality = filters.omicModalities.some(modality =>
-                    modalitiesStr.includes(modality.toLowerCase())
-                );
+                const hasMatchingModality = filters.omicModalities.some(modality => {
+                    if (modality === 'Bulk RNA-seq') {
+                        // Match any form of "bulk" in the string
+                        return /bulk/i.test(modalitiesStr);
+                    }
+                    // For other modalities, use exact matching as before
+                    return modalitiesStr.includes(modality.toLowerCase());
+                });
                 if (!hasMatchingModality) return false;
             }
 
