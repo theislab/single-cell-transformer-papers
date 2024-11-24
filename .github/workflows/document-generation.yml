@@ -48,13 +48,13 @@ jobs:
           
       # Upload artifacts
       - name: Upload PDF artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: pdfs
           path: _pages/*.pdf
           
       - name: Upload Notebook artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: notebooks
           path: _pages/*.ipynb
