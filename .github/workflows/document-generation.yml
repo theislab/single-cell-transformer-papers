@@ -10,56 +10,19 @@ jobs:
   convert:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
       
+      # Setup Python for notebook conversion
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.x'
           
+      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install "WeasyPrint>=53.0" "markdown>=3.3" "jupytext>=1.13"
-          
-      # Create PDF generation script
-      - name: Create PDF generation script
-        run: |
-          cat > generate_pdf.py << 'EOF'
-          import sys
-          import markdown
-          import re
-          from weasyprint import HTML, CSS
-          from markdown.extensions import meta
-          
-          def convert_to_pdf(markdown_path, pdf_path):
-              try:
-                  with open(markdown_path, 'r') as md_file:
-                      content = md_file.read()
-                  
-                  # Strip Jekyll front matter
-                  content = re.sub(r'^---\n.*?\n---\n', '', content, flags=re.DOTALL)
-                  
-                  # Convert to HTML with extensions
-                  html = markdown.markdown(content, extensions=['meta', 'tables', 'fenced_code'])
-                  
-                  # Add basic styling
-                  css = CSS(string='''
-                      body { font-family: Arial, sans-serif; margin: 40px; }
-                      code { background: #f4f4f4; padding: 2px 5px; }
-                      pre { background: #f4f4f4; padding: 10px; }
-                  ''')
-                  
-                  # Generate PDF using the updated API
-                  HTML(string=html).write_pdf(pdf_path, stylesheets=[css])
-                  
-              except Exception as e:
-                  print(f"Error processing {markdown_path}: {str(e)}")
-                  sys.exit(1)
-          
-          if __name__ == '__main__':
-              convert_to_pdf(sys.argv[1], sys.argv[2])
-          EOF
+          pip install jupytext nbconvert WeasyPrint markdown
           
       # Convert Markdown to Notebook
       - name: Convert to Notebook
@@ -72,18 +35,26 @@ jobs:
       - name: Generate PDF
         run: |
           for f in _pages/*.md; do
-            python generate_pdf.py "$f" "${f%.md}.pdf"
+            markdown_path="${f}"
+            pdf_path="${f%.md}.pdf"
+            python -c "
+            import markdown
+            import weasyprint
+            with open('$markdown_path', 'r') as md_file:
+                html = markdown.markdown(md_file.read())
+            weasyprint.HTML(string=html).write_pdf('$pdf_path')
+            "
           done
           
       # Upload artifacts
       - name: Upload PDF artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: pdfs
           path: _pages/*.pdf
           
       - name: Upload Notebook artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: notebooks
           path: _pages/*.ipynb
