@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transformers in Single-Cell Omics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Add this to your existing styles */
+        .nav-link {
+            color: var(--primary-text);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(107, 70, 193, 0.1);
+        }
+        
+        .site-title {
+            color: var(--primary-text);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        /* Base styles */
+        :root {
+            --primary-text: #24292e;
+            --background: #ffffff;
+            --sidebar-bg: #6b46c1;
+            --sidebar-text: #ffffff;
+            --table-header: #f3f4f6;
+            --table-row-alt: #f9fafb;
+            --table-border: #e5e7eb;
+        }
+
+        /* Dark mode variables */
+        html.dark {
+            --primary-text: #e2e8f0;
+            --background: #1a1b26;
+            --sidebar-bg: #4c3085;
+            --sidebar-text: #e6e6e6;
+            --table-header: #1f2937;
+            --table-bg: #1a1b26;
+            --table-border: #2d3748;
+        }
+
+        body {
+            color: var(--primary-text);
+            background-color: var(--background);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Markdown content styling */
+        .markdown-content h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .markdown-content code {
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .markdown-content pre {
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        /* Legend styling */
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Navigation and Layout */
+        /* Change this in your CSS section */
+        .sidebar {
+            width: 0px; /* Increased from 250px */
+            display:none;
+        }
+
+        .sidebar.collapsed {
+            margin-left: -320px; /* Match the new width */
+        }
+
+        .content.expanded {
+            margin-left: 0px; /* Match the new width */
+            width: 100%;
+            padding-right: 24px;
+        }
+
+        /* Add this for collapsed state */
+        .content:not(.expanded) {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        /* Dropdowns */
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: var(--background);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            z-index: 1000;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: var(--primary-text);
+        }
+
+        .dropdown a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        /* Dark mode dropdown items */
+        html.dark .dropdown a {
+            color: var(--primary-text);
+        }
+
+        html.dark .dropdown a:hover {
+            background-color: #1f2937;
+        }
+
+        /* Link styling */
+        .markdown-content a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section headings */
+        .section-heading {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: #24292e;
+        }
+
+        /* Legend styling */
+        .legend-list {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .legend-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Citation block */
+        .citation-block {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        /* Dark mode adjustments */
+        html.dark .markdown-content a {
+            color: #58a6ff;
+        }
+
+        html.dark .section-heading {
+            color: #c9d1d9;
+        }
+
+        html.dark .legend-list,
+        html.dark .citation-block {
+            background-color: #161b22;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .content {
+                padding: 1rem;
+                margin-top: 4rem;
+            }
+
+            header {
+                padding: 0.5rem;
+            }
+
+            /* Make the navigation menu collapsible on mobile */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background);
+                padding: 1rem;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+
+            .nav-links.show {
+                display: block;
+            }
+
+            /* Add hamburger menu */
+            .menu-button {
+                display: block;
+            }
+
+            /* Adjust table display for mobile */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Adjust dropdown positioning */
+            .dropdown {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: auto;
+            }
+        }
+
+        /* Add styles for the hamburger menu */
+        .menu-button {
+            display: none;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-button {
+                display: block;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0;
+            }
+        }
+
+        /* Add this to your print media query */
+        @media print {
+            @page {
+                size: landscape !important;
+                margin: 0.5cm !important;
+            }
+
+            /* Force all table columns to be visible */
+            table {
+                width: 100% !important;
+                display: table !important;
+                table-layout: auto !important;
+                font-size: 8pt !important;
+            }
+
+            th, td {
+                display: table-cell !important;
+                visibility: visible !important;
+                white-space: normal !important;
+                min-width: auto !important;
+                max-width: none !important;
+                overflow: visible !important;
+                padding: 4px !important;
+                font-size: inherit !important;
+            }
+
+            /* Ensure no columns are hidden */
+            .hidden, 
+            [hidden], 
+            [style*="display: none"], 
+            [style*="visibility: hidden"] {
+                display: table-cell !important;
+                visibility: visible !important;
+            }
+
+            /* Adjust content wrapping */
+            td > * {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+
+            /* Hide UI elements */
+            .filter-button,
+            header,
+            .sidebar,
+            #github-btn,
+            #download-btn,
+            #theme-toggle,
+            .menu-button {
+                display: none !important;
+            }
+
+            /* Center the title */
+            h1 {
+                text-align: center !important;
+                margin-bottom: 20px !important;
+                font-size: 16pt !important;
+            }
+
+            /* Ensure content starts at the top of the page */
+            .content {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+            /* Force background colors and images to print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        /* Update table styles */
+        html.dark table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: var(--table-bg);
+        }
+
+        html.dark th {
+            background-color: var(--table-header);
+            color: var(--primary-text);
+            font-weight: 500;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        html.dark tr:nth-child(even),
+        html.dark tr:nth-child(odd) {
+            background-color: var(--table-bg);
+        }
+
+        html.dark td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        html.dark tr:hover {
+            background-color: #1f2937;
+        }
+
+        /* Update link colors for dark mode */
+        html.dark .markdown-content a {
+            color: #7aa2f7;
+        }
+
+        html.dark .markdown-content a:hover {
+            color: #97c1ff;
+        }
+
+        /* Update dropdown styles for dark mode */
+        html.dark .dropdown {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+
+        html.dark .dropdown a:hover {
+            background-color: #374151;
+        }
+
+        /* Update button styles */
+        html.dark button {
+            background-color: transparent !important;
+            border: none !important;
+            color: var(--primary-text);
+        }
+
+        html.dark button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Specifically target the header buttons */
+        html.dark header button {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        html.dark header button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Add these dark mode styles */
+        html.dark .filter-panel {
+            background-color: #1a1b26;
+        }
+
+        /* Fix the white "Filters" title */
+        html.dark .filter-panel h3,
+        html.dark .filters-title {
+            color: #e2e8f0;
+        }
+
+        /* Fix the white hover state on filter items */
+        html.dark .filter-option:hover,
+        html.dark label:hover,
+        html.dark .checkbox-wrapper:hover {
+            background-color: #1f2937 !important;  /* Slightly lighter than background */
+            color: #e2e8f0;
+        }
+
+        /* Ensure checkbox items and their containers stay dark */
+        html.dark .checkbox-container,
+        html.dark .filter-item {
+            background-color: #1a1b26;
+            color: #e2e8f0;
+        }
+
+        html.dark .checkbox-container:hover,
+        html.dark .filter-item:hover {
+            background-color: #1f2937;
+        }
+
+        /* Ensure the text stays visible in dark mode */
+        html.dark .filter-label,
+        html.dark .filter-text {
+            color: #e2e8f0;
+        }
+
+        /* Dark mode styles for filter panel */
+        html.dark .fixed {
+            background-color: #1a1b26;
+        }
+
+        /* Fix all text colors */
+        html.dark .fixed *,
+        html.dark .filter-panel *,
+        html.dark label,
+        html.dark h3,
+        html.dark h4,
+        html.dark span,
+        html.dark .filter-option,
+        html.dark .checkbox-label {
+            color: #e2e8f0 !important;  /* Force light text color */
+        }
+
+        /* Style the checkboxes */
+        html.dark input[type="checkbox"] {
+            background-color: #1f2937;
+            border-color: #4b5563;
+        }
+
+        /* Style hover states */
+        html.dark label:hover,
+        html.dark .filter-option:hover {
+            background-color: #1f2937;
+        }
+
+        /* Style section headers */
+        html.dark .filter-section-header {
+            color: #e2e8f0;
+            border-color: #4b5563;
+        }
+
+        /* Style buttons */
+        html.dark button {
+            background-color: #1f2937;
+            color: #e2e8f0;
+            border: 1px solid #374151;
+        }
+
+        html.dark button.apply {
+            background-color: #3b82f6;
+            border: none;
+        }
+
+        /* Fix the white Filters header */
+        html.dark .fixed h3:first-child,
+        html.dark .filter-panel h3:first-child,
+        html.dark .filters-header {
+            color: #e2e8f0 !important;
+            background-color: #1a1b26;
+        }
+
+        /* In case the header is wrapped in a div */
+        html.dark .filter-header,
+        html.dark .filter-title,
+        html.dark .fixed > div:first-child {
+            color: #e2e8f0 !important;
+            background-color: #1a1b26;
+        }
+
+        /* Fix all white backgrounds in the filter panel */
+        html.dark .fixed {
+            background-color: #1a1b26 !important;
+        }
+
+        /* Fix the white background behind the filter options */
+        html.dark .fixed > div,
+        html.dark .filter-panel > div,
+        html.dark .filter-section,
+        html.dark .filter-option,
+        html.dark .checkbox-wrapper,
+        html.dark label,
+        html.dark input[type="checkbox"] {
+            background-color: #1a1b26 !important;
+        }
+
+        /* Fix any white backgrounds on hover */
+        html.dark .filter-option:hover,
+        html.dark label:hover,
+        html.dark .checkbox-wrapper:hover {
+            background-color: #1f2937 !important;
+        }
+
+        /* Ensure the entire panel and its contents stay dark */
+        html.dark .fixed,
+        html.dark .fixed * {
+            background-color: #1a1b26;
+        }
+
+        /* Only buttons should have different background */
+        html.dark button.reset,
+        html.dark button.apply {
+            background-color: #1f2937;
+        }
+
+        html.dark button.apply {
+            background-color: #3b82f6;
+        }
+
+        /* Mobile card layout */
+        @media screen and (max-width: 768px) {
+            /* Completely hide the header/first card */
+            thead, 
+            thead tr, 
+            thead th {
+                display: none !important;
+                height: 0;
+                width: 0;
+                margin: 0;
+                padding: 0;
+                position: absolute;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+            }
+
+            /* Container */
+            .table-container {
+                padding: 1rem;
+                overflow-x: hidden;
+                width: 100%;
+            }
+
+            /* Card styling */
+            tr {
+                display: flex;
+                flex-direction: column;
+                background-color: var(--background);
+                margin-bottom: 1rem;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                width: calc(100% - 2rem); /* Account for padding */
+            }
+
+            /* Row content */
+            td {
+                display: flex;
+                flex-direction: column;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                width: 100%;
+            }
+
+            /* Bold headers */
+            td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                margin-bottom: 0.25rem;
+                color: #666;
+            }
+
+            /* Content wrapping */
+            td > * {
+                width: 100%;
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.5;
+            }
+
+            /* Ensure text content wraps */
+            td {
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            /* Column headers */
+            td:nth-child(1)::before { content: "Model"; }
+            td:nth-child(2)::before { content: "Paper"; }
+            td:nth-child(3)::before { content: "Code"; }
+            td:nth-child(4)::before { content: "Omic Modalities"; }
+            td:nth-child(5)::before { content: "Pre-Training Dataset"; }
+            td:nth-child(6)::before { content: "Input Embedding"; }
+            td:nth-child(7)::before { content: "Architecture"; }
+            td:nth-child(8)::before { content: "SSL Tasks"; }
+            td:nth-child(9)::before { content: "Supervised Tasks"; }
+
+            /* Dark mode */
+            html.dark tr {
+                background-color: #1f2937;
+            }
+
+            html.dark td::before {
+                color: #e2e8f0;
+            }
+
+            /* Remove last border */
+            td:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Adjust filter panel for mobile */
+        @media screen and (max-width: 768px) {
+            .filter-panel {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 flex items-center justify-between px-4 py-2 border-b border-gray-200">
+        <div class="flex items-center">
+            <button class="menu-button md:hidden" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/" class="text-xl font-semibold ml-2">
+                Transformers in Single-Cell Omics
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+            <a href="/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
+            <a href="/transformer-llms" class="nav-link">Transformer LLMs</a>
+            <a href="/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <!-- GitHub Dropdown -->
+            <div class="relative">
+                <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                    <i class="fab fa-github text-xl"></i>
+                </button>
+                <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-code-branch mr-2"></i>Repository
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-edit mr-2"></i>Suggest edit
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-exclamation-circle mr-2"></i>Open issue
+                    </a>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="relative" id="download-btn">
+                <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                <i class="fas fa-sun text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <!-- Update the sidebar nav element -->
+    <nav id="sidebar" class="sidebar fixed left-0 top-16 h-full text-white p-6"> <!-- increased padding -->
+        <div class="space-y-6"> <!-- increased spacing -->
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2> <!-- larger text and margin -->
+            <a href="/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Home</a>
+            <a href="/single-cell-transformers/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
+            <a href="/transformer-llms/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
+            <a href="/transformer-evaluation/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content pt-20 px-8 w-full">
+        <div class="w-full mx-auto markdown-content">
+            <div id="transformer-evaluation-root"></div>
+
+<!-- Load React and ReactDOM from CDN -->
+<script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+
+<script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+<!-- Load your bundle -->
+<script src="/assets/js/dist/transformer-evaluation.bundle.js"></script>
+
+
+        </div>
+    </main>
+
+    <script>
+        // Add this helper function at the top of your script section
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
+                isError ? 'bg-red-500' : 'bg-green-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+        
+        function updateThemeIcon(isDark) {
+            themeIcon.classList.remove('fa-sun', 'fa-moon');
+            themeIcon.classList.add(isDark ? 'fa-moon' : 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        });
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.add(savedTheme);
+        updateThemeIcon(savedTheme === 'dark');
+
+        // Dropdown functionality
+        function setupDropdown(btnId, dropdownId) {
+            const btn = document.getElementById(btnId);
+            const dropdown = document.getElementById(dropdownId);
+
+            if (!btn || !dropdown) return;
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isVisible = dropdown.classList.contains('show');
+                
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+                
+                // Toggle current dropdown
+                if (!isVisible) {
+                    dropdown.classList.add('show');
+                }
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+        });
+
+        // Initialize dropdowns
+        setupDropdown('github-btn', 'github-dropdown');
+        setupDropdown('download-btn', 'download-dropdown');
+
+        // GitHub functionality
+        const REPO_URL = 'https://github.com/theislab/single-cell-transformer-papers';
+
+        document.querySelector('#github-dropdown').addEventListener('click', (e) => {
+            e.preventDefault();
+            const action = e.target.closest('a')?.textContent.trim();
+            
+            if (action) {
+                switch(action) {
+                    case 'Repository':
+                        window.open(REPO_URL, '_blank');
+                        break;
+                    case 'Suggest edit':
+                        // Get current page path and construct the edit URL
+                        const path = window.location.pathname;
+                        const editPath = path === '/' ? 'README.md' : 
+                            path.replace(/\/$/, '').split('/').pop() + '.md';
+                        const editUrl = `${REPO_URL}/edit/main/${editPath}`;
+                        window.open(editUrl, '_blank');
+                        break;
+                    case 'Open issue':
+                        window.open(`${REPO_URL}/issues/new`, '_blank');
+                        break;
+                }
+            }
+        });
+
+        // Update the print preparation function
+        function prepareForPrint() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @page {
+                    size: landscape !important;
+                    margin: 0.5cm !important;
+                }
+                
+                /* Force all columns to be visible */
+                table {
+                    width: 100% !important;
+                    display: table !important;
+                    table-layout: auto !important;
+                    font-size: 8pt !important;
+                }
+                
+                th, td {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                    white-space: normal !important;
+                    min-width: auto !important;
+                    max-width: none !important;
+                    overflow: visible !important;
+                    padding: 4px !important;
+                }
+
+                /* Show all columns */
+                .hidden, 
+                [hidden], 
+                [style*="display: none"], 
+                [style*="visibility: hidden"] {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                }
+
+                /* Adjust content wrapping */
+                td > * {
+                    white-space: normal !important;
+                    word-wrap: break-word !important;
+                }
+            `;
+            
+            document.head.appendChild(style);
+
+            // Force all columns to be visible
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                // Show all columns
+                const columns = table.querySelectorAll('th, td');
+                columns.forEach(col => {
+                    col.style.cssText = `
+                        display: table-cell !important;
+                        visibility: visible !important;
+                        white-space: normal !important;
+                        min-width: auto !important;
+                        max-width: none !important;
+                        overflow: visible !important;
+                    `;
+                });
+            });
+
+            window.print();
+
+            // Cleanup
+            setTimeout(() => {
+                document.head.removeChild(style);
+            }, 1000);
+        }
+
+        // Update the download button click handler
+        document.getElementById('download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            prepareForPrint();
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menu-toggle')?.addEventListener('click', () => {
+            document.getElementById('nav-links')?.classList.toggle('show');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#menu-toggle') && !e.target.closest('#nav-links')) {
+                document.getElementById('nav-links')?.classList.remove('show');
+            }
+        });
+    </script>
+    <!-- Load React and ReactDOM first -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Include the data directly -->
+    <script type="text/javascript">
+        window.singleCellTransformers = [{"model":"Precious3GPT","paper":{"type":"preprint","text":"[Galkin et al. 2024](https://doi.org/10.1101/2024.07.25.605062)","url":"https://doi.org/10.1101/2024.07.25.605062"},"code":{"type":"evaluation_only","text":"[ðï¸ð¤](https://huggingface.co/insilicomedicine/precious3-gpt-multi-modal)","url":"https://huggingface.co/insilicomedicine/precious3-gpt-multi-modal"},"omic_modalities":"Bulk/scRNA-seq, DNAm, proteomics, natural language annotations","pre_training_dataset":"Omics data with KG and text embeddings, Closed source","input_embedding":"?","architecture":"Decoder-only LLaMA-like transformer model with modality mapper units","ssl_tasks":"Emulation of chemical response, cross-species/tissue/omics transference, emulation of clinical conditions","supervised_tasks":"Age prediction, gene classification"},{"model":"LangCell","paper":{"type":"peer_reviewed","text":"[Zhao et al. 2024](https://arxiv.org/abs/2405.06708)","url":"https://arxiv.org/abs/2405.06708"},"code":{"type":"reproducible","text":"[ð ï¸Github](https://github.com/PharMolix/LangCell)","url":"https://github.com/PharMolix/LangCell"},"omic_modalities":"scRNA-seq, natural language","pre_training_dataset":"27M / cross-tissue, human ([CELLxGENE](https://cellxgene.cziscience.com/))","input_embedding":"Ordering: rank-based, natural language cell description","architecture":"Other: two encoders (cell and text)","ssl_tasks":"MLM with CE loss, intra- and inter-modal contrastive loss, cell-text matching with CE loss","supervised_tasks":"Cell type annotation, pathway identification"},{"model":"ScRAT","paper":{"type":"peer_reviewed","text":"[Mao et al. 2024](https://academic.oup.com/bioinformatics/article/40/2/btae067/7613064)","url":"https://academic.oup.com/bioinformatics/article/40/2/btae067/7613064"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/yuzhenmao/ScRAT)","url":"https://github.com/yuzhenmao/ScRAT"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Cells as tokens","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Phenotype prediction: aggregated per sample cell embeddings are used to predict sample label (e.g., health condition)"},{"model":"scPRINT","paper":{"type":"preprint","text":"[Kalfon et al. 2024](https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1)","url":"https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1"},"code":{"type":"reproducible","text":"[ð ï¸Github](https://github.com/cantinilab/scPRINT)","url":"https://github.com/cantinilab/scPRINT"},"omic_modalities":"scRNA-seq","pre_training_dataset":"50M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/))","input_embedding":"Other: [ESM-2](https://www.science.org/doi/10.1126/science.ade2574) based gene embeddings. Gene embeddings are randomly sampled and order determined by position on chromosomes","architecture":"Encoder","ssl_tasks":"Multi task Pre-training: Denoising, Botleneck learning (+ many additional losses available)","supervised_tasks":"Cell label prediction (these supervised tasks are part of the pre-training)"},{"model":"scMulan","paper":{"type":"peer_reviewed","text":"[Bian et al. 2024](https://link.springer.com/chapter/10.1007/978-1-0716-3989-4_57)","url":"https://link.springer.com/chapter/10.1007/978-1-0716-3989-4_57"},"code":{"type":"evaluation_only","text":"[ðGithub](https://github.com/SuperBianC/scMulan/tree/main)","url":"https://github.com/SuperBianC/scMulan/tree/main"},"omic_modalities":"scRNA-seq","pre_training_dataset":"10M / cross-tissue, human ([hECA](https://www.sciencedirect.com/science/article/pii/S2589004222005892))","input_embedding":"Not specified","architecture":"Decoder","ssl_tasks":"Conditional cell generation","supervised_tasks":"cell type annotation, cell metadata annotation (both also used in training)"},{"model":"BioFormers","paper":{"type":"preprint","text":"[Belgadi and Li et al. 2023](https://www.biorxiv.org/content/10.1101/2023.11.29.569320v1.full.pdf)","url":"https://www.biorxiv.org/content/10.1101/2023.11.29.569320v1.full.pdf"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"scRNA-seq","pre_training_dataset":"8K / single tissue, human ([PBMC](https://docs.scvi-tools.org/en/stable/api/reference/scvi.data.pbmc_dataset.html), [Adamson et al. 2016](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE90546))","input_embedding":"Value categorization: value binning","architecture":"Encoder","ssl_tasks":"MLM with CE loss","supervised_tasks":"-"},{"model":"Geneformer","paper":{"type":"peer_reviewed","text":"[Theodoris et al. 2023](https://www.nature.com/articles/s41586-023-06139-9)","url":"https://www.nature.com/articles/s41586-023-06139-9"},"code":{"type":"reproducible","text":"[ð ð¤](https://huggingface.co/ctheodoris/Geneformer)","url":"https://huggingface.co/ctheodoris/Geneformer"},"omic_modalities":"scRNA-seq","pre_training_dataset":"36M / cross-tissue, human ([Genecorpus](https://huggingface.co/datasets/ctheodoris/Genecorpus-30M))","input_embedding":"Ordering: rank-based","architecture":"Encoder","ssl_tasks":"MLM with CE loss, gene ID prediction","supervised_tasks":"Gene function prediction, cell annotation"},{"model":"Universal Cell Embedding","paper":{"type":"preprint","text":"[Rosen et al. 2023](https://www.biorxiv.org/content/10.1101/2023.11.28.568918v1.full.pdf)","url":"https://www.biorxiv.org/content/10.1101/2023.11.28.568918v1.full.pdf"},"code":{"type":"evaluation_only","text":"[ðGithub](https://github.com/snap-stanford/uce)","url":"https://github.com/snap-stanford/uce"},"omic_modalities":"scRNA-seq","pre_training_dataset":"36M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/) and [other](https://www.biorxiv.org/content/biorxiv/early/2023/11/29/2023.11.28.568918/DC3/embed/media-3.xlsx?download=true))","input_embedding":"Other: [ESM-2](https://www.science.org/doi/10.1126/science.ade2574) based gene embeddings. Gene embeddings are sampled according to expression levels and order determined by position on chromosomes.","architecture":"Encoder","ssl_tasks":"Modified MLM, binary CE loss predicting whether a gene is expressed or not. Uses CLS embedding instead of token-embeddings.","supervised_tasks":"Cell annotation"},{"model":"scGPT","paper":{"type":"peer_reviewed","text":"[Cui et al. 2024](https://www.nature.com/articles/s41592-024-02201-0)","url":"https://www.nature.com/articles/s41592-024-02201-0"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/bowang-lab/scGPT)","url":"https://github.com/bowang-lab/scGPT"},"omic_modalities":"scRNA-seq, scATAC-seq, CITE-seq, Spatial transcriptomics","pre_training_dataset":"33M / cross-tissue, human, non-disease ([CELLxGENE](https://cellxgene.cziscience.com/))","input_embedding":"Value categorization: value binning","architecture":"Other: attention masking in encoder","ssl_tasks":"Iterative MLM variant with MSE loss, cell token expression prediction, gene expression prediction","supervised_tasks":"Cell type annotation, genetic perturbation effect prediction, reverse perturbation prediction, cell clustering, multimodal embedding, gene function prediction"},{"model":"TOSICA","paper":{"type":"peer_reviewed","text":"[Chen et al. 2023](https://www.nature.com/articles/s41467-023-35923-4)","url":"https://www.nature.com/articles/s41467-023-35923-4"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/JackieHanLab/TOSICA)","url":"https://github.com/JackieHanLab/TOSICA"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Value projection","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Cell type annotation"},{"model":"scMoFormer","paper":{"type":"peer_reviewed","text":"[Tang et al. 2023](https://dl.acm.org/doi/10.1145/3583780.3615061)","url":"https://dl.acm.org/doi/10.1145/3583780.3615061"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/OmicsML/scMoFormer)","url":"https://github.com/OmicsML/scMoFormer"},"omic_modalities":"scRNA-seq, scATAC-seq, CITE-seq","pre_training_dataset":"-","input_embedding":"Other, SVD-based","architecture":"Encoder and graph transformers","ssl_tasks":"-","supervised_tasks":"Cross-modality prediction"},{"model":"tGPT","paper":{"type":"peer_reviewed","text":"[Shen et al. 2023](https://www.cell.com/iscience/pdf/S2589-0042(23)","url":"https://www.cell.com/iscience/pdf/S2589-0042(23"},"code":{"type":"reproducible","text":"[ð GitHubï¸](https://github.com/deeplearningplus/tGPT)","url":"https://github.com/deeplearningplus/tGPT"},"omic_modalities":"scRNA-seq","pre_training_dataset":"22M / cross-tissue, cross-species, disease and non-disease, organoids ([list](https://www.cell.com/cms/10.1016/j.isci.2023.106536/attachment/1e95114b-5ea0-4596-afd8-0cb04bae0f6d/mmc2))","input_embedding":"Ordering","architecture":"Decoder","ssl_tasks":"NTP with CE loss, gene ID prediction","supervised_tasks":"-"},{"model":"SpaFormer","paper":{"type":"preprint","text":"[Wen et al. 2023](https://arxiv.org/abs/2302.03038)","url":"https://arxiv.org/abs/2302.03038"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/wehos/CellT)","url":"https://github.com/wehos/CellT"},"omic_modalities":"Spatial transcriptomics","pre_training_dataset":"-","input_embedding":"Cells as tokens, value projection","architecture":"Encoder","ssl_tasks":"Modified MLM with MSE loss, gene expression prediction","supervised_tasks":"Gene expression imputation"},{"model":"scFoundation","paper":{"type":"peer_reviewed","text":"[Hao et al. 2024](https://www.nature.com/articles/s41592-024-02305-7)","url":"https://www.nature.com/articles/s41592-024-02305-7"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/biomap-research/scFoundation)","url":"https://github.com/biomap-research/scFoundation"},"omic_modalities":"scRNA-seq","pre_training_dataset":"50M / cross-tissue, human, disease and non-disease ([GEO](https://www.ncbi.nlm.nih.gov/geo/), [Single Cell Portal](https://singlecell.broadinstitute.org/single_cell), [HCA](https://data.humancellatlas.org/), [EMBL-EBI](https://www.ebi.ac.uk/))","input_embedding":"Value projection","architecture":"Other: two encoders","ssl_tasks":"Modified MLM with MSE loss, gene expression prediction","supervised_tasks":"Drug response prediction, genetic perturbation effect prediction"},{"model":"CellLM","paper":{"type":"preprint","text":"[Zhao et al. 2023](https://arxiv.org/abs/2306.04371)","url":"https://arxiv.org/abs/2306.04371"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/PharMolix/OpenBioMed)","url":"https://github.com/PharMolix/OpenBioMed"},"omic_modalities":"scRNA-seq","pre_training_dataset":"1.8M / cross-tissue, human, disease and non-disease ([PanglaoDB](https://panglaodb.se/), [CancerSCEM](https://ngdc.cncb.ac.cn/cancerscem/))","input_embedding":"Value categorization","architecture":"Encoder","ssl_tasks":"Contrastive loss, MLM with CE loss","supervised_tasks":"Non-disease vs cancer prediction, cell type annotation, drug response prediction"},{"model":"scCLIP","paper":{"type":"preprint","text":"[Xiong et al. 2023](https://openreview.net/forum?id=KMtM5ZHxct&referrer=%5Bthe%20profile%20of%20Tianlong%20Chen%5D(%2Fprofile%3Fid%3D~Tianlong_Chen1)","url":"https://openreview.net/forum?id=KMtM5ZHxct&referrer=%5Bthe%20profile%20of%20Tianlong%20Chen%5D(%2Fprofile%3Fid%3D~Tianlong_Chen1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://anonymous.4open.science/r/scCLIP-61F6/README.md)","url":"https://anonymous.4open.science/r/scCLIP-61F6/README.md"},"omic_modalities":"scRNA-seq, scATAC-seq","pre_training_dataset":"377k / cross-tissue, human fetal ([ATAC](https://www.science.org/doi/10.1126/science.aba7612), [RNA](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7780123/))","input_embedding":"Value projection","architecture":"Encoder","ssl_tasks":"Contrastive loss, CE matching modalities","supervised_tasks":"-"},{"model":"GeneCompass","paper":{"type":"preprint","text":"[Yang et al. 2023](https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1)","url":"https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1"},"code":{"type":"reproducible","text":"[ð  GitHub](https://github.com/xCompass-AI/GeneCompass)","url":"https://github.com/xCompass-AI/GeneCompass"},"omic_modalities":"scRNA-seq","pre_training_dataset":"126M / cross-tissue, human and mouse, disease and non-disease ([GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [CELLxGENE](https://cellxgene.cziscience.com/), [GSA](https://ngdc.cncb.ac.cn/gsa/), [Single Cell Portal](https://singlecell.broadinstitute.org/single_cell), [HCA](https://data.humancellatlas.org/), [EMBL-EBI](https://www.ebi.ac.uk/), [3CA](https://www.weizmann.ac.il/sites/3CA/), [Cell BLAST](https://cblast.gao-lab.org/), [TEDD](https://TEDD.obg.cuhk.edu.hk/),  and [other](https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1.full))","input_embedding":"?","architecture":"Other: two encoders","ssl_tasks":"MLM with CE and MSE loss, gene ID and expression prediction","supervised_tasks":"Cell type annotation, drug response prediction, gene function prediction"},{"model":"CellPLM","paper":{"type":"peer_reviewed","text":"[Wen et al. 2024](https://openreview.net/forum?id=BKXvPDekud)","url":"https://openreview.net/forum?id=BKXvPDekud"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/OmicsML/CellPLM)","url":"https://github.com/OmicsML/CellPLM"},"omic_modalities":"scRNA-seq, Spatial transcriptomics","pre_training_dataset":"11M / cross-tissue, human, disease and non-disease ([HTCA](https://humantumoratlas.org/), [HCA](https://data.humancellatlas.org/), [GEO](https://www.ncbi.nlm.nih.gov/geo/))","input_embedding":"Cells as tokens, value projection","architecture":"Encoder","ssl_tasks":"Modified MLM with MSE loss and KL losses, gene expression prediction","supervised_tasks":"Gene expression imputation, cell type annotation, genetic perturbation effect prediction"},{"model":"scMAE","paper":{"type":"preprint","text":"[Kim et al. 2023](https://openreview.net/pdf?id=2mq6uezuGj)","url":"https://openreview.net/pdf?id=2mq6uezuGj"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"single-cell flow cytometry","pre_training_dataset":"6.5M / human, disease and non-disease (source?)","input_embedding":"Other, concatenation of values with learnable protein embeddings","architecture":"Other: two encoders","ssl_tasks":"MLM with MSE loss, protein expression prediction","supervised_tasks":"Cell type annotation, protein expression imputation"},{"model":"CAN/CGRAN","paper":{"type":"peer_reviewed","text":"[Wang et al. 2023](https://ebooks.iospress.nl/volumearticle/64489)","url":"https://ebooks.iospress.nl/volumearticle/64489"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Value projection","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Cell type annotation"},{"model":"scTranslator","paper":{"type":"preprint","text":"[Liu et al. 2023](https://www.biorxiv.org/content/10.1101/2023.07.04.547619v2.full)","url":"https://www.biorxiv.org/content/10.1101/2023.07.04.547619v2.full"},"code":{"type":"evaluation_only","text":"[ðï¸GitHub](https://github.com/TencentAILabHealthcare/sctranslator)","url":"https://github.com/TencentAILabHealthcare/sctranslator"},"omic_modalities":"scRNA-seq, CITE-seq","pre_training_dataset":"-","input_embedding":"Value projection","architecture":"Other: two encoders","ssl_tasks":"-","supervised_tasks":"Cross-modality prediction"},{"model":"scTransSort","paper":{"type":"peer_reviewed","text":"[Jiao et al. 2023](https://www.mdpi.com/2218-273X/13/4/611)","url":"https://www.mdpi.com/2218-273X/13/4/611"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/jiaojiao-123/scTransSort)","url":"https://github.com/jiaojiao-123/scTransSort"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Value projection","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Cell type annotation"},{"model":"STGRNS","paper":{"type":"peer_reviewed","text":"[Xu et al. 2023](https://academic.oup.com/bioinformatics/article/39/4/btad165/7099621)","url":"https://academic.oup.com/bioinformatics/article/39/4/btad165/7099621"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/zhanglab-wbgcas/STGRNS)","url":"https://github.com/zhanglab-wbgcas/STGRNS"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Other","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"GRN inference"},{"model":"CIForm","paper":{"type":"peer_reviewed","text":"[Xu et al. 2023](https://academic.oup.com/bib/article-abstract/24/4/bbad195/7169137?redirectedFrom=fulltext)","url":"https://academic.oup.com/bib/article-abstract/24/4/bbad195/7169137?redirectedFrom=fulltext"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/zhanglab-wbgcas/CIForm)","url":"https://github.com/zhanglab-wbgcas/CIForm"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Value projection","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Cell type annotation"},{"model":"scFormer","paper":{"type":"preprint","text":"[Cui et al. 2023](https://openreview.net/forum?id=7hdmA0qtr5)","url":"https://openreview.net/forum?id=7hdmA0qtr5"},"code":{"type":"partial","text":"[ï¸GitHub](https://github.com/bowang-lab/scFormer)","url":"https://github.com/bowang-lab/scFormer"},"omic_modalities":"scRNA-seq","pre_training_dataset":"Task specific","input_embedding":"Value categorization: value binning","architecture":"Encoder","ssl_tasks":"Modified MLM with CE, cell token expression prediction, contrastive loss with cosine similarity, gene expression prediction","supervised_tasks":"Cell type annotation, genetic perturbation effect prediction"},{"model":"Exceiver","paper":{"type":"preprint","text":"[Connell et al. 2022](https://openreview.net/forum?id=XxRuCIgq2LX)","url":"https://openreview.net/forum?id=XxRuCIgq2LX"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/keiserlab/exceiver)","url":"https://github.com/keiserlab/exceiver"},"omic_modalities":"scRNA-seq","pre_training_dataset":"0.5M / cross-tissue, human ([Tabula Sapiens](https://figshare.com/ndownloader/files/34702114))","input_embedding":"Other: value scaled embeddings","architecture":"Encoder","ssl_tasks":"Modified MLM with MSE, gene expression prediction","supervised_tasks":"Cell type annotation, drug response prediction"},{"model":"TransCluster","paper":{"type":"peer_reviewed","text":"[Song et al. 2022](https://www.frontiersin.org/articles/10.3389/fgene.2022.1038919/full)","url":"https://www.frontiersin.org/articles/10.3389/fgene.2022.1038919/full"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/Danica123/TransCluster)","url":"https://github.com/Danica123/TransCluster"},"omic_modalities":"scRNA-seq","pre_training_dataset":"-","input_embedding":"Value projection with LDA","architecture":"Encoder","ssl_tasks":"-","supervised_tasks":"Cell type annotation"},{"model":"scBERT","paper":{"type":"peer_reviewed","text":"[Yang et al. 2022](https://www.nature.com/articles/s42256-022-00534-z)","url":"https://www.nature.com/articles/s42256-022-00534-z"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/TencentAILabHealthcare/scBERT)","url":"https://github.com/TencentAILabHealthcare/scBERT"},"omic_modalities":"scRNA-seq","pre_training_dataset":"1M / cross-tissue, human ([PanglaoDB](https://panglaodb.se/))","input_embedding":"Value categorization, binning","architecture":"Encoder","ssl_tasks":"MLM with CE loss, gene expression prediction","supervised_tasks":"Cell type annotation, unseen cell type detection"},{"model":"iSEEEK","paper":{"type":"peer_reviewed","text":"[Shen et al. 2022](https://academic.oup.com/bib/article/23/2/bbab573/6511497?login=false)","url":"https://academic.oup.com/bib/article/23/2/bbab573/6511497?login=false"},"code":{"type":"evaluation_only","text":"[ðGithub](https://github.com/lixiangchun/iSEEEK)","url":"https://github.com/lixiangchun/iSEEEK"},"omic_modalities":"scRNA-seq","pre_training_dataset":"11.9M / cross-tissue, cross-species ([list](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bib/23/2/10.1093_bib_bbab573/1/supplementary_table_1_data_source_information_bbab573.xlsx?Expires=1710130756&Signature=EKqLNLeqpYl320~rRpsK79fA4RC1KvQcWeYqpGALwIQ2SK-IAqZmyXnU-tuYG4xzZqeOhjKc2oyhqBRkO8xJBGO~EMja5KhbNP8PS4nV1eFCrZW6GvbluqyqCP9v-z2ExYhSo3f4jisWi9irRL0y7fxIPk3dPV4f3NACrRjDinqpUZ2eJTKOWwQ8GTbL3dySxPNJa8XQ0y2lGv0lBO~KMG-PJROYDi-PQyHHkTz5AbAnhpD5jnK1BSdxNg8oFuIErS7U0ej8V86eA3AqZyFdI4RZtq-iPTkAEFSQROhQdv1aTh3Cj5EuIZvVgmivr~qF571C9m4IHnI0bEsrhI4f3w__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA))","input_embedding":"Ordering: rank-based","architecture":"Encoder","ssl_tasks":"MLM with CE loss","supervised_tasks":"Marker gene classification"},{"model":"Multitask learning","paper":{"type":"preprint","text":"[Pang et al. 2020](https://www.biorxiv.org/content/10.1101/2020.02.05.935239v2)","url":"https://www.biorxiv.org/content/10.1101/2020.02.05.935239v2"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"scRNA-seq","pre_training_dataset":"160k / brain, mouse ([MBA](http://mousebrain.org/))","input_embedding":"Value projection","architecture":"Other: autoencoder with two transformer encoders (?)","ssl_tasks":"Modified MLM with MSE loss, gene expression prediction","supervised_tasks":"-"}];
+        window.transformerLLMs = [{"model":"CELLama","paper":{"type":"preprint","text":"[Choi et al. 2024](https://www.biorxiv.org/content/10.1101/2024.05.08.593094v1.full#ref-16)","url":"https://www.biorxiv.org/content/10.1101/2024.05.08.593094v1.full#ref-16"},"code":{"type":"reproducible","text":"[ð GitHub](https://github.com/portrai-io/CELLama)","url":"https://github.com/portrai-io/CELLama"},"omic_modalities":"scRNA-seq, Spatial transcriptomics","pre_training_dataset":"Natural Language [SBERT](https://fq.pkwyx.com/default/https/aclanthology.org/D19-1410.pdf)","input_embedding":"Other: Ordering with embedding of the natural language representation, additional cell annotations are added in natural language","architecture":"[SBERT](https://fq.pkwyx.com/default/https/aclanthology.org/D19-1410.pdf)","ssl_tasks":"Contrastive loss","supervised_tasks":"Cell type annotation","zero_shot_tasks":"Cell type annotation, niche cell type featuring"},{"model":"CellWhisperer","paper":{"type":"preprint","text":"[Schaefer et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.15.618501v1)","url":"https://www.biorxiv.org/content/10.1101/2024.10.15.618501v1"},"code":{"type":"reproducible","text":"[ð GitHub](https://github.com/epigen/cellwhisperer)","url":"https://github.com/epigen/cellwhisperer"},"omic_modalities":"Bulk/scRNA-seq","pre_training_dataset":"Transcriptome data paired with natural language annotations","input_embedding":"Geneformer- and BioBERT-based embedding models (contrastively fine-tuned)","architecture":"Multimodal contrastive training of embedding models (CLIP) and transcriptome instruction fine-tuning of LLM (LLaVA)","ssl_tasks":"-","supervised_tasks":"Transcriptome-aware question-answering","zero_shot_tasks":"Reference-free cell property prediction (cell types & states, disease states, organ of cell origin, ...)"},{"model":"scInterpreter","paper":{"type":"preprint","text":"[Li et al. 2024](https://arxiv.org/abs/2402.12405)","url":"https://arxiv.org/abs/2402.12405"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language [GPT-3.5](https://api.openai.com/) and [Llama-13b](https://arxiv.org/abs/2302.13971)","input_embedding":"Other: Ordering with embedding of the natural language representation","architecture":"[GPT-3.5](https://api.openai.com/)","ssl_tasks":"NTP with CE loss and instruction finetuning (GPT-3.5 closed-source)","supervised_tasks":"-","zero_shot_tasks":"Cell type annotation (LLMs frozen, only small MLP trained)"},{"model":"ChatCell","paper":{"type":"preprint","text":"[Fang et al. 2024](https://arxiv.org/abs/2402.08303)","url":"https://arxiv.org/abs/2402.08303"},"code":{"type":"reproducible","text":"[ð GitHub](https://github.com/zjunlp/ChatCell)","url":"https://github.com/zjunlp/ChatCell"},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language [T5](https://huggingface.co/docs/transformers/en/model_doc/t5) and [natural language instructions](https://huggingface.co/datasets/zjunlp/ChatCell-Instructions)","input_embedding":"Other: Ordering with embedding as natural language with additional terms","architecture":"[T5](https://huggingface.co/docs/transformers/en/model_doc/t5)","ssl_tasks":"NTP with CE loss","supervised_tasks":"None (conditional sequence generation, prompting)","zero_shot_tasks":"Simulation, cell type annotation, drug sensitivity prediction"},{"model":"MarkerGeneBERT","paper":{"type":"preprint","text":"[Cheng et al. 2023](https://www.biorxiv.org/content/10.1101/2024.01.30.578115v1)","url":"https://www.biorxiv.org/content/10.1101/2024.01.30.578115v1"},"code":{"type":"none","text":"None","url":""},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language, [PubMed](https://pubmed.ncbi.nlm.nih.gov/) and [PubMed Central](https://www.ncbi.nlm.nih.gov/pmc/)","input_embedding":"Other: Natural language preprocessed with [SciBERT](https://arxiv.org/abs/1903.10676)","architecture":"Encoder","ssl_tasks":"MLM","supervised_tasks":"Named Entity Recognition (NER), cell-biomarker sentence classification","zero_shot_tasks":"-"},{"model":"scELMo","paper":{"type":"preprint","text":"[Liu, Chen and Zheng 2023](https://www.biorxiv.org/content/10.1101/2023.12.07.569910v1.full.pdf)","url":"https://www.biorxiv.org/content/10.1101/2023.12.07.569910v1.full.pdf"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/HelloWorldLTY/scELMo)","url":"https://github.com/HelloWorldLTY/scELMo"},"omic_modalities":"scRNA-seq, CITE-seq","pre_training_dataset":"Natural Language, Closed source","input_embedding":"Other: NLP model embeddings of features weighted by the feature level in a cell (e.g. expression level)","architecture":"Closed source (some open)","ssl_tasks":"Closed source (some open)","supervised_tasks":"Cell type annotation, Genetic perturbation effect prediction","zero_shot_tasks":"Cell and gene embeddings in other perturbation models"},{"model":"GenePT","paper":{"type":"preprint","text":"[Chen and Zou 2023](https://www.biorxiv.org/content/10.1101/2023.10.16.562533v1.full)","url":"https://www.biorxiv.org/content/10.1101/2023.10.16.562533v1.full"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/yiqunchen/GenePT)","url":"https://github.com/yiqunchen/GenePT"},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language, Closed source","input_embedding":"Ordering: embedding as natural language","architecture":"Closed source","ssl_tasks":"Closed source","supervised_tasks":"Gene function prediction","zero_shot_tasks":"Cell clustering, GRN inference"},{"model":"GPT-4","paper":{"type":"peer_reviewed","text":"[W. Hou and Z. Ji 2024](https://www.nature.com/articles/s41592-024-02235-4)","url":"https://www.nature.com/articles/s41592-024-02235-4"},"code":{"type":"evaluation_only","text":"[ðGitHub](https://github.com/Winnie09/GPTCelltype)","url":"https://github.com/Winnie09/GPTCelltype"},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language, Closed source","input_embedding":"Ordering: embedding as natural language","architecture":"Closed source","ssl_tasks":"Closed source","supervised_tasks":"None (conditional sequence generation, prompting)","zero_shot_tasks":"Cell type annotation"},{"model":"Cell2Sentence","paper":{"type":"peer_reviewed","text":"[Levine et al. 2024](https://openreview.net/forum?id=EWt5wsEdvc&referrer=%5Bthe%20profile%20of%20Josue%20Ortega%20Caro%5D(%2Fprofile%3Fid%3D~Josue_Ortega_Caro1)","url":"https://openreview.net/forum?id=EWt5wsEdvc&referrer=%5Bthe%20profile%20of%20Josue%20Ortega%20Caro%5D(%2Fprofile%3Fid%3D~Josue_Ortega_Caro1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/vandijklab/cell2sentence-ft)","url":"https://github.com/vandijklab/cell2sentence-ft"},"omic_modalities":"scRNA-seq","pre_training_dataset":"Natural Language ([GPT2](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)) and [scRNA-seq](https://www.science.org/doi/full/10.1126/science.abl5197?casa_token=KSZInYXxqU4AAAAA%3AuNgeqoX4vxOaMPGAv4UW9_GMy1lMmZ1-QGyx2VBCSbsGWvchKCzdNUvwt-h_yemzugH075TGz6N8fw) (40k / immune, human)","input_embedding":"Ordering: embedding as natural language","architecture":"Decoder","ssl_tasks":"NTP with CE loss","supervised_tasks":"-","zero_shot_tasks":"Simulation, cell type annotation"}];
+        window.transformerEvaluation = [{"paper":{"type":"preprint","text":"[Ahlmann-Eltze et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.16.613342)","url":"https://www.biorxiv.org/content/10.1101/2024.09.16.613342"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/const-ae/linear_perturbation_prediction-Paper/)","url":"https://github.com/const-ae/linear_perturbation_prediction-Paper/"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, scFoundation","tasks":"Genetic perturbation effect prediction","notes":"A simple linear model performs better than scGPT and scFoundation (and GEARS)."},{"paper":{"type":"preprint","text":"[He et al. 2024](https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1)","url":"https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/laolintou/scPEFT)","url":"https://github.com/laolintou/scPEFT"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT","tasks":"Cell type annotation","notes":"Evaluation of Parameter-Efficient Fine-Tuning (PEFT) for scGPT. Indicates that PEFT not only is more compute-efficient, but also results in better cell type prediction."},{"paper":{"type":"peer_reviewed","text":"[Khan et al. 2023](https://www.nature.com/articles/s42256-023-00757-8)","url":"https://www.nature.com/articles/s42256-023-00757-8"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/TranslationalBioinformaticsUnit/scbert-reusability)","url":"https://github.com/TranslationalBioinformaticsUnit/scbert-reusability"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scBERT","tasks":"Cell type annotation. Unseen cell type detection","notes":"Focused on imbalanced cell type classification. scBERT is sensitive to class imbalance. scBERT outperforms Seurat. scBERT doesn't perform well in unseen cell type detection. It benefits from SSL pretraining."},{"paper":{"type":"preprint","text":"[Liu et al. 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4)","url":"https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/HelloWorldLTY/scEval)","url":"https://github.com/HelloWorldLTY/scEval"},"omic_modalities":"scRNA-seq, scATAC-seq, Spatial transcriptomics","evaluated_transformers":"scGPT, Geneformer, scBERT, tGPT, CellLM","tasks":"Cell clustering, cell type annotation, multimodal embedding, GRN inference, gene expression imputation, genetic perturbation effect prediction, simulation, gene function prediction","notes":"Models aren't trained on the same datasets. scGPT is positioned as most versatile in terms of task diversity that it can tackle. Models other than transformer appear to be at least as good as transformers in most tasks. Transformers were shown to be sensitive to the choice of hyperparameters, such as learning rate and epochs."},{"paper":{"type":"preprint","text":"[Boiarsky et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1)","url":"https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/clinicalml/sc-foundation-eval)","url":"https://github.com/clinicalml/sc-foundation-eval"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scBERT, scGPT","tasks":"Cell type annotation","notes":"Logistic regression appears to be as good as transformers in cell type annotation, even in low-data scenarios."},{"paper":{"type":"preprint","text":"[Kedzierska et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2)","url":"https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/microsoft/zero-shot-scfoundation)","url":"https://github.com/microsoft/zero-shot-scfoundation"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, Geneformer","tasks":"Cell clustering","notes":"Zero-shot performance only. Both models appear unreliable."},{"paper":{"type":"preprint","text":"[Alsabbagh et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1)","url":"https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels)","url":"https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, Geneformer, scBERT","tasks":"Cell type annotation","notes":"Focused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly."}];
+    </script>
+
+    <!-- Then load your bundles -->
+    <script src="/assets/js/dist/single-cell-transformers.bundle.js"></script>
+    <script src="/assets/js/dist/transformer-llms.bundle.js"></script>
+    <script src="/assets/js/dist/transformer-evaluation.bundle.js"></script>
+
+    <!-- Add these divs where you want the tables to appear -->
+    <div id="single-cell-transformers"></div>
+    <div id="transformer-llms"></div>
+    <div id="transformer-evaluation"></div>
+</body>
+</html>
+

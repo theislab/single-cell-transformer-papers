@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transformers in Single-Cell Omics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Add this to your existing styles */
+        .nav-link {
+            color: var(--primary-text);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(107, 70, 193, 0.1);
+        }
+        
+        .site-title {
+            color: var(--primary-text);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        /* Base styles */
+        :root {
+            --primary-text: #24292e;
+            --background: #ffffff;
+            --sidebar-bg: #6b46c1;
+            --sidebar-text: #ffffff;
+            --table-header: #f3f4f6;
+            --table-row-alt: #f9fafb;
+            --table-border: #e5e7eb;
+        }
+
+        /* Dark mode variables */
+        html.dark {
+            --primary-text: #e2e8f0;
+            --background: #1a1b26;
+            --sidebar-bg: #4c3085;
+            --sidebar-text: #e6e6e6;
+            --table-header: #1f2937;
+            --table-bg: #1a1b26;
+            --table-border: #2d3748;
+        }
+
+        body {
+            color: var(--primary-text);
+            background-color: var(--background);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Markdown content styling */
+        .markdown-content h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .markdown-content code {
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .markdown-content pre {
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        /* Legend styling */
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Navigation and Layout */
+        /* Change this in your CSS section */
+        .sidebar {
+            width: 0px; /* Increased from 250px */
+            display:none;
+        }
+
+        .sidebar.collapsed {
+            margin-left: -320px; /* Match the new width */
+        }
+
+        .content.expanded {
+            margin-left: 0px; /* Match the new width */
+            width: 100%;
+            padding-right: 24px;
+        }
+
+        /* Add this for collapsed state */
+        .content:not(.expanded) {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        /* Dropdowns */
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: var(--background);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            z-index: 1000;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: var(--primary-text);
+        }
+
+        .dropdown a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        /* Dark mode dropdown items */
+        html.dark .dropdown a {
+            color: var(--primary-text);
+        }
+
+        html.dark .dropdown a:hover {
+            background-color: #1f2937;
+        }
+
+        /* Link styling */
+        .markdown-content a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section headings */
+        .section-heading {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: #24292e;
+        }
+
+        /* Legend styling */
+        .legend-list {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .legend-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Citation block */
+        .citation-block {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        /* Dark mode adjustments */
+        html.dark .markdown-content a {
+            color: #58a6ff;
+        }
+
+        html.dark .section-heading {
+            color: #c9d1d9;
+        }
+
+        html.dark .legend-list,
+        html.dark .citation-block {
+            background-color: #161b22;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .content {
+                padding: 1rem;
+                margin-top: 4rem;
+            }
+
+            header {
+                padding: 0.5rem;
+            }
+
+            /* Make the navigation menu collapsible on mobile */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background);
+                padding: 1rem;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+
+            .nav-links.show {
+                display: block;
+            }
+
+            /* Add hamburger menu */
+            .menu-button {
+                display: block;
+            }
+
+            /* Adjust table display for mobile */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Adjust dropdown positioning */
+            .dropdown {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: auto;
+            }
+        }
+
+        /* Add styles for the hamburger menu */
+        .menu-button {
+            display: none;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-button {
+                display: block;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0;
+            }
+        }
+
+        /* Add this to your print media query */
+        @media print {
+            @page {
+                size: landscape !important;
+                margin: 0.5cm !important;
+            }
+
+            /* Force all table columns to be visible */
+            table {
+                width: 100% !important;
+                display: table !important;
+                table-layout: auto !important;
+                font-size: 8pt !important;
+            }
+
+            th, td {
+                display: table-cell !important;
+                visibility: visible !important;
+                white-space: normal !important;
+                min-width: auto !important;
+                max-width: none !important;
+                overflow: visible !important;
+                padding: 4px !important;
+                font-size: inherit !important;
+            }
+
+            /* Ensure no columns are hidden */
+            .hidden, 
+            [hidden], 
+            [style*="display: none"], 
+            [style*="visibility: hidden"] {
+                display: table-cell !important;
+                visibility: visible !important;
+            }
+
+            /* Adjust content wrapping */
+            td > * {
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+
+            /* Hide UI elements */
+            .filter-button,
+            header,
+            .sidebar,
+            #github-btn,
+            #download-btn,
+            #theme-toggle,
+            .menu-button {
+                display: none !important;
+            }
+
+            /* Center the title */
+            h1 {
+                text-align: center !important;
+                margin-bottom: 20px !important;
+                font-size: 16pt !important;
+            }
+
+            /* Ensure content starts at the top of the page */
+            .content {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+            /* Force background colors and images to print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        /* Update table styles */
+        html.dark table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: var(--table-bg);
+        }
+
+        html.dark th {
+            background-color: var(--table-header);
+            color: var(--primary-text);
+            font-weight: 500;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        html.dark tr:nth-child(even),
+        html.dark tr:nth-child(odd) {
+            background-color: var(--table-bg);
+        }
+
+        html.dark td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        html.dark tr:hover {
+            background-color: #1f2937;
+        }
+
+        /* Update link colors for dark mode */
+        html.dark .markdown-content a {
+            color: #7aa2f7;
+        }
+
+        html.dark .markdown-content a:hover {
+            color: #97c1ff;
+        }
+
+        /* Update dropdown styles for dark mode */
+        html.dark .dropdown {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+
+        html.dark .dropdown a:hover {
+            background-color: #374151;
+        }
+
+        /* Update button styles */
+        html.dark button {
+            background-color: transparent !important;
+            border: none !important;
+            color: var(--primary-text);
+        }
+
+        html.dark button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Specifically target the header buttons */
+        html.dark header button {
+            background-color: transparent !important;
+            border: none !important;
+        }
+
+        html.dark header button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Add these dark mode styles */
+        html.dark .filter-panel {
+            background-color: #1a1b26;
+        }
+
+        /* Fix the white "Filters" title */
+        html.dark .filter-panel h3,
+        html.dark .filters-title {
+            color: #e2e8f0;
+        }
+
+        /* Fix the white hover state on filter items */
+        html.dark .filter-option:hover,
+        html.dark label:hover,
+        html.dark .checkbox-wrapper:hover {
+            background-color: #1f2937 !important;  /* Slightly lighter than background */
+            color: #e2e8f0;
+        }
+
+        /* Ensure checkbox items and their containers stay dark */
+        html.dark .checkbox-container,
+        html.dark .filter-item {
+            background-color: #1a1b26;
+            color: #e2e8f0;
+        }
+
+        html.dark .checkbox-container:hover,
+        html.dark .filter-item:hover {
+            background-color: #1f2937;
+        }
+
+        /* Ensure the text stays visible in dark mode */
+        html.dark .filter-label,
+        html.dark .filter-text {
+            color: #e2e8f0;
+        }
+
+        /* Dark mode styles for filter panel */
+        html.dark .fixed {
+            background-color: #1a1b26;
+        }
+
+        /* Fix all text colors */
+        html.dark .fixed *,
+        html.dark .filter-panel *,
+        html.dark label,
+        html.dark h3,
+        html.dark h4,
+        html.dark span,
+        html.dark .filter-option,
+        html.dark .checkbox-label {
+            color: #e2e8f0 !important;  /* Force light text color */
+        }
+
+        /* Style the checkboxes */
+        html.dark input[type="checkbox"] {
+            background-color: #1f2937;
+            border-color: #4b5563;
+        }
+
+        /* Style hover states */
+        html.dark label:hover,
+        html.dark .filter-option:hover {
+            background-color: #1f2937;
+        }
+
+        /* Style section headers */
+        html.dark .filter-section-header {
+            color: #e2e8f0;
+            border-color: #4b5563;
+        }
+
+        /* Style buttons */
+        html.dark button {
+            background-color: #1f2937;
+            color: #e2e8f0;
+            border: 1px solid #374151;
+        }
+
+        html.dark button.apply {
+            background-color: #3b82f6;
+            border: none;
+        }
+
+        /* Fix the white Filters header */
+        html.dark .fixed h3:first-child,
+        html.dark .filter-panel h3:first-child,
+        html.dark .filters-header {
+            color: #e2e8f0 !important;
+            background-color: #1a1b26;
+        }
+
+        /* In case the header is wrapped in a div */
+        html.dark .filter-header,
+        html.dark .filter-title,
+        html.dark .fixed > div:first-child {
+            color: #e2e8f0 !important;
+            background-color: #1a1b26;
+        }
+
+        /* Fix all white backgrounds in the filter panel */
+        html.dark .fixed {
+            background-color: #1a1b26 !important;
+        }
+
+        /* Fix the white background behind the filter options */
+        html.dark .fixed > div,
+        html.dark .filter-panel > div,
+        html.dark .filter-section,
+        html.dark .filter-option,
+        html.dark .checkbox-wrapper,
+        html.dark label,
+        html.dark input[type="checkbox"] {
+            background-color: #1a1b26 !important;
+        }
+
+        /* Fix any white backgrounds on hover */
+        html.dark .filter-option:hover,
+        html.dark label:hover,
+        html.dark .checkbox-wrapper:hover {
+            background-color: #1f2937 !important;
+        }
+
+        /* Ensure the entire panel and its contents stay dark */
+        html.dark .fixed,
+        html.dark .fixed * {
+            background-color: #1a1b26;
+        }
+
+        /* Only buttons should have different background */
+        html.dark button.reset,
+        html.dark button.apply {
+            background-color: #1f2937;
+        }
+
+        html.dark button.apply {
+            background-color: #3b82f6;
+        }
+
+        /* Mobile card layout */
+        @media screen and (max-width: 768px) {
+            /* Completely hide the header/first card */
+            thead, 
+            thead tr, 
+            thead th {
+                display: none !important;
+                height: 0;
+                width: 0;
+                margin: 0;
+                padding: 0;
+                position: absolute;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+            }
+
+            /* Container */
+            .table-container {
+                padding: 1rem;
+                overflow-x: hidden;
+                width: 100%;
+            }
+
+            /* Card styling */
+            tr {
+                display: flex;
+                flex-direction: column;
+                background-color: var(--background);
+                margin-bottom: 1rem;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                width: calc(100% - 2rem); /* Account for padding */
+            }
+
+            /* Row content */
+            td {
+                display: flex;
+                flex-direction: column;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                width: 100%;
+            }
+
+            /* Bold headers */
+            td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                margin-bottom: 0.25rem;
+                color: #666;
+            }
+
+            /* Content wrapping */
+            td > * {
+                width: 100%;
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.5;
+            }
+
+            /* Ensure text content wraps */
+            td {
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            /* Column headers */
+            td:nth-child(1)::before { content: "Model"; }
+            td:nth-child(2)::before { content: "Paper"; }
+            td:nth-child(3)::before { content: "Code"; }
+            td:nth-child(4)::before { content: "Omic Modalities"; }
+            td:nth-child(5)::before { content: "Pre-Training Dataset"; }
+            td:nth-child(6)::before { content: "Input Embedding"; }
+            td:nth-child(7)::before { content: "Architecture"; }
+            td:nth-child(8)::before { content: "SSL Tasks"; }
+            td:nth-child(9)::before { content: "Supervised Tasks"; }
+
+            /* Dark mode */
+            html.dark tr {
+                background-color: #1f2937;
+            }
+
+            html.dark td::before {
+                color: #e2e8f0;
+            }
+
+            /* Remove last border */
+            td:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Adjust filter panel for mobile */
+        @media screen and (max-width: 768px) {
+            .filter-panel {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 flex items-center justify-between px-4 py-2 border-b border-gray-200">
+        <div class="flex items-center">
+            <button class="menu-button md:hidden" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="{{ site.baseurl }}/" class="text-xl font-semibold ml-2">
+                Transformers in Single-Cell Omics
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+            <a href="{{ site.baseurl }}/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
+            <a href="{{ site.baseurl }}/transformer-llms" class="nav-link">Transformer LLMs</a>
+            <a href="{{ site.baseurl }}/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <!-- GitHub Dropdown -->
+            <div class="relative">
+                <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                    <i class="fab fa-github text-xl"></i>
+                </button>
+                <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-code-branch mr-2"></i>Repository
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-edit mr-2"></i>Suggest edit
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-exclamation-circle mr-2"></i>Open issue
+                    </a>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="relative" id="download-btn">
+                <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                <i class="fas fa-sun text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <!-- Update the sidebar nav element -->
+    <nav id="sidebar" class="sidebar fixed left-0 top-16 h-full text-white p-6"> <!-- increased padding -->
+        <div class="space-y-6"> <!-- increased spacing -->
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2> <!-- larger text and margin -->
+            <a href="{{ site.baseurl }}/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Home</a>
+            <a href="{{ site.baseurl }}/single-cell-transformers/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
+            <a href="{{ site.baseurl }}/transformer-llms/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
+            <a href="{{ site.baseurl }}/transformer-evaluation/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content pt-20 px-8 w-full">
+        <div class="w-full mx-auto markdown-content">
+            {{ content }}
+        </div>
+    </main>
+
+    <script>
+        // Add this helper function at the top of your script section
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
+                isError ? 'bg-red-500' : 'bg-green-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+        
+        function updateThemeIcon(isDark) {
+            themeIcon.classList.remove('fa-sun', 'fa-moon');
+            themeIcon.classList.add(isDark ? 'fa-moon' : 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        });
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.add(savedTheme);
+        updateThemeIcon(savedTheme === 'dark');
+
+        // Dropdown functionality
+        function setupDropdown(btnId, dropdownId) {
+            const btn = document.getElementById(btnId);
+            const dropdown = document.getElementById(dropdownId);
+
+            if (!btn || !dropdown) return;
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isVisible = dropdown.classList.contains('show');
+                
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+                
+                // Toggle current dropdown
+                if (!isVisible) {
+                    dropdown.classList.add('show');
+                }
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+        });
+
+        // Initialize dropdowns
+        setupDropdown('github-btn', 'github-dropdown');
+        setupDropdown('download-btn', 'download-dropdown');
+
+        // GitHub functionality
+        const REPO_URL = 'https://github.com/theislab/single-cell-transformer-papers';
+
+        document.querySelector('#github-dropdown').addEventListener('click', (e) => {
+            e.preventDefault();
+            const action = e.target.closest('a')?.textContent.trim();
+            
+            if (action) {
+                switch(action) {
+                    case 'Repository':
+                        window.open(REPO_URL, '_blank');
+                        break;
+                    case 'Suggest edit':
+                        // Get current page path
+                        const path = window.location.pathname;
+                        let editPath;
+                        
+                        // Check if we're on a table page
+                        if (path.includes('single-cell-transformers') || 
+                            path.includes('transformer-llms') || 
+                            path.includes('transformer-evaluation')) {
+                            editPath = 'README.md';
+                        } else {
+                            // For any other page, use the default logic
+                            editPath = path === '/' ? 'README.md' : 
+                                path.replace(/\/$/, '').split('/').pop() + '.md';
+                        }
+                        
+                        const editUrl = `${REPO_URL}/edit/main/${editPath}`;
+                        window.open(editUrl, '_blank');
+                        break;
+                    case 'Open issue':
+                        window.open(`${REPO_URL}/issues/new`, '_blank');
+                        break;
+                }
+            }
+        });
+
+        // Update the print preparation function
+        function prepareForPrint() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @page {
+                    size: landscape !important;
+                    margin: 0.5cm !important;
+                }
+                
+                /* Force all columns to be visible */
+                table {
+                    width: 100% !important;
+                    display: table !important;
+                    table-layout: auto !important;
+                    font-size: 8pt !important;
+                }
+                
+                th, td {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                    white-space: normal !important;
+                    min-width: auto !important;
+                    max-width: none !important;
+                    overflow: visible !important;
+                    padding: 4px !important;
+                }
+
+                /* Show all columns */
+                .hidden, 
+                [hidden], 
+                [style*="display: none"], 
+                [style*="visibility: hidden"] {
+                    display: table-cell !important;
+                    visibility: visible !important;
+                }
+
+                /* Adjust content wrapping */
+                td > * {
+                    white-space: normal !important;
+                    word-wrap: break-word !important;
+                }
+            `;
+            
+            document.head.appendChild(style);
+
+            // Force all columns to be visible
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                // Show all columns
+                const columns = table.querySelectorAll('th, td');
+                columns.forEach(col => {
+                    col.style.cssText = `
+                        display: table-cell !important;
+                        visibility: visible !important;
+                        white-space: normal !important;
+                        min-width: auto !important;
+                        max-width: none !important;
+                        overflow: visible !important;
+                    `;
+                });
+            });
+
+            window.print();
+
+            // Cleanup
+            setTimeout(() => {
+                document.head.removeChild(style);
+            }, 1000);
+        }
+
+        // Update the download button click handler
+        document.getElementById('download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            prepareForPrint();
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menu-toggle')?.addEventListener('click', () => {
+            document.getElementById('nav-links')?.classList.toggle('show');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#menu-toggle') && !e.target.closest('#nav-links')) {
+                document.getElementById('nav-links')?.classList.remove('show');
+            }
+        });
+    </script>
+    <!-- Load React and ReactDOM first -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Include the data directly -->
+    <script type="text/javascript">
+        window.singleCellTransformers = {{ site.data.single-cell-transformers | jsonify }};
+        window.transformerLLMs = {{ site.data.transformer-llms | jsonify }};
+        window.transformerEvaluation = {{ site.data.transformer-evaluation | jsonify }};
+    </script>
+
+    <!-- Then load your bundles -->
+    <script src="{{ site.baseurl }}/assets/js/dist/single-cell-transformers.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-llms.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-evaluation.bundle.js"></script>
+
+    <!-- Add these divs where you want the tables to appear -->
+    <div id="single-cell-transformers"></div>
+    <div id="transformer-llms"></div>
+    <div id="transformer-evaluation"></div>
+</body>
+</html>
+

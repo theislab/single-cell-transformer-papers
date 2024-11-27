@@ -1,0 +1,58 @@
+title: Transformers in Single-Cell Omics
+description: A curated collection of papers on transformers in single-cell analysis
+baseurl: ""
+url: "https://paulos2411.github.io"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Remove trailing slashes
+permalink: "/:title"
+trailing_slash: false
+
+# Default layout settings
+defaults:
+  -
+    scope:
+      path: "" # Apply to all files
+    values:
+      layout: "default"
+  -
+    scope:
+      path: "index.md"
+    values:
+      layout: "default"
+  - scope:
+      path: "assets/_data"
+      type: "yml"
+    values:
+      layout: null  # Prevent Jekyll from wrapping YAML files in the default layout
+
+# Collections
+collections:
+  pages:
+    output: true
+    permalink: /:title
+
+# Include directories and files
+include:
+  - _pages
+  - _data
+  - assets
+  - assets/js/dist
+
+# Exclude from processing
+exclude:
+  - node_modules
+  - webpack.config.js
+  - package.json
+  - package-lock.json
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Explicitly set data directory
+data_dir: _data

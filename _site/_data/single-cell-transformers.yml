@@ -1,0 +1,450 @@
+- model: Precious3GPT
+  paper:
+    type: preprint
+    text: '[Galkin et al. 2024](https://doi.org/10.1101/2024.07.25.605062)'
+    url: https://doi.org/10.1101/2024.07.25.605062
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8Dï¸\x8Fð\x9F¤\x97](https://huggingface.co/insilicomedicine/precious3-gpt-multi-modal)"
+    url: https://huggingface.co/insilicomedicine/precious3-gpt-multi-modal
+  omic_modalities: Bulk/scRNA-seq, DNAm, proteomics, natural language annotations
+  pre_training_dataset: Omics data with KG and text embeddings, Closed source
+  input_embedding: '?'
+  architecture: Decoder-only LLaMA-like transformer model with modality mapper units
+  ssl_tasks: Emulation of chemical response, cross-species/tissue/omics transference, emulation of clinical conditions
+  supervised_tasks: Age prediction, gene classification
+- model: LangCell
+  paper:
+    type: peer_reviewed
+    text: '[Zhao et al. 2024](https://arxiv.org/abs/2405.06708)'
+    url: https://arxiv.org/abs/2405.06708
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/PharMolix/LangCell)"
+    url: https://github.com/PharMolix/LangCell
+  omic_modalities: scRNA-seq, natural language
+  pre_training_dataset: 27M / cross-tissue, human ([CELLxGENE](https://cellxgene.cziscience.com/))
+  input_embedding: 'Ordering: rank-based, natural language cell description'
+  architecture: 'Other: two encoders (cell and text)'
+  ssl_tasks: MLM with CE loss, intra- and inter-modal contrastive loss, cell-text matching with CE loss
+  supervised_tasks: Cell type annotation, pathway identification
+- model: ScRAT
+  paper:
+    type: peer_reviewed
+    text: '[Mao et al. 2024](https://academic.oup.com/bioinformatics/article/40/2/btae067/7613064)'
+    url: https://academic.oup.com/bioinformatics/article/40/2/btae067/7613064
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/yuzhenmao/ScRAT)"
+    url: https://github.com/yuzhenmao/ScRAT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Cells as tokens
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: 'Phenotype prediction: aggregated per sample cell embeddings are used to predict sample label (e.g., health condition)'
+- model: scPRINT
+  paper:
+    type: preprint
+    text: '[Kalfon et al. 2024](https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/cantinilab/scPRINT)"
+    url: https://github.com/cantinilab/scPRINT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 50M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/))
+  input_embedding: 'Other: [ESM-2](https://www.science.org/doi/10.1126/science.ade2574) based gene embeddings. Gene embeddings are randomly sampled and order determined by position on chromosomes'
+  architecture: Encoder
+  ssl_tasks: 'Multi task Pre-training: Denoising, Botleneck learning (+ many additional losses available)'
+  supervised_tasks: Cell label prediction (these supervised tasks are part of the pre-training)
+- model: scMulan
+  paper:
+    type: peer_reviewed
+    text: '[Bian et al. 2024](https://link.springer.com/chapter/10.1007/978-1-0716-3989-4_57)'
+    url: https://link.springer.com/chapter/10.1007/978-1-0716-3989-4_57
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGithub](https://github.com/SuperBianC/scMulan/tree/main)"
+    url: https://github.com/SuperBianC/scMulan/tree/main
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 10M / cross-tissue, human ([hECA](https://www.sciencedirect.com/science/article/pii/S2589004222005892))
+  input_embedding: Not specified
+  architecture: Decoder
+  ssl_tasks: Conditional cell generation
+  supervised_tasks: cell type annotation, cell metadata annotation (both also used in training)
+- model: BioFormers
+  paper:
+    type: preprint
+    text: '[Belgadi and Li et al. 2023](https://www.biorxiv.org/content/10.1101/2023.11.29.569320v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2023.11.29.569320v1.full.pdf
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 8K / single tissue, human ([PBMC](https://docs.scvi-tools.org/en/stable/api/reference/scvi.data.pbmc_dataset.html), [Adamson et al. 2016](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE90546))
+  input_embedding: 'Value categorization: value binning'
+  architecture: Encoder
+  ssl_tasks: MLM with CE loss
+  supervised_tasks: '-'
+- model: Geneformer
+  paper:
+    type: peer_reviewed
+    text: '[Theodoris et al. 2023](https://www.nature.com/articles/s41586-023-06139-9)'
+    url: https://www.nature.com/articles/s41586-023-06139-9
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ð\x9F¤\x97](https://huggingface.co/ctheodoris/Geneformer)"
+    url: https://huggingface.co/ctheodoris/Geneformer
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 36M / cross-tissue, human ([Genecorpus](https://huggingface.co/datasets/ctheodoris/Genecorpus-30M))
+  input_embedding: 'Ordering: rank-based'
+  architecture: Encoder
+  ssl_tasks: MLM with CE loss, gene ID prediction
+  supervised_tasks: Gene function prediction, cell annotation
+- model: Universal Cell Embedding
+  paper:
+    type: preprint
+    text: '[Rosen et al. 2023](https://www.biorxiv.org/content/10.1101/2023.11.28.568918v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2023.11.28.568918v1.full.pdf
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGithub](https://github.com/snap-stanford/uce)"
+    url: https://github.com/snap-stanford/uce
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 36M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/) and [other](https://www.biorxiv.org/content/biorxiv/early/2023/11/29/2023.11.28.568918/DC3/embed/media-3.xlsx?download=true))
+  input_embedding: 'Other: [ESM-2](https://www.science.org/doi/10.1126/science.ade2574) based gene embeddings. Gene embeddings are sampled according to expression levels and order determined by position on chromosomes.'
+  architecture: Encoder
+  ssl_tasks: Modified MLM, binary CE loss predicting whether a gene is expressed or not. Uses CLS embedding instead of token-embeddings.
+  supervised_tasks: Cell annotation
+- model: scGPT
+  paper:
+    type: peer_reviewed
+    text: '[Cui et al. 2024](https://www.nature.com/articles/s41592-024-02201-0)'
+    url: https://www.nature.com/articles/s41592-024-02201-0
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/bowang-lab/scGPT)"
+    url: https://github.com/bowang-lab/scGPT
+  omic_modalities: scRNA-seq, scATAC-seq, CITE-seq, Spatial transcriptomics
+  pre_training_dataset: 33M / cross-tissue, human, non-disease ([CELLxGENE](https://cellxgene.cziscience.com/))
+  input_embedding: 'Value categorization: value binning'
+  architecture: 'Other: attention masking in encoder'
+  ssl_tasks: Iterative MLM variant with MSE loss, cell token expression prediction, gene expression prediction
+  supervised_tasks: Cell type annotation, genetic perturbation effect prediction, reverse perturbation prediction, cell clustering, multimodal embedding, gene function prediction
+- model: TOSICA
+  paper:
+    type: peer_reviewed
+    text: '[Chen et al. 2023](https://www.nature.com/articles/s41467-023-35923-4)'
+    url: https://www.nature.com/articles/s41467-023-35923-4
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/JackieHanLab/TOSICA)"
+    url: https://github.com/JackieHanLab/TOSICA
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: Cell type annotation
+- model: scMoFormer
+  paper:
+    type: peer_reviewed
+    text: '[Tang et al. 2023](https://dl.acm.org/doi/10.1145/3583780.3615061)'
+    url: https://dl.acm.org/doi/10.1145/3583780.3615061
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/OmicsML/scMoFormer)"
+    url: https://github.com/OmicsML/scMoFormer
+  omic_modalities: scRNA-seq, scATAC-seq, CITE-seq
+  pre_training_dataset: '-'
+  input_embedding: Other, SVD-based
+  architecture: Encoder and graph transformers
+  ssl_tasks: '-'
+  supervised_tasks: Cross-modality prediction
+- model: tGPT
+  paper:
+    type: peer_reviewed
+    text: '[Shen et al. 2023](https://www.cell.com/iscience/pdf/S2589-0042(23)'
+    url: https://www.cell.com/iscience/pdf/S2589-0042(23
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_GitHubï¸\x8F](https://github.com/deeplearningplus/tGPT)"
+    url: https://github.com/deeplearningplus/tGPT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 22M / cross-tissue, cross-species, disease and non-disease, organoids ([list](https://www.cell.com/cms/10.1016/j.isci.2023.106536/attachment/1e95114b-5ea0-4596-afd8-0cb04bae0f6d/mmc2))
+  input_embedding: Ordering
+  architecture: Decoder
+  ssl_tasks: NTP with CE loss, gene ID prediction
+  supervised_tasks: '-'
+- model: SpaFormer
+  paper:
+    type: preprint
+    text: '[Wen et al. 2023](https://arxiv.org/abs/2302.03038)'
+    url: https://arxiv.org/abs/2302.03038
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/wehos/CellT)"
+    url: https://github.com/wehos/CellT
+  omic_modalities: Spatial transcriptomics
+  pre_training_dataset: '-'
+  input_embedding: Cells as tokens, value projection
+  architecture: Encoder
+  ssl_tasks: Modified MLM with MSE loss, gene expression prediction
+  supervised_tasks: Gene expression imputation
+- model: scFoundation
+  paper:
+    type: peer_reviewed
+    text: '[Hao et al. 2024](https://www.nature.com/articles/s41592-024-02305-7)'
+    url: https://www.nature.com/articles/s41592-024-02305-7
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/biomap-research/scFoundation)"
+    url: https://github.com/biomap-research/scFoundation
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 50M / cross-tissue, human, disease and non-disease ([GEO](https://www.ncbi.nlm.nih.gov/geo/), [Single Cell Portal](https://singlecell.broadinstitute.org/single_cell), [HCA](https://data.humancellatlas.org/), [EMBL-EBI](https://www.ebi.ac.uk/))
+  input_embedding: Value projection
+  architecture: 'Other: two encoders'
+  ssl_tasks: Modified MLM with MSE loss, gene expression prediction
+  supervised_tasks: Drug response prediction, genetic perturbation effect prediction
+- model: CellLM
+  paper:
+    type: preprint
+    text: '[Zhao et al. 2023](https://arxiv.org/abs/2306.04371)'
+    url: https://arxiv.org/abs/2306.04371
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/PharMolix/OpenBioMed)"
+    url: https://github.com/PharMolix/OpenBioMed
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 1.8M / cross-tissue, human, disease and non-disease ([PanglaoDB](https://panglaodb.se/), [CancerSCEM](https://ngdc.cncb.ac.cn/cancerscem/))
+  input_embedding: Value categorization
+  architecture: Encoder
+  ssl_tasks: Contrastive loss, MLM with CE loss
+  supervised_tasks: Non-disease vs cancer prediction, cell type annotation, drug response prediction
+- model: scCLIP
+  paper:
+    type: preprint
+    text: '[Xiong et al. 2023](https://openreview.net/forum?id=KMtM5ZHxct&referrer=%5Bthe%20profile%20of%20Tianlong%20Chen%5D(%2Fprofile%3Fid%3D~Tianlong_Chen1)'
+    url: https://openreview.net/forum?id=KMtM5ZHxct&referrer=%5Bthe%20profile%20of%20Tianlong%20Chen%5D(%2Fprofile%3Fid%3D~Tianlong_Chen1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://anonymous.4open.science/r/scCLIP-61F6/README.md)"
+    url: https://anonymous.4open.science/r/scCLIP-61F6/README.md
+  omic_modalities: scRNA-seq, scATAC-seq
+  pre_training_dataset: 377k / cross-tissue, human fetal ([ATAC](https://www.science.org/doi/10.1126/science.aba7612), [RNA](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7780123/))
+  input_embedding: Value projection
+  architecture: Encoder
+  ssl_tasks: Contrastive loss, CE matching modalities
+  supervised_tasks: '-'
+- model: GeneCompass
+  paper:
+    type: preprint
+    text: '[Yang et al. 2023](https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1)'
+    url: https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ GitHub](https://github.com/xCompass-AI/GeneCompass)"
+    url: https://github.com/xCompass-AI/GeneCompass
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 126M / cross-tissue, human and mouse, disease and non-disease ([GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [CELLxGENE](https://cellxgene.cziscience.com/), [GSA](https://ngdc.cncb.ac.cn/gsa/), [Single Cell Portal](https://singlecell.broadinstitute.org/single_cell), [HCA](https://data.humancellatlas.org/), [EMBL-EBI](https://www.ebi.ac.uk/), [3CA](https://www.weizmann.ac.il/sites/3CA/), [Cell BLAST](https://cblast.gao-lab.org/), [TEDD](https://TEDD.obg.cuhk.edu.hk/),  and [other](https://www.biorxiv.org/content/10.1101/2023.09.26.559542v1.full))
+  input_embedding: '?'
+  architecture: 'Other: two encoders'
+  ssl_tasks: MLM with CE and MSE loss, gene ID and expression prediction
+  supervised_tasks: Cell type annotation, drug response prediction, gene function prediction
+- model: CellPLM
+  paper:
+    type: peer_reviewed
+    text: '[Wen et al. 2024](https://openreview.net/forum?id=BKXvPDekud)'
+    url: https://openreview.net/forum?id=BKXvPDekud
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/OmicsML/CellPLM)"
+    url: https://github.com/OmicsML/CellPLM
+  omic_modalities: scRNA-seq, Spatial transcriptomics
+  pre_training_dataset: 11M / cross-tissue, human, disease and non-disease ([HTCA](https://humantumoratlas.org/), [HCA](https://data.humancellatlas.org/), [GEO](https://www.ncbi.nlm.nih.gov/geo/))
+  input_embedding: Cells as tokens, value projection
+  architecture: Encoder
+  ssl_tasks: Modified MLM with MSE loss and KL losses, gene expression prediction
+  supervised_tasks: Gene expression imputation, cell type annotation, genetic perturbation effect prediction
+- model: scMAE
+  paper:
+    type: preprint
+    text: '[Kim et al. 2023](https://openreview.net/pdf?id=2mq6uezuGj)'
+    url: https://openreview.net/pdf?id=2mq6uezuGj
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: single-cell flow cytometry
+  pre_training_dataset: 6.5M / human, disease and non-disease (source?)
+  input_embedding: Other, concatenation of values with learnable protein embeddings
+  architecture: 'Other: two encoders'
+  ssl_tasks: MLM with MSE loss, protein expression prediction
+  supervised_tasks: Cell type annotation, protein expression imputation
+- model: CAN/CGRAN
+  paper:
+    type: peer_reviewed
+    text: '[Wang et al. 2023](https://ebooks.iospress.nl/volumearticle/64489)'
+    url: https://ebooks.iospress.nl/volumearticle/64489
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: Cell type annotation
+- model: scTranslator
+  paper:
+    type: preprint
+    text: '[Liu et al. 2023](https://www.biorxiv.org/content/10.1101/2023.07.04.547619v2.full)'
+    url: https://www.biorxiv.org/content/10.1101/2023.07.04.547619v2.full
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8Dï¸\x8FGitHub](https://github.com/TencentAILabHealthcare/sctranslator)"
+    url: https://github.com/TencentAILabHealthcare/sctranslator
+  omic_modalities: scRNA-seq, CITE-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection
+  architecture: 'Other: two encoders'
+  ssl_tasks: '-'
+  supervised_tasks: Cross-modality prediction
+- model: scTransSort
+  paper:
+    type: peer_reviewed
+    text: '[Jiao et al. 2023](https://www.mdpi.com/2218-273X/13/4/611)'
+    url: https://www.mdpi.com/2218-273X/13/4/611
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/jiaojiao-123/scTransSort)"
+    url: https://github.com/jiaojiao-123/scTransSort
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: Cell type annotation
+- model: STGRNS
+  paper:
+    type: peer_reviewed
+    text: '[Xu et al. 2023](https://academic.oup.com/bioinformatics/article/39/4/btad165/7099621)'
+    url: https://academic.oup.com/bioinformatics/article/39/4/btad165/7099621
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/zhanglab-wbgcas/STGRNS)"
+    url: https://github.com/zhanglab-wbgcas/STGRNS
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Other
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: GRN inference
+- model: CIForm
+  paper:
+    type: peer_reviewed
+    text: '[Xu et al. 2023](https://academic.oup.com/bib/article-abstract/24/4/bbad195/7169137?redirectedFrom=fulltext)'
+    url: https://academic.oup.com/bib/article-abstract/24/4/bbad195/7169137?redirectedFrom=fulltext
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/zhanglab-wbgcas/CIForm)"
+    url: https://github.com/zhanglab-wbgcas/CIForm
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: Cell type annotation
+- model: scFormer
+  paper:
+    type: preprint
+    text: '[Cui et al. 2023](https://openreview.net/forum?id=7hdmA0qtr5)'
+    url: https://openreview.net/forum?id=7hdmA0qtr5
+  code:
+    type: partial
+    text: "[ï¸\x8FGitHub](https://github.com/bowang-lab/scFormer)"
+    url: https://github.com/bowang-lab/scFormer
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Task specific
+  input_embedding: 'Value categorization: value binning'
+  architecture: Encoder
+  ssl_tasks: Modified MLM with CE, cell token expression prediction, contrastive loss with cosine similarity, gene expression prediction
+  supervised_tasks: Cell type annotation, genetic perturbation effect prediction
+- model: Exceiver
+  paper:
+    type: preprint
+    text: '[Connell et al. 2022](https://openreview.net/forum?id=XxRuCIgq2LX)'
+    url: https://openreview.net/forum?id=XxRuCIgq2LX
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/keiserlab/exceiver)"
+    url: https://github.com/keiserlab/exceiver
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 0.5M / cross-tissue, human ([Tabula Sapiens](https://figshare.com/ndownloader/files/34702114))
+  input_embedding: 'Other: value scaled embeddings'
+  architecture: Encoder
+  ssl_tasks: Modified MLM with MSE, gene expression prediction
+  supervised_tasks: Cell type annotation, drug response prediction
+- model: TransCluster
+  paper:
+    type: peer_reviewed
+    text: '[Song et al. 2022](https://www.frontiersin.org/articles/10.3389/fgene.2022.1038919/full)'
+    url: https://www.frontiersin.org/articles/10.3389/fgene.2022.1038919/full
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/Danica123/TransCluster)"
+    url: https://github.com/Danica123/TransCluster
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '-'
+  input_embedding: Value projection with LDA
+  architecture: Encoder
+  ssl_tasks: '-'
+  supervised_tasks: Cell type annotation
+- model: scBERT
+  paper:
+    type: peer_reviewed
+    text: '[Yang et al. 2022](https://www.nature.com/articles/s42256-022-00534-z)'
+    url: https://www.nature.com/articles/s42256-022-00534-z
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/TencentAILabHealthcare/scBERT)"
+    url: https://github.com/TencentAILabHealthcare/scBERT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 1M / cross-tissue, human ([PanglaoDB](https://panglaodb.se/))
+  input_embedding: Value categorization, binning
+  architecture: Encoder
+  ssl_tasks: MLM with CE loss, gene expression prediction
+  supervised_tasks: Cell type annotation, unseen cell type detection
+- model: iSEEEK
+  paper:
+    type: peer_reviewed
+    text: '[Shen et al. 2022](https://academic.oup.com/bib/article/23/2/bbab573/6511497?login=false)'
+    url: https://academic.oup.com/bib/article/23/2/bbab573/6511497?login=false
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGithub](https://github.com/lixiangchun/iSEEEK)"
+    url: https://github.com/lixiangchun/iSEEEK
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 11.9M / cross-tissue, cross-species ([list](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bib/23/2/10.1093_bib_bbab573/1/supplementary_table_1_data_source_information_bbab573.xlsx?Expires=1710130756&Signature=EKqLNLeqpYl320~rRpsK79fA4RC1KvQcWeYqpGALwIQ2SK-IAqZmyXnU-tuYG4xzZqeOhjKc2oyhqBRkO8xJBGO~EMja5KhbNP8PS4nV1eFCrZW6GvbluqyqCP9v-z2ExYhSo3f4jisWi9irRL0y7fxIPk3dPV4f3NACrRjDinqpUZ2eJTKOWwQ8GTbL3dySxPNJa8XQ0y2lGv0lBO~KMG-PJROYDi-PQyHHkTz5AbAnhpD5jnK1BSdxNg8oFuIErS7U0ej8V86eA3AqZyFdI4RZtq-iPTkAEFSQROhQdv1aTh3Cj5EuIZvVgmivr~qF571C9m4IHnI0bEsrhI4f3w__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA))
+  input_embedding: 'Ordering: rank-based'
+  architecture: Encoder
+  ssl_tasks: MLM with CE loss
+  supervised_tasks: Marker gene classification
+- model: Multitask learning
+  paper:
+    type: preprint
+    text: '[Pang et al. 2020](https://www.biorxiv.org/content/10.1101/2020.02.05.935239v2)'
+    url: https://www.biorxiv.org/content/10.1101/2020.02.05.935239v2
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 160k / brain, mouse ([MBA](http://mousebrain.org/))
+  input_embedding: Value projection
+  architecture: 'Other: autoencoder with two transformer encoders (?)'
+  ssl_tasks: Modified MLM with MSE loss, gene expression prediction
+  supervised_tasks: '-'
