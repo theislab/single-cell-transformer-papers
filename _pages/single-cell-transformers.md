@@ -11,5 +11,5 @@ permalink: /single-cell-transformer-papers/single-cell-transformers/
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 <!-- Load your bundle with corrected path -->
-<script src="{{ '/single-cell-transformer-papers/assets/js/dist/single-cell-transformers.bundle.js' | absolute_url }}"></script>
+<script src="{{ '/assets/js/dist/single-cell-transformers.bundle.js' | absolute_url }}"></script>
 
