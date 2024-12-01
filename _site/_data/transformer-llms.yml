@@ -1,0 +1,144 @@
+- model: CELLama
+  paper:
+    type: preprint
+    text: '[Choi et al. 2024](https://www.biorxiv.org/content/10.1101/2024.05.08.593094v1.full#ref-16)'
+    url: https://www.biorxiv.org/content/10.1101/2024.05.08.593094v1.full#ref-16
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_GitHub](https://github.com/portrai-io/CELLama)"
+    url: https://github.com/portrai-io/CELLama
+  omic_modalities: scRNA-seq, Spatial transcriptomics
+  pre_training_dataset: Natural Language [SBERT](https://fq.pkwyx.com/default/https/aclanthology.org/D19-1410.pdf)
+  input_embedding: 'Other: Ordering with embedding of the natural language representation, additional cell annotations are added in natural language'
+  architecture: '[SBERT](https://fq.pkwyx.com/default/https/aclanthology.org/D19-1410.pdf)'
+  ssl_tasks: Contrastive loss
+  supervised_tasks: Cell type annotation
+  zero_shot_tasks: Cell type annotation, niche cell type featuring
+- model: CellWhisperer
+  paper:
+    type: preprint
+    text: '[Schaefer et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.15.618501v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.15.618501v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_GitHub](https://github.com/epigen/cellwhisperer)"
+    url: https://github.com/epigen/cellwhisperer
+  omic_modalities: Bulk/scRNA-seq
+  pre_training_dataset: Transcriptome data paired with natural language annotations
+  input_embedding: Geneformer- and BioBERT-based embedding models (contrastively fine-tuned)
+  architecture: Multimodal contrastive training of embedding models (CLIP) and transcriptome instruction fine-tuning of LLM (LLaVA)
+  ssl_tasks: '-'
+  supervised_tasks: Transcriptome-aware question-answering
+  zero_shot_tasks: Reference-free cell property prediction (cell types & states, disease states, organ of cell origin, ...)
+- model: scInterpreter
+  paper:
+    type: preprint
+    text: '[Li et al. 2024](https://arxiv.org/abs/2402.12405)'
+    url: https://arxiv.org/abs/2402.12405
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language [GPT-3.5](https://api.openai.com/) and [Llama-13b](https://arxiv.org/abs/2302.13971)
+  input_embedding: 'Other: Ordering with embedding of the natural language representation'
+  architecture: '[GPT-3.5](https://api.openai.com/)'
+  ssl_tasks: NTP with CE loss and instruction finetuning (GPT-3.5 closed-source)
+  supervised_tasks: '-'
+  zero_shot_tasks: Cell type annotation (LLMs frozen, only small MLP trained)
+- model: ChatCell
+  paper:
+    type: preprint
+    text: '[Fang et al. 2024](https://arxiv.org/abs/2402.08303)'
+    url: https://arxiv.org/abs/2402.08303
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_GitHub](https://github.com/zjunlp/ChatCell)"
+    url: https://github.com/zjunlp/ChatCell
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language [T5](https://huggingface.co/docs/transformers/en/model_doc/t5) and [natural language instructions](https://huggingface.co/datasets/zjunlp/ChatCell-Instructions)
+  input_embedding: 'Other: Ordering with embedding as natural language with additional terms'
+  architecture: '[T5](https://huggingface.co/docs/transformers/en/model_doc/t5)'
+  ssl_tasks: NTP with CE loss
+  supervised_tasks: None (conditional sequence generation, prompting)
+  zero_shot_tasks: Simulation, cell type annotation, drug sensitivity prediction
+- model: MarkerGeneBERT
+  paper:
+    type: preprint
+    text: '[Cheng et al. 2023](https://www.biorxiv.org/content/10.1101/2024.01.30.578115v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.01.30.578115v1
+  code:
+    type: none
+    text: None
+    url: ''
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language, [PubMed](https://pubmed.ncbi.nlm.nih.gov/) and [PubMed Central](https://www.ncbi.nlm.nih.gov/pmc/)
+  input_embedding: 'Other: Natural language preprocessed with [SciBERT](https://arxiv.org/abs/1903.10676)'
+  architecture: Encoder
+  ssl_tasks: MLM
+  supervised_tasks: Named Entity Recognition (NER), cell-biomarker sentence classification
+  zero_shot_tasks: '-'
+- model: scELMo
+  paper:
+    type: preprint
+    text: '[Liu, Chen and Zheng 2023](https://www.biorxiv.org/content/10.1101/2023.12.07.569910v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2023.12.07.569910v1.full.pdf
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/HelloWorldLTY/scELMo)"
+    url: https://github.com/HelloWorldLTY/scELMo
+  omic_modalities: scRNA-seq, CITE-seq
+  pre_training_dataset: Natural Language, Closed source
+  input_embedding: 'Other: NLP model embeddings of features weighted by the feature level in a cell (e.g. expression level)'
+  architecture: Closed source (some open)
+  ssl_tasks: Closed source (some open)
+  supervised_tasks: Cell type annotation, Genetic perturbation effect prediction
+  zero_shot_tasks: Cell and gene embeddings in other perturbation models
+- model: GenePT
+  paper:
+    type: preprint
+    text: '[Chen and Zou 2023](https://www.biorxiv.org/content/10.1101/2023.10.16.562533v1.full)'
+    url: https://www.biorxiv.org/content/10.1101/2023.10.16.562533v1.full
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/yiqunchen/GenePT)"
+    url: https://github.com/yiqunchen/GenePT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language, Closed source
+  input_embedding: 'Ordering: embedding as natural language'
+  architecture: Closed source
+  ssl_tasks: Closed source
+  supervised_tasks: Gene function prediction
+  zero_shot_tasks: Cell clustering, GRN inference
+- model: GPT-4
+  paper:
+    type: peer_reviewed
+    text: '[W. Hou and Z. Ji 2024](https://www.nature.com/articles/s41592-024-02235-4)'
+    url: https://www.nature.com/articles/s41592-024-02235-4
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/Winnie09/GPTCelltype)"
+    url: https://github.com/Winnie09/GPTCelltype
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language, Closed source
+  input_embedding: 'Ordering: embedding as natural language'
+  architecture: Closed source
+  ssl_tasks: Closed source
+  supervised_tasks: None (conditional sequence generation, prompting)
+  zero_shot_tasks: Cell type annotation
+- model: Cell2Sentence
+  paper:
+    type: peer_reviewed
+    text: '[Levine et al. 2024](https://openreview.net/forum?id=EWt5wsEdvc&referrer=%5Bthe%20profile%20of%20Josue%20Ortega%20Caro%5D(%2Fprofile%3Fid%3D~Josue_Ortega_Caro1)'
+    url: https://openreview.net/forum?id=EWt5wsEdvc&referrer=%5Bthe%20profile%20of%20Josue%20Ortega%20Caro%5D(%2Fprofile%3Fid%3D~Josue_Ortega_Caro1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/vandijklab/cell2sentence-ft)"
+    url: https://github.com/vandijklab/cell2sentence-ft
+  omic_modalities: scRNA-seq
+  pre_training_dataset: Natural Language ([GPT2](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)) and [scRNA-seq](https://www.science.org/doi/full/10.1126/science.abl5197?casa_token=KSZInYXxqU4AAAAA%3AuNgeqoX4vxOaMPGAv4UW9_GMy1lMmZ1-QGyx2VBCSbsGWvchKCzdNUvwt-h_yemzugH075TGz6N8fw) (40k / immune, human)
+  input_embedding: 'Ordering: embedding as natural language'
+  architecture: Decoder
+  ssl_tasks: NTP with CE loss
+  supervised_tasks: '-'
+  zero_shot_tasks: Simulation, cell type annotation

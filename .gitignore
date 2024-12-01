@@ -1,2 +1,11 @@
+<<<<<<< HEAD
 .idea
 .DS_Store
+=======
+# ignore everything in this directory
+node_modules/
+.env
+.env.local
+*.log
+.cache/_site/
+>>>>>>> main
