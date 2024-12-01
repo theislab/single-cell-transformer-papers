@@ -688,16 +688,16 @@
             <button class="menu-button md:hidden" id="menu-toggle">
                 <i class="fas fa-bars"></i>
             </button>
-            <a href="{{ site.baseurl }}/" class="text-xl font-semibold ml-2">
+            <a href="{{ '/single-cell-transformer-papers/' | absolute_url }}" class="text-xl font-semibold ml-2">
                 Transformers in Single-Cell Omics
             </a>
         </div>
 
         <!-- Navigation Links -->
         <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
-            <a href="{{ '/single-cell-transformers' | relative_url }}" class="nav-link">Single Cell Transformers</a>
-            <a href="{{ '/transformer-llms' | relative_url }}" class="nav-link">Transformer LLMs</a>
-            <a href="{{ '/transformer-evaluation' | relative_url }}" class="nav-link">Transformer Evaluation</a>
+            <a href="{{ '/single-cell-transformer-papers/single-cell-transformers/' | absolute_url }}" class="nav-link">Single Cell Transformers</a>
+            <a href="{{ '/single-cell-transformer-papers/transformer-llms/' | absolute_url }}" class="nav-link">Transformer LLMs</a>
+            <a href="{{ '/single-cell-transformer-papers/transformer-evaluation/' | absolute_url }}" class="nav-link">Transformer Evaluation</a>
         </div>
 
         <div class="flex items-center space-x-6">
@@ -738,9 +738,9 @@
     <nav id="sidebar" class="sidebar fixed left-0 top-16 h-full text-white p-6"> <!-- increased padding -->
         <div class="space-y-6"> <!-- increased spacing -->
             <h2 class="text-2xl font-bold mb-8">Navigation</h2> <!-- larger text and margin -->
-            <a href="{{ '/single-cell-transformers' | relative_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
-            <a href="{{ '/transformer-llms' | relative_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
-            <a href="{{ '/transformer-evaluation' | relative_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
+            <a href="{{ '/single-cell-transformer-papers/single-cell-transformers/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
+            <a href="{{ '/single-cell-transformer-papers/transformer-llms/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
+            <a href="{{ '/single-cell-transformer-papers/transformer-evaluation/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
         </div>
     </nav>
 
@@ -955,9 +955,9 @@
     </script>
 
     <!-- Then load your bundles -->
-    <script src="{{ site.baseurl }}/assets/js/dist/single-cell-transformers.bundle.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/dist/transformer-llms.bundle.js"></script>
-    <script src="{{ site.baseurl }}/assets/js/dist/transformer-evaluation.bundle.js"></script>
+    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/single-cell-transformers.bundle.js' | absolute_url }}"></script>
+    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/transformer-llms.bundle.js' | absolute_url }}"></script>
+    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/transformer-evaluation.bundle.js' | absolute_url }}"></script>
 
     <!-- Add these divs where you want the tables to appear -->
     <div id="single-cell-transformers"></div>
