@@ -1,7 +1,7 @@
 title: Transformers in Single-Cell Omics
 description: A curated collection of papers on transformers in single-cell analysis
 baseurl: ""
-url: "https://theislab/single-cell-transformer-papers"
+url: "https://theislab.github.io/single-cell-transformer-papers"
 
 # Build settings
 markdown: kramdown
