@@ -680,6 +680,41 @@
                 max-width: none;
             }
         }
+
+        /* Add these styles for mobile menu animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        #mobile-menu.show {
+            max-height: 300px; /* Adjust this value based on your content */
+        }
+
+        /* Ensure the select is positioned over the icon but invisible */
+        #mobile-nav {
+            top: 0;
+            right: 0;
+            z-index: 2;
+        }
+
+        /* Mobile menu animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        #mobile-menu.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Add subtle border between menu items */
+        #mobile-menu a:not(:last-child) {
+            border-bottom: 1px solid rgba(156, 163, 175, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -689,44 +724,24 @@
                 Transformers in Single-Cell Omics
             </a>
 
-            <!-- Navigation Links -->
-            <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-4">
                 <a href="/single-cell-transformer-papers/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
                 <a href="/single-cell-transformer-papers/transformer-llms" class="nav-link">Transformer LLMs</a>
                 <a href="/single-cell-transformer-papers/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
             </div>
 
-            <div class="flex items-center space-x-6">
-                <!-- GitHub Dropdown -->
-                <div class="relative">
-                    <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                        <i class="fab fa-github text-xl"></i>
-                    </button>
-                    <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                            <i class="fas fa-code-branch mr-2"></i>Repository
-                        </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                            <i class="fas fa-edit mr-2"></i>Suggest edit
-                        </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                            <i class="fas fa-exclamation-circle mr-2"></i>Open issue
-                        </a>
-                    </div>
-                </div>
+            <!-- Mobile menu button -->
+            <button onclick="toggleMenu()" class="md:hidden p-2" aria-label="Menu">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
 
-                <!-- Download Button -->
-                <div class="relative" id="download-btn">
-                    <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                        <i class="fas fa-download"></i>
-                    </button>
-                </div>
-
-                <!-- Theme Toggle -->
-                <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                    <i class="fas fa-sun text-xl"></i>
-                </button>
-            </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-900 shadow-lg">
+            <a href="/single-cell-transformer-papers/single-cell-transformers" class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Single Cell Transformers</a>
+            <a href="/single-cell-transformer-papers/transformer-llms" class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Transformer LLMs</a>
+            <a href="/single-cell-transformer-papers/transformer-evaluation" class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Transformer Evaluation</a>
         </div>
     </header>
 
@@ -760,196 +775,12 @@
     </main>
 
     <script>
-        // Add this helper function at the top of your script section
-        function showNotification(message, isError = false) {
-            const notification = document.createElement('div');
-            notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
-                isError ? 'bg-red-500' : 'bg-green-500'
-            } text-white`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // Theme Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('i');
-        const html = document.documentElement;
-        
-        function updateThemeIcon(isDark) {
-            themeIcon.classList.remove('fa-sun', 'fa-moon');
-            themeIcon.classList.add(isDark ? 'fa-moon' : 'fa-sun');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcon(isDark);
-        });
-
-        // Initialize theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.classList.add(savedTheme);
-        updateThemeIcon(savedTheme === 'dark');
-
-        // Dropdown functionality
-        function setupDropdown(btnId, dropdownId) {
-            const btn = document.getElementById(btnId);
-            const dropdown = document.getElementById(dropdownId);
-
-            if (!btn || !dropdown) return;
-
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isVisible = dropdown.classList.contains('show');
-                
-                // Close all dropdowns
-                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
-                
-                // Toggle current dropdown
-                if (!isVisible) {
-                    dropdown.classList.add('show');
-                }
-            });
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
-        });
-
-        // Initialize dropdowns
-        setupDropdown('github-btn', 'github-dropdown');
-        setupDropdown('download-btn', 'download-dropdown');
-
-        // GitHub functionality
-        const REPO_URL = 'https://github.com/theislab/single-cell-transformer-papers';
-
-        document.querySelector('#github-dropdown').addEventListener('click', (e) => {
-            e.preventDefault();
-            const action = e.target.closest('a')?.textContent.trim();
-            
-            if (action) {
-                switch(action) {
-                    case 'Repository':
-                        window.open(REPO_URL, '_blank');
-                        break;
-                    case 'Suggest edit':
-                        // Get current page path
-                        const path = window.location.pathname;
-                        let editPath;
-                        
-                        // Check if we're on a table page
-                        if (path.includes('single-cell-transformers') || 
-                            path.includes('transformer-llms') || 
-                            path.includes('transformer-evaluation')) {
-                            editPath = 'README.md';
-                        } else {
-                            // For any other page, use the default logic
-                            editPath = path === '/' ? 'README.md' : 
-                                path.replace(/\/$/, '').split('/').pop() + '.md';
-                        }
-                        
-                        const editUrl = `${REPO_URL}/edit/main/${editPath}`;
-                        window.open(editUrl, '_blank');
-                        break;
-                    case 'Open issue':
-                        window.open(`${REPO_URL}/issues/new`, '_blank');
-                        break;
-                }
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
             }
-        });
-
-        // Update the print preparation function
-        function prepareForPrint() {
-            const style = document.createElement('style');
-            style.textContent = `
-                @page {
-                    size: landscape !important;
-                    margin: 0.5cm !important;
-                }
-                
-                /* Force all columns to be visible */
-                table {
-                    width: 100% !important;
-                    display: table !important;
-                    table-layout: auto !important;
-                    font-size: 8pt !important;
-                }
-                
-                th, td {
-                    display: table-cell !important;
-                    visibility: visible !important;
-                    white-space: normal !important;
-                    min-width: auto !important;
-                    max-width: none !important;
-                    overflow: visible !important;
-                    padding: 4px !important;
-                }
-
-                /* Show all columns */
-                .hidden, 
-                [hidden], 
-                [style*="display: none"], 
-                [style*="visibility: hidden"] {
-                    display: table-cell !important;
-                    visibility: visible !important;
-                }
-
-                /* Adjust content wrapping */
-                td > * {
-                    white-space: normal !important;
-                    word-wrap: break-word !important;
-                }
-            `;
-            
-            document.head.appendChild(style);
-
-            // Force all columns to be visible
-            const tables = document.querySelectorAll('table');
-            tables.forEach(table => {
-                // Show all columns
-                const columns = table.querySelectorAll('th, td');
-                columns.forEach(col => {
-                    col.style.cssText = `
-                        display: table-cell !important;
-                        visibility: visible !important;
-                        white-space: normal !important;
-                        min-width: auto !important;
-                        max-width: none !important;
-                        overflow: visible !important;
-                    `;
-                });
-            });
-
-            window.print();
-
-            // Cleanup
-            setTimeout(() => {
-                document.head.removeChild(style);
-            }, 1000);
         }
-
-        // Update the download button click handler
-        document.getElementById('download-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            prepareForPrint();
-        });
-
-        // Mobile menu toggle
-        document.getElementById('menu-toggle')?.addEventListener('click', () => {
-            document.getElementById('nav-links')?.classList.toggle('show');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#menu-toggle') && !e.target.closest('#nav-links')) {
-                document.getElementById('nav-links')?.classList.remove('show');
-            }
-        });
     </script>
     <!-- Load React and ReactDOM first -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
