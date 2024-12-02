@@ -4,7 +4,7 @@
 🚧 **This readme has been discontinued. Visit the website linked above for the most recent version** 🚧
 
 We welcome contributions to this repository. Please open a pull request or an issue if you want to add or edit an entry.
-Paper descriptions are stored in `_data` directory.
+Paper descriptions are stored in `_data` directory. New entries need to follow the schema of their corresponding table. 
 
 # Outdated version
 
