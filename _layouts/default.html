@@ -683,53 +683,50 @@
     </style>
 </head>
 <body>
-    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 flex items-center justify-between px-4 py-2 border-b border-gray-200">
-        <div class="flex items-center">
-            <button class="menu-button md:hidden" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a href="{{ '/single-cell-transformer-papers/' | absolute_url }}" class="text-xl font-semibold ml-2">
-                Transformers in Single-Cell Omics
+    <header class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md z-50">
+        <div class="flex items-center justify-between px-4 py-2">
+            <a href="{{ site.baseurl }}/" class="text-xl font-semibold ml-2">
+                {{ site.title }}
             </a>
-        </div>
 
-        <!-- Navigation Links -->
-        <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
-            <a href="{{ '/single-cell-transformer-papers/single-cell-transformers/' | absolute_url }}" class="nav-link">Single Cell Transformers</a>
-            <a href="{{ '/single-cell-transformer-papers/transformer-llms/' | absolute_url }}" class="nav-link">Transformer LLMs</a>
-            <a href="{{ '/single-cell-transformer-papers/transformer-evaluation/' | absolute_url }}" class="nav-link">Transformer Evaluation</a>
-        </div>
+            <!-- Navigation Links -->
+            <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+                <a href="{{ site.baseurl }}/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
+                <a href="{{ site.baseurl }}/transformer-llms" class="nav-link">Transformer LLMs</a>
+                <a href="{{ site.baseurl }}/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
+            </div>
 
-        <div class="flex items-center space-x-6">
-            <!-- GitHub Dropdown -->
-            <div class="relative">
-                <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                    <i class="fab fa-github text-xl"></i>
-                </button>
-                <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-code-branch mr-2"></i>Repository
-                    </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-edit mr-2"></i>Suggest edit
-                    </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-exclamation-circle mr-2"></i>Open issue
-                    </a>
+            <div class="flex items-center space-x-6">
+                <!-- GitHub Dropdown -->
+                <div class="relative">
+                    <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                        <i class="fab fa-github text-xl"></i>
+                    </button>
+                    <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-code-branch mr-2"></i>Repository
+                        </a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-edit mr-2"></i>Suggest edit
+                        </a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-exclamation-circle mr-2"></i>Open issue
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Download Button -->
-            <div class="relative" id="download-btn">
-                <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i class="fas fa-download"></i>
+                <!-- Download Button -->
+                <div class="relative" id="download-btn">
+                    <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                    <i class="fas fa-sun text-xl"></i>
                 </button>
             </div>
-
-            <!-- Theme Toggle -->
-            <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                <i class="fas fa-sun text-xl"></i>
-            </button>
         </div>
     </header>
 
@@ -738,9 +735,9 @@
     <nav id="sidebar" class="sidebar fixed left-0 top-16 h-full text-white p-6"> <!-- increased padding -->
         <div class="space-y-6"> <!-- increased spacing -->
             <h2 class="text-2xl font-bold mb-8">Navigation</h2> <!-- larger text and margin -->
-            <a href="{{ '/single-cell-transformer-papers/single-cell-transformers/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
-            <a href="{{ '/single-cell-transformer-papers/transformer-llms/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
-            <a href="{{ '/single-cell-transformer-papers/transformer-evaluation/' | absolute_url }}" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
+            <a href="{{ site.baseurl }}/single-cell-transformers" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
+            <a href="{{ site.baseurl }}/transformer-llms" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
+            <a href="{{ site.baseurl }}/transformer-evaluation" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
         </div>
     </nav>
 
@@ -954,15 +951,10 @@
         window.transformerEvaluation = {{ site.data.transformer-evaluation | jsonify }};
     </script>
 
-    <!-- Then load your bundles -->
-    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/single-cell-transformers.bundle.js' | absolute_url }}"></script>
-    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/transformer-llms.bundle.js' | absolute_url }}"></script>
-    <script src="{{ '/single-cell-transformer-papers/assets/js/dist/transformer-evaluation.bundle.js' | absolute_url }}"></script>
-
-    <!-- Add these divs where you want the tables to appear -->
-    <div id="single-cell-transformers"></div>
-    <div id="transformer-llms"></div>
-    <div id="transformer-evaluation"></div>
+    <!-- Load all bundles -->
+    <script src="{{ site.baseurl }}/assets/js/dist/single-cell-transformers.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-llms.bundle.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/dist/transformer-evaluation.bundle.js"></script>
 </body>
 </html>
 

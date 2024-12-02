@@ -1,7 +1,7 @@
 title: Transformers in Single-Cell Omics
 description: A curated collection of papers on transformers in single-cell analysis
-baseurl: ""
-url: "https://theislab.github.io/single-cell-transformer-papers"
+baseurl: "/single-cell-transformer-papers"
+url: "https://theislab.github.io"
 
 # Build settings
 markdown: kramdown
@@ -9,27 +9,17 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-# Remove trailing slashes
-permalink: "/:title"
+# Explicitly remove trailing slashes
+permalink: /:title
 trailing_slash: false
 
 # Default layout settings
 defaults:
   -
     scope:
-      path: "" # Apply to all files
+      path: ""
     values:
       layout: "default"
-  -
-    scope:
-      path: "index.md"
-    values:
-      layout: "default"
-  - scope:
-      path: "assets/_data"
-      type: "yml"
-    values:
-      layout: null  # Prevent Jekyll from wrapping YAML files in the default layout
 
 # Collections
 collections:
@@ -40,9 +30,9 @@ collections:
 # Include directories and files
 include:
   - _pages
-  - _data
   - assets
   - assets/js/dist
+  - _data
 
 # Exclude from processing
 exclude:

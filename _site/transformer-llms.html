@@ -683,53 +683,50 @@
     </style>
 </head>
 <body>
-    <header class="fixed top-0 w-full bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 flex items-center justify-between px-4 py-2 border-b border-gray-200">
-        <div class="flex items-center">
-            <button class="menu-button md:hidden" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a href="/" class="text-xl font-semibold ml-2">
+    <header class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md z-50">
+        <div class="flex items-center justify-between px-4 py-2">
+            <a href="/single-cell-transformer-papers/" class="text-xl font-semibold ml-2">
                 Transformers in Single-Cell Omics
             </a>
-        </div>
 
-        <!-- Navigation Links -->
-        <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
-            <a href="/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
-            <a href="/transformer-llms" class="nav-link">Transformer LLMs</a>
-            <a href="/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
-        </div>
+            <!-- Navigation Links -->
+            <div class="nav-links hidden md:flex items-center space-x-4" id="nav-links">
+                <a href="/single-cell-transformer-papers/single-cell-transformers" class="nav-link">Single Cell Transformers</a>
+                <a href="/single-cell-transformer-papers/transformer-llms" class="nav-link">Transformer LLMs</a>
+                <a href="/single-cell-transformer-papers/transformer-evaluation" class="nav-link">Transformer Evaluation</a>
+            </div>
 
-        <div class="flex items-center space-x-6">
-            <!-- GitHub Dropdown -->
-            <div class="relative">
-                <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                    <i class="fab fa-github text-xl"></i>
-                </button>
-                <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-code-branch mr-2"></i>Repository
-                    </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-edit mr-2"></i>Suggest edit
-                    </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <i class="fas fa-exclamation-circle mr-2"></i>Open issue
-                    </a>
+            <div class="flex items-center space-x-6">
+                <!-- GitHub Dropdown -->
+                <div class="relative">
+                    <button id="github-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                        <i class="fab fa-github text-xl"></i>
+                    </button>
+                    <div id="github-dropdown" class="dropdown right-0 mt-2 w-48">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-code-branch mr-2"></i>Repository
+                        </a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-edit mr-2"></i>Suggest edit
+                        </a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <i class="fas fa-exclamation-circle mr-2"></i>Open issue
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Download Button -->
-            <div class="relative" id="download-btn">
-                <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i class="fas fa-download"></i>
+                <!-- Download Button -->
+                <div class="relative" id="download-btn">
+                    <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                    <i class="fas fa-sun text-xl"></i>
                 </button>
             </div>
-
-            <!-- Theme Toggle -->
-            <button id="theme-toggle" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
-                <i class="fas fa-sun text-xl"></i>
-            </button>
         </div>
     </header>
 
@@ -738,10 +735,9 @@
     <nav id="sidebar" class="sidebar fixed left-0 top-16 h-full text-white p-6"> <!-- increased padding -->
         <div class="space-y-6"> <!-- increased spacing -->
             <h2 class="text-2xl font-bold mb-8">Navigation</h2> <!-- larger text and margin -->
-            <a href="/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Home</a>
-            <a href="/single-cell-transformers/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
-            <a href="/transformer-llms/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
-            <a href="/transformer-evaluation/" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
+            <a href="/single-cell-transformer-papers/single-cell-transformers" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Single-cell transformers</a>
+            <a href="/single-cell-transformer-papers/transformer-llms" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer LLMs</a>
+            <a href="/single-cell-transformer-papers/transformer-evaluation" class="block py-3 hover:bg-opacity-20 hover:bg-white rounded">Transformer evaluation</a>
         </div>
     </nav>
 
@@ -750,13 +746,14 @@
         <div class="w-full mx-auto markdown-content">
             <div id="transformer-llms-root"></div>
 
-<!-- Load React and ReactDOM from CDN -->
-<script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-
-<script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-<!-- Load your bundle -->
-<script src="/assets/js/dist/transformer-llms.bundle.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('transformer-llms-root')) {
+            const root = ReactDOM.createRoot(document.getElementById('transformer-llms-root'));
+            root.render(React.createElement(TransformerLLMs));
+        }
+    });
+</script>
 
 
         </div>
@@ -841,10 +838,21 @@
                         window.open(REPO_URL, '_blank');
                         break;
                     case 'Suggest edit':
-                        // Get current page path and construct the edit URL
+                        // Get current page path
                         const path = window.location.pathname;
-                        const editPath = path === '/' ? 'README.md' : 
-                            path.replace(/\/$/, '').split('/').pop() + '.md';
+                        let editPath;
+                        
+                        // Check if we're on a table page
+                        if (path.includes('single-cell-transformers') || 
+                            path.includes('transformer-llms') || 
+                            path.includes('transformer-evaluation')) {
+                            editPath = 'README.md';
+                        } else {
+                            // For any other page, use the default logic
+                            editPath = path === '/' ? 'README.md' : 
+                                path.replace(/\/$/, '').split('/').pop() + '.md';
+                        }
+                        
                         const editUrl = `${REPO_URL}/edit/main/${editPath}`;
                         window.open(editUrl, '_blank');
                         break;
@@ -954,15 +962,10 @@
         window.transformerEvaluation = [{"paper":{"type":"preprint","text":"[Ahlmann-Eltze et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.16.613342)","url":"https://www.biorxiv.org/content/10.1101/2024.09.16.613342"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/const-ae/linear_perturbation_prediction-Paper/)","url":"https://github.com/const-ae/linear_perturbation_prediction-Paper/"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, scFoundation","tasks":"Genetic perturbation effect prediction","notes":"A simple linear model performs better than scGPT and scFoundation (and GEARS)."},{"paper":{"type":"preprint","text":"[He et al. 2024](https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1)","url":"https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/laolintou/scPEFT)","url":"https://github.com/laolintou/scPEFT"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT","tasks":"Cell type annotation","notes":"Evaluation of Parameter-Efficient Fine-Tuning (PEFT) for scGPT. Indicates that PEFT not only is more compute-efficient, but also results in better cell type prediction."},{"paper":{"type":"peer_reviewed","text":"[Khan et al. 2023](https://www.nature.com/articles/s42256-023-00757-8)","url":"https://www.nature.com/articles/s42256-023-00757-8"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/TranslationalBioinformaticsUnit/scbert-reusability)","url":"https://github.com/TranslationalBioinformaticsUnit/scbert-reusability"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scBERT","tasks":"Cell type annotation. Unseen cell type detection","notes":"Focused on imbalanced cell type classification. scBERT is sensitive to class imbalance. scBERT outperforms Seurat. scBERT doesn't perform well in unseen cell type detection. It benefits from SSL pretraining."},{"paper":{"type":"preprint","text":"[Liu et al. 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4)","url":"https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/HelloWorldLTY/scEval)","url":"https://github.com/HelloWorldLTY/scEval"},"omic_modalities":"scRNA-seq, scATAC-seq, Spatial transcriptomics","evaluated_transformers":"scGPT, Geneformer, scBERT, tGPT, CellLM","tasks":"Cell clustering, cell type annotation, multimodal embedding, GRN inference, gene expression imputation, genetic perturbation effect prediction, simulation, gene function prediction","notes":"Models aren't trained on the same datasets. scGPT is positioned as most versatile in terms of task diversity that it can tackle. Models other than transformer appear to be at least as good as transformers in most tasks. Transformers were shown to be sensitive to the choice of hyperparameters, such as learning rate and epochs."},{"paper":{"type":"preprint","text":"[Boiarsky et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1)","url":"https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/clinicalml/sc-foundation-eval)","url":"https://github.com/clinicalml/sc-foundation-eval"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scBERT, scGPT","tasks":"Cell type annotation","notes":"Logistic regression appears to be as good as transformers in cell type annotation, even in low-data scenarios."},{"paper":{"type":"preprint","text":"[Kedzierska et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2)","url":"https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/microsoft/zero-shot-scfoundation)","url":"https://github.com/microsoft/zero-shot-scfoundation"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, Geneformer","tasks":"Cell clustering","notes":"Zero-shot performance only. Both models appear unreliable."},{"paper":{"type":"preprint","text":"[Alsabbagh et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1)","url":"https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1"},"code":{"type":"reproducible","text":"[ð ï¸GitHub](https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels)","url":"https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels"},"omic_modalities":"scRNA-seq","evaluated_transformers":"scGPT, Geneformer, scBERT","tasks":"Cell type annotation","notes":"Focused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly."}];
     </script>
 
-    <!-- Then load your bundles -->
-    <script src="/assets/js/dist/single-cell-transformers.bundle.js"></script>
-    <script src="/assets/js/dist/transformer-llms.bundle.js"></script>
-    <script src="/assets/js/dist/transformer-evaluation.bundle.js"></script>
-
-    <!-- Add these divs where you want the tables to appear -->
-    <div id="single-cell-transformers"></div>
-    <div id="transformer-llms"></div>
-    <div id="transformer-evaluation"></div>
+    <!-- Load all bundles -->
+    <script src="/single-cell-transformer-papers/assets/js/dist/single-cell-transformers.bundle.js"></script>
+    <script src="/single-cell-transformer-papers/assets/js/dist/transformer-llms.bundle.js"></script>
+    <script src="/single-cell-transformer-papers/assets/js/dist/transformer-evaluation.bundle.js"></script>
 </body>
 </html>
 
