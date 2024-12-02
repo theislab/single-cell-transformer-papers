@@ -1,0 +1,48 @@
+title: Transformers in Single-Cell Omics
+description: A curated collection of papers on transformers in single-cell analysis
+baseurl: "/single-cell-transformer-papers"
+url: "https://theislab.github.io"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Explicitly remove trailing slashes
+permalink: /:title
+trailing_slash: false
+
+# Default layout settings
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Collections
+collections:
+  pages:
+    output: true
+    permalink: /:title
+
+# Include directories and files
+include:
+  - _pages
+  - assets
+  - assets/js/dist
+  - _data
+
+# Exclude from processing
+exclude:
+  - node_modules
+  - webpack.config.js
+  - package.json
+  - package-lock.json
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Explicitly set data directory
+data_dir: _data

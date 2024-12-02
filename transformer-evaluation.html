@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transformer Evaluation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: #f6f8fa;
+            border: 1px solid #d1d5da;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dfe2e5;
+        }
+
+        th {
+            background: #f6f8fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f6f8fa;
+        }
+
+        .paper-link {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .code-link {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .peer-reviewed::before {
+            content: "📄";
+            margin-right: 5px;
+        }
+
+        .preprint::before {
+            content: "📝";
+            margin-right: 5px;
+        }
+
+        .reproducible::before {
+            content: "🛠️";
+            margin-right: 5px;
+        }
+
+        .evaluation-only::before {
+            content: "🔍";
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Transformer Evaluation</h1>
+        <button class="filter-btn">Filter</button>
+    </div>
+
+    <table id="evaluation-table">
+        <thead>
+            <tr>
+                <th>Paper</th>
+                <th>Code</th>
+                <th>Omic Modalities</th>
+                <th>Evaluated Transformers</th>
+                <th>Tasks</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('_data/transformer-evaluation.yml');
+                const yamlText = await response.text();
+                const data = jsyaml.load(yamlText);
+                
+                const tbody = document.querySelector('#evaluation-table tbody');
+                
+                data.forEach(entry => {
+                    const row = document.createElement('tr');
+                    
+                    // Paper column
+                    const paperCell = `
+                        <td>
+                            <a href="${entry.paper.url}" class="paper-link ${entry.paper.type}">
+                                ${entry.paper.text}
+                            </a>
+                        </td>
+                    `;
+                    
+                    // Code column
+                    const codeCell = `
+                        <td>
+                            <a href="${entry.code.url}" class="code-link ${entry.code.type}">
+                                ${entry.code.text}
+                            </a>
+                        </td>
+                    `;
+                    
+                    row.innerHTML = `
+                        ${paperCell}
+                        ${codeCell}
+                        <td>${entry.omic_modalities}</td>
+                        <td>${entry.evaluated_transformers}</td>
+                        <td>${entry.tasks}</td>
+                        <td>${entry.notes || ''}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</body>
+</html> 

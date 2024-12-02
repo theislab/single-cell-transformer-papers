@@ -1,0 +1,84 @@
+- paper:
+    type: preprint
+    text: '[Ahlmann-Eltze et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.16.613342)'
+    url: https://www.biorxiv.org/content/10.1101/2024.09.16.613342
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/const-ae/linear_perturbation_prediction-Paper/)"
+    url: https://github.com/const-ae/linear_perturbation_prediction-Paper/
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT, scFoundation
+  tasks: Genetic perturbation effect prediction
+  notes: A simple linear model performs better than scGPT and scFoundation (and GEARS).
+- paper:
+    type: preprint
+    text: '[He et al. 2024](https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.01.27.577455v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/laolintou/scPEFT)"
+    url: https://github.com/laolintou/scPEFT
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT
+  tasks: Cell type annotation
+  notes: Evaluation of Parameter-Efficient Fine-Tuning (PEFT) for scGPT. Indicates that PEFT not only is more compute-efficient, but also results in better cell type prediction.
+- paper:
+    type: peer_reviewed
+    text: '[Khan et al. 2023](https://www.nature.com/articles/s42256-023-00757-8)'
+    url: https://www.nature.com/articles/s42256-023-00757-8
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/TranslationalBioinformaticsUnit/scbert-reusability)"
+    url: https://github.com/TranslationalBioinformaticsUnit/scbert-reusability
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scBERT
+  tasks: Cell type annotation. Unseen cell type detection
+  notes: Focused on imbalanced cell type classification. scBERT is sensitive to class imbalance. scBERT outperforms Seurat. scBERT doesn't perform well in unseen cell type detection. It benefits from SSL pretraining.
+- paper:
+    type: preprint
+    text: '[Liu et al. 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4)'
+    url: https://www.biorxiv.org/content/10.1101/2023.09.08.555192v4
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/HelloWorldLTY/scEval)"
+    url: https://github.com/HelloWorldLTY/scEval
+  omic_modalities: scRNA-seq, scATAC-seq, Spatial transcriptomics
+  evaluated_transformers: scGPT, Geneformer, scBERT, tGPT, CellLM
+  tasks: Cell clustering, cell type annotation, multimodal embedding, GRN inference, gene expression imputation, genetic perturbation effect prediction, simulation, gene function prediction
+  notes: Models aren't trained on the same datasets. scGPT is positioned as most versatile in terms of task diversity that it can tackle. Models other than transformer appear to be at least as good as transformers in most tasks. Transformers were shown to be sensitive to the choice of hyperparameters, such as learning rate and epochs.
+- paper:
+    type: preprint
+    text: '[Boiarsky et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1)'
+    url: https://www.biorxiv.org/content/10.1101/2023.10.19.563100v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/clinicalml/sc-foundation-eval)"
+    url: https://github.com/clinicalml/sc-foundation-eval
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scBERT, scGPT
+  tasks: Cell type annotation
+  notes: Logistic regression appears to be as good as transformers in cell type annotation, even in low-data scenarios.
+- paper:
+    type: preprint
+    text: '[Kedzierska et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2)'
+    url: https://www.biorxiv.org/content/10.1101/2023.10.16.561085v2
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/microsoft/zero-shot-scfoundation)"
+    url: https://github.com/microsoft/zero-shot-scfoundation
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT, Geneformer
+  tasks: Cell clustering
+  notes: Zero-shot performance only. Both models appear unreliable.
+- paper:
+    type: preprint
+    text: '[Alsabbagh et al. 2023](https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1)'
+    url: https://www.biorxiv.org/content/10.1101/2023.10.24.563625v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels)"
+    url: https://github.com/SabbaghCodes/ImbalancedLearningForSingleCellFoundationModels
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT, Geneformer, scBERT
+  tasks: Cell type annotation
+  notes: Focused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly.
