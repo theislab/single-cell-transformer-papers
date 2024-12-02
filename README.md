@@ -1,4 +1,12 @@
 # Transformers in Single-Cell Omics
+[website](https://theislab.github.io/single-cell-transformer-papers/)
+
+🚧 **This readme has been discontinued. Visit the website linked above for the most recent version** 🚧
+
+We welcome contributions to this repository. Please open a pull request or an issue if you want to add or edit an entry.
+Paper descriptions are stored in `_data` directory.
+
+# Outdated version
 
 This repository accompanies [Transformers in Single-Cell Omics:
 A Review and New Perspectives](https://rdcu.be/dQuVW). Please refer to the manuscript for the details.
