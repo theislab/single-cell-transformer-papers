@@ -1,6 +1,8 @@
 # Transformers in Single-Cell Omics
 A list of single-cell transformer papers is available on the [website](https://theislab.github.io/single-cell-transformer-papers/).
 
+We welcome contributions to this repository. Please open a pull request or an issue if you want to add or edit an entry. Model data is stored in `_data` directory, following the format of the existing entries. New entries are added at the top of the corresponding table.
+
 ### Citation
 If you find the the data in this repository useful for your work, please cite:
 ```
