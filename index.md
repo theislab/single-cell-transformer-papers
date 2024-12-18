@@ -22,7 +22,7 @@ We welcome contributions to this repository. Please open a pull request or an is
   </div>
   <div class="legend-item">
     <span class="legend-icon">📄</span>
-    <span>Peer-Reviewed Publication</span>
+    <span>Peer-reviewed publication</span>
   </div>
   <div class="legend-item">
     <span class="legend-icon">🛠️</span>
