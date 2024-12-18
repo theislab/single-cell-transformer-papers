@@ -1,3 +1,19 @@
+- model: scChat
+  paper:
+    type: preprint
+    text: '[Lu et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.01.616063v2.abstract)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.01.616063v2.abstract
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_GitHub](https://github.com/li-group/scChat)"
+    url: https://github.com/li-group/scChat
+  omic_modalities: scRNA-seq
+  pre_training_dataset: '[GPT-4o](https://api.openai.com/)' 
+  input_embedding: 'Other: Natural language descriptions'
+  architecture: '[GPT-4o](https://api.openai.com/)'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+  zero_shot_tasks: Cell type annotation, research hypothesis validation and generation, experiment design suggestions
 - model: CELLama
   paper:
     type: preprint
