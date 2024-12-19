@@ -1,3 +1,18 @@
+- model: CancerFoundation
+  paper:
+    type: preprint
+    text: '[Theus et al. 2024](https://doi.org/10.1101/2024.07.25.605062)'
+    url: https://doi.org/10.1101/2024.07.25.605062
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BoevaLab/CancerFoundation)"
+    url: https://github.com/BoevaLab/CancerFoundation
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 1M / Only malignant cells from the currated cancer cell atlas.
+  input_embedding: 'Value categorization: value binning'
+  architecture: 'Other: attention masking in encoder'
+  ssl_tasks: Iterative MLM variant with MSE loss, cell token expression prediction, gene expression prediction
+  supervised_tasks: Drug response prediction
 - model: Precious3GPT
   paper:
     type: preprint
