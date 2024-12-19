@@ -8,7 +8,7 @@ const FILTER_OPTIONS = {
     { value: 'peer_reviewed', label: 'Peer Reviewed 📄' },
   ],
   code: [
-    { value: 'reproducible', label: 'Reproducible 🛠️' },
+    { value: 'reproducible', label: 'Training Code Available 🛠️' },
     { value: 'evaluation_only', label: 'Evaluation Only 🔍' },
     { value: 'none', label: 'None' },
   ],
