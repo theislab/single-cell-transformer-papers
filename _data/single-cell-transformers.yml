@@ -1,8 +1,8 @@
 - model: CancerFoundation
   paper:
     type: preprint
-    text: '[Theus et al. 2024](https://doi.org/10.1101/2024.07.25.605062)'
-    url: https://doi.org/10.1101/2024.07.25.605062
+    text: '[Theus et al. 2024](https://doi.org/10.1101/2024.11.01.621087)'
+    url: https://doi.org/10.1101/2024.11.01.621087
   code:
     type: reproducible
     text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BoevaLab/CancerFoundation)"
