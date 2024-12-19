@@ -1,3 +1,18 @@
+- model: mcBERT
+  paper:
+    type: preprint
+    text: '[von Querfurth et al. 2024](https://doi.org/10.1101/2024.11.04.621897)'
+    url: https://doi.org/10.1101/2024.11.04.621897
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/COMSYS/mcBERT)"
+    url: https://github.com/COMSYS/mcBERT
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 7M cells single tissue, human (see Table 1 in the paper; heart, kidney, PBMC, and lung)
+  input_embedding: Cells as tokens + value projection
+  architecture: Transformer Encoder / BERT
+  ssl_tasks: MLM on cell-level, based on unmasked cells of patient
+  supervised_tasks: Phenotype classification
 - model: CancerFoundation
   paper:
     type: preprint
