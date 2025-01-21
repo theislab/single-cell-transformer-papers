@@ -1,5 +1,105 @@
 - paper:
     type: preprint
+    text: '[Kaspar Märtens et al. 2024](https://openreview.net/pdf?id=eb3ndUlkt4)'
+    url: https://openreview.net/pdf?id=eb3ndUlkt4
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/valence-labs/Tx-Evaluation)'
+    url: 'https://github.com/valence-labs/Tx-Evaluation'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+
+- paper:
+    type: preprint
+    text: '[Ihab Bendidi et al. 2024](https://arxiv.org/pdf/2410.13956)'
+    url: https://arxiv.org/pdf/2410.13956
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/valence-labs/Tx-Evaluation)'
+    url: 'https://github.com/valence-labs/Tx-Evaluation'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+- paper:
+    type: preprint
+    text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/ggit12/anndictionary/)'
+    url: 'https://github.com/ggit12/anndictionary/'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+
+- paper:
+    type: preprint
+    text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/ggit12/anndictionary/)'
+    url: 'https://github.com/ggit12/anndictionary/'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+- paper:
+    type: preprint
+    text: '[Yan Wu et al. 2024](https://scholar.google.com/scholar?cluster=18315006149844520972&hl=en&as_sdt=0,5)'
+    url: https://scholar.google.com/scholar?cluster=18315006149844520972&hl=en&as_sdt=0,5
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/altoslabs/perturbench)'
+    url: 'https://github.com/altoslabs/perturbench'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+- paper:
+    type: preprint
+    text: '[A. Wenteler et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.02.616248v1.abstract)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.02.616248v1.abstract
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/aaronwtr/PertEval)'
+    url: 'https://github.com/aaronwtr/PertEval'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+
+- paper:
+    type: preprint
+    text: '[Eric Kernfeld et al. 2024](https://www.biorxiv.org/content/10.1101/2023.07.28.551039v2.full)'
+    url: https://www.biorxiv.org/content/10.1101/2023.07.28.551039v2.full
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/ekernf01/perturbation_benchmarking)'
+    url: 'https://github.com/ekernf01/perturbation_benchmarking'
+  omic_modalities: '-'
+  evaluated_transformers: '-'
+  tasks: '-'
+  notes: '-'
+
+
+- paper:
+    type: preprint
     text: '[Yoav Kan-Tor et al. 2024](https://arxiv.org/abs/2412.04075)'
     url: https://arxiv.org/abs/2412.04075
   code:
@@ -9,7 +109,7 @@
   omic_modalities: Natural Language, scRNAseq, protein sequence, DNA sequence
   evaluated_transformers: Mistral, MPnet, CellPLM, GeneFormer, scGPT, DNABert2, ESM (plus bag-of-words, gene2vec)
   tasks: genomic properties, gene regulatory functions, gene localization, gene biological processes, protein properties
-  notes: '-'
+  notes: 'Evaluating model performance using gene embeddings allows comparing models utilizing different data modalities. The performance profile of a diverse set of models across ~300 gene related tasks was shown to be most influenced by the training modality.'
 - paper:
     type: preprint
     text: '[Ahlmann-Eltze et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.16.613342)'

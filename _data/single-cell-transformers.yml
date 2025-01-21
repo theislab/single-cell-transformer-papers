@@ -1,3 +1,361 @@
+- model: scGREAT
+  paper:
+    type: peer_reviewed
+    text: '[Yuchen Wang et al. 2024](https://www.cell.com/iscience/pdf/S2589-0042(24)00573-X.pdf)'
+    url: https://www.cell.com/iscience/pdf/S2589-0042(24)00573-X.pdf
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/WangyuchenCS/scGREAT)"
+    url: https://github.com/WangyuchenCS/scGREAT
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: Nicheformer
+  paper:
+    type: peer_reviewed
+    text: '[Anna C. Schaar et al. 2024](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4803291)'
+    url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4803291
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/theislab/nicheformer)"
+    url: https://github.com/theislab/nicheformer
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scmFormer
+  paper:
+    type: preprint
+    text: '[Jing Xu et al. 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11109621/)'
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11109621/
+  code:
+    type: evaluation_only
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/zhanglab-wbgcas/scmFormer)"
+    url: https://github.com/zhanglab-wbgcas/scmFormer
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: Metric Mirages
+  paper:
+    type: preprint
+    text: '[Hanchen Wang et al. 2024](https://www.biorxiv.org/content/10.1101/2024.04.02.587824v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.04.02.587824v1.full.pdf
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scEmb
+  paper:
+    type: preprint
+    text: '[Kang-Lin Hsieh et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.24.614685v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.09.24.614685v1
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+
+- model: Cell-ontology guided transcriptome foundation model
+  paper:
+    type: preprint
+    text: '[Xinyu Yuan et al. 2024](https://arxiv.org/pdf/2408.12373)'
+    url: https://arxiv.org/pdf/2408.12373
+  code:
+    type: '-'
+    text: "[](https://github.com/zhanglab-wbgcas/scmFormer)"
+    url: 'https://github.com/DeepGraphLearning/scCello'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: Cell-Graph Compass
+  paper:
+    type: preprint
+    text: '[Chen Fang et al. 2024](https://www.biorxiv.org/content/10.1101/2024.06.04.597354v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.06.04.597354v1.full.pdf
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/epang-ucas/Cell-Graph-Compass)"
+    url: 'https://github.com/epang-ucas/Cell-Graph-Compass'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scGAA
+  paper:
+    type: peer_reviewed
+    text: '[Tianci Kong et al. 2024](https://www.nature.com/articles/s41598-024-73356-1)'
+    url: https://www.nature.com/articles/s41598-024-73356-1
+  code:
+    type: 'evaluation_only'
+    text: "[ð\x9F\x94\x8DGitHub]https://github.com/kongtianci/scGAA)"
+    url: 'https://github.com/kongtianci/scGAA'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scFusionTTT
+  paper:
+    type: preprint
+    text: '[Dian Meng et al. 2024](https://openreview.net/forum?id=7rR6RAUaoC)'
+    url: https://openreview.net/forum?id=7rR6RAUaoC
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+- model: scCello
+  paper:
+    type: preprint
+    text: '[Xinyu Yuan et al. 2024](https://github.com/theislab/single-cell-transformer-papers/issues/32)'
+    url: https://github.com/theislab/single-cell-transformer-papers/issues/32
+  code:
+    type: '-'
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/DeepGraphLearning/scCello)"
+    url: 'https://github.com/DeepGraphLearning/scCello'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scGenePT
+  paper:
+    type: preprint
+    text: '[Ana-Maria Istrate et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.23.619972v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.10.23.619972v1.full.pdf
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/czi-ai/scGenePT)"
+    url: 'https://github.com/czi-ai/scGenePT'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: ENHANCING GENERATIVE PERTURBATION MODELS WITH LLM-INFORMED GENE EMBEDDINGS
+  paper:
+    type: preprint
+    text: '[Kaspar Märtens et al. 2024](https://openreview.net/pdf?id=eb3ndUlkt4)'
+    url: https://openreview.net/pdf?id=eb3ndUlkt4
+  code:
+    type: '-'
+    text: "-"
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scSwinTNet 
+  paper:
+    type: peer_reviewed
+    text: '[Huanhuan Dai et al. 2024](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10737051)'
+    url: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10737051
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/Danica123/scSwinTNet)"
+    url: 'https://github.com/Danica123/scSwinTNet'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: sclong
+  paper:
+    type: preprint
+    text: '[Ding Bai et al. 2024](https://www.biorxiv.org/content/10.1101/2024.11.09.622759v2)'
+    url: https://www.biorxiv.org/content/10.1101/2024.11.09.622759v2
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/BaiDing1234/scLong)"
+    url: 'https://github.com/BaiDing1234/scLong'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: WHITE-BOX DIFFUSION TRANSFORMER FOR SINGLE-CELL RNA-SEQ GENERATION
+  paper:
+    type: preprint
+    text: '[Zhuorui Cui et al. 2024](https://arxiv.org/pdf/2411.06785)'
+    url: https://arxiv.org/pdf/2411.06785
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: "A framework for gene representation on spatial transcriptomics"
+  paper:
+    type: preprint
+    text: '[Shenghao Cao et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.27.615337v5.full)'
+    url: https://www.biorxiv.org/content/10.1101/2024.09.27.615337v5.full
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+- model: genohoption
+  paper:
+    type: preprint
+    text: '[Jiabei Cheng et al. 2024](https://arxiv.org/pdf/2411.06331)'
+    url: https://arxiv.org/pdf/2411.06331
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/Bunnybeibei/GenoHoption)"
+    url: 'https://github.com/Bunnybeibei/GenoHoption'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: Cellpatch
+  paper:
+    type: preprint
+    text: '[Hanwen Zhu et al. 2024](https://www.biorxiv.org/content/10.1101/2024.11.15.623701v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.11.15.623701v1.full.pdf
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/HanwenZhu98/CellPatch)'
+    url: 'https://github.com/HanwenZhu98/CellPatch'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: GRNPT
+  paper:
+    type: preprint
+    text: '[Guangzheng Weng et al. 2024](https://advanced.onlinelibrary.wiley.com/doi/pdf/10.1002/advs.202409990)'
+    url: https://advanced.onlinelibrary.wiley.com/doi/pdf/10.1002/advs.202409990
+  code:
+    type: 'evaluation_only'
+    text: '[ð\x9F\x94\x8DGitHub](https://github.com/wgzgithub/GRNPT)'
+    url: 'https://github.com/wgzgithub/GRNPT'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+- model: Aido.cell
+  paper:
+    type: preprint
+    text: '[Nicholas Ho et al. 2024](https://www.biorxiv.org/content/10.1101/2024.11.28.625303v1.full)'
+    url: https://www.biorxiv.org/content/10.1101/2024.11.28.625303v1.full
+  code:
+    type: 'evaluation_only'
+    text: '[ð\x9F\x94\x8DGitHub](https://github.com/wgzgithub/GRNPT)'
+    url: 'https://huggingface.co/genbio-ai/AIDO.Cell-100M/tree/main'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: sctel
+  paper:
+    type: peer_reviewed
+    text: '[Yuanyuan Chen et al. 2024](https://www.nature.com/articles/s41540-024-00484-9)'
+    url: https://www.nature.com/articles/s41540-024-00484-9
+  code:
+    type: 'reproducible'
+    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/142857cyy/scTEL)'
+    u'rl: 'https://github.com/142857cyy/scTEL'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+- model: "Toward a privacy-preserving predictive foundation model"
+  paper:
+    type: preprint
+    text: '[Jiayuan Ding et al. 2024](https://www.biorxiv.org/content/10.1101/2025.01.06.631427v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2025.01.06.631427v1.full.pdf
+  code:
+    type: '-'
+    text: '-'
+    url: '-'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
 - model: mcBERT
   paper:
     type: preprint

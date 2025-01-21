@@ -1,3 +1,20 @@
+- model: stFormer
+  paper:
+    type: preprint
+    text: '[Shenghao Cao et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.27.615337v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.09.27.615337v1
+  code:
+    type: 'reproducible'
+    text: "[ð\x9F\x94\x8DGitHub](https://github.com/ucaswangls/STFormer)"
+    url: 'https://github.com/ucaswangls/STFormer'
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
 - model: scChat
   paper:
     type: preprint
