@@ -1,8 +1,8 @@
 - model: scGREAT
   paper:
     type: peer_reviewed
-    text: '[Yuchen Wang et al. 2024](https://www.cell.com/iscience/pdf/S2589-0042(24)00573-X.pdf)'
-    url: https://www.cell.com/iscience/pdf/S2589-0042(24)00573-X.pdf
+    text: '[Yuchen Wang et al. 2024](https://www.cell.com/iscience/pdf/S2589-0042%2824%2900573-X.pdf)'
+    url: https://www.cell.com/iscience/pdf/S2589-0042%2824%2900573-X.pdf
   code:
     type: reproducible
     text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/WangyuchenCS/scGREAT)"
