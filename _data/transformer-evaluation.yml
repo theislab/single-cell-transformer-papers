@@ -100,7 +100,7 @@
     url: https://www.biorxiv.org/content/10.1101/2024.09.30.615843v1
   code:
     type: reproducible
-    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/turbine-ai/PerturbSeqPredBenchmark"
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/turbine-ai/PerturbSeqPredBenchmark)"
     url: https://github.com/turbine-ai/PerturbSeqPredBenchmark
   omic_modalities: scRNA-seq
   evaluated_transformers: scGPT
