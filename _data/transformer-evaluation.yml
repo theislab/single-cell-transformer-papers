@@ -77,10 +77,10 @@
     type: 'reproducible'
     text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/aaronwtr/PertEval)'
     url: 'https://github.com/aaronwtr/PertEval'
-  omic_modalities: '-'
-  evaluated_transformers: '-'
-  tasks: '-'
-  notes: '-'
+  omic_modalities: 'scRNA-seq'
+  evaluated_transformers: 'UCE, scBERT, scGPT, Geneformer, scFoundation'
+  tasks: 'Transcriptomic perturbation prediction'
+  notes: 'Introduces PertEval-scFM, a benchmark to assess the zero-shot utility of single-cell foundation model embeddings for transcriptomic perturbation prediction. Uses SPECTRA to generate train-test splits with increasing dissimilarity to evaluate robustness against distribution shift. Models are evaluated with MSE and AUSPC, with AUSPC reflecting robustness under distribution shift. Additional analyses include E-distance and predicted transcriptomic distributions across the top 20 DEGs. Findings suggest that single-cell foundation model embeddings capture average perturbation effects but generally lack robustness to distribution shift. Ongoing work demonstrates that the domain-specific model GEARS outperforms foundation model embeddings, indicating that masked-language modeling on gene expression data without domain-specific inductive biases is insufficient for accurate transcriptomic perturbation prediction.'
 
 
 
