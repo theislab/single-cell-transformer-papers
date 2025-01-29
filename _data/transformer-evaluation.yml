@@ -26,22 +26,6 @@
   tasks: '-'
   notes: '-'
 
-
-- paper:
-    type: preprint
-    text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
-    url: https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf
-  code:
-    type: 'reproducible'
-    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/ggit12/anndictionary/)'
-    url: 'https://github.com/ggit12/anndictionary/'
-  omic_modalities: '-'
-  evaluated_transformers: '-'
-  tasks: '-'
-  notes: '-'
-
-
-
 - paper:
     type: preprint
     text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
