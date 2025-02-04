@@ -161,22 +161,6 @@
   supervised_tasks: '-'
 
 
-- model: scCello
-  paper:
-    type: preprint
-    text: '[Xinyu Yuan et al. 2024](https://github.com/theislab/single-cell-transformer-papers/issues/32)'
-    url: https://github.com/theislab/single-cell-transformer-papers/issues/32
-  code:
-    type: '-'
-    text: "[ð\x9F\x94\x8DGitHub](https://github.com/DeepGraphLearning/scCello)"
-    url: 'https://github.com/DeepGraphLearning/scCello'
-  omic_modalities: '-'
-  pre_training_dataset: '-'
-  input_embedding: '-'
-  architecture: '-'
-  ssl_tasks: '-'
-  supervised_tasks: '-'
-
 - model: scGenePT
   paper:
     type: preprint
