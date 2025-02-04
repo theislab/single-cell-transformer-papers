@@ -1,7 +1,7 @@
 - model: scCello
   paper:
     type: peer_reviewed
-    text: '[Yuan, Xinyu, et al. 2024]'(https://openreview.net/pdf?id=aeYNVtTo7o)
+    text: '[Yuan, Xinyu, et al. 2024](https://openreview.net/pdf?id=aeYNVtTo7o)'
     url: https://openreview.net/pdf?id=aeYNVtTo7o
   code:
     type: reproducible
