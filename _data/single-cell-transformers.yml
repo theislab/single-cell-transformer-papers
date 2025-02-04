@@ -1,3 +1,19 @@
+- model: scCello
+  paper:
+    type: peer_reviewed
+    text: '[Yuan, Xinyu, et al. 2024]'(https://openreview.net/pdf?id=aeYNVtTo7o)
+    url: https://openreview.net/pdf?id=aeYNVtTo7o
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/DeepGraphLearning/scCello)"
+    url: https://github.com/DeepGraphLearning/scCello
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 23M / cross-tissue, human ([CELLxGENE](https://cellxgene.cziscience.com/))
+  input_embedding: 'Ordering: rank-based'
+  architecture: Encoder
+  ssl_tasks: 'Multi-level pre-training: MLM with CE loss for gene level modeling; an ontologybased cell-type coherence loss for intra-cellular level modeling; a relational alignment loss to inject cell-type lineage from cell ontology graph for inter-cellular level modeling'
+  supervised_tasks: 'fine-tuning tasks: cell type classification; zero-shot tasks: cell type annotation, marker gene prediction, novel cell type prediction, cancer drug prediction'
+
 - model: scGREAT
   paper:
     type: peer_reviewed
