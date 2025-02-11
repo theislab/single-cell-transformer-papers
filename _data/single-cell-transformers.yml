@@ -1,3 +1,22 @@
+- model: BioLLM
+  paper:
+    type: preprint
+    text: '[Ping Qiu, et al. 2024](https://www.biorxiv.org/content/10.1101/2024.11.22.624786v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.11.22.624786v1.full.pdf
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BGIResearch/BioLLM)"
+    url: https://github.com/BGIResearch/BioLLM
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+
+
 - model: scGPT-spatial
   paper:
     type: preprint
