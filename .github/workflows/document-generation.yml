@@ -14,7 +14,7 @@ jobs:
       
       # Setup Python for notebook conversion
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
           
@@ -54,13 +54,13 @@ jobs:
           
       # Upload artifacts
       - name: Upload PDF artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pdfs
           path: _pages/*.pdf
           
       - name: Upload Notebook artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: notebooks
           path: _pages/*.ipynb

@@ -1,3 +1,38 @@
+- model: scGPT-spatial
+  paper:
+    type: preprint
+    text: '[Chloe Wang, et al. 2024](https://www.biorxiv.org/content/10.1101/2025.02.05.636714v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2025.02.05.636714v1.full.pdf
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/bowang-lab/scGPT-spatial)"
+    url: https://github.com/bowang-lab/scGPT-spatial
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+- model: MAMMAL - Molecular Aligned Multi-Modal Architecture and Language
+  paper:
+    type: preprint
+    text: '[Yoel Shoshan, et al. 2024](https://arxiv.org/pdf/2410.22367)'
+    url: https://arxiv.org/pdf/2410.22367
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BiomedSciAI/biomed-multi-alignment)"
+    url: https://github.com/BiomedSciAI/biomed-multi-alignment
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+
 - model: scCello
   paper:
     type: peer_reviewed
