@@ -44,7 +44,7 @@
   pre_training_dataset: CellXGene Human
   input_embedding: 
   architecture: T5 Encoder-Decoder
-  ssl_tasks: Expression-ranked gene masking, Protein LM (Uniref90), Antibody LM (OAS), Antibody Denoising (OAS), Small-Molecule LM (ZINC), Protein Interaction LM (STRING)
+  ssl_tasks: Expression-ranked gene masking (CELLxGENE Human), Protein LM (Uniref90), Antibody LM (OAS), Antibody Denoising (OAS), Small-Molecule LM (ZINC), Protein Interaction LM (STRING)
   supervised_tasks: Cell type annotation (zheng68k), Cancer drug response prediction (GDSC1/2/3), Brain Blood Barrier Penetration prediction (MoleculeNet), Small-Molecule toxicity prediction (MoleculeNet), drug clinical trial result prediction (MoleculeNet), Antibody-Antigen binding prediction (HER2), Targeted antibody generation (SAbDAb), Protein-Protein delta-delta G  prediction (SKEMPI v2), Drug-Target interaction prediction (PEER), TCR binding prediction (Weber et al)  
 
 - model: Nicheformer
