@@ -33,25 +33,6 @@
   ssl_tasks: '-'
   supervised_tasks: '-'
 
-
-- model: MAMMAL - Molecular Aligned Multi-Modal Architecture and Language
-  paper:
-    type: preprint
-    text: '[Yoel Shoshan, et al. 2024](https://arxiv.org/pdf/2410.22367)'
-    url: https://arxiv.org/pdf/2410.22367
-  code:
-    type: reproducible
-    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BiomedSciAI/biomed-multi-alignment)"
-    url: https://github.com/BiomedSciAI/biomed-multi-alignment
-  omic_modalities: '-'
-  pre_training_dataset: '-'
-  input_embedding: '-'
-  architecture: '-'
-  ssl_tasks: '-'
-  supervised_tasks: '-'
-
-
-
 - model: scCello
   paper:
     type: peer_reviewed
@@ -83,7 +64,6 @@
   architecture: '-'
   ssl_tasks: '-'
   supervised_tasks: '-'
-
 
 - model: MAMMAL
   paper:
