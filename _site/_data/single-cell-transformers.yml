@@ -1,3 +1,66 @@
+- model: The Complexity of Automated Cell Type Annotations with GPT-4
+  paper:
+    type: preprint
+    text: '[Soumya Luthra, et al. 2024](https://www.biorxiv.org/content/10.1101/2025.02.11.637659v2)'
+    url: https://www.biorxiv.org/content/10.1101/2025.02.11.637659v2
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/soulbio/cell_type_annotation)"
+    url: https://github.com/soulbio/cell_type_annotation
+
+
+
+- model: BioLLM
+  paper:
+    type: preprint
+    text: '[Ping Qiu, et al. 2024](https://www.biorxiv.org/content/10.1101/2024.11.22.624786v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2024.11.22.624786v1.full.pdf
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/BGIResearch/BioLLM)"
+    url: https://github.com/BGIResearch/BioLLM
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+
+
+
+- model: scGPT-spatial
+  paper:
+    type: preprint
+    text: '[Chloe Wang, et al. 2024](https://www.biorxiv.org/content/10.1101/2025.02.05.636714v1.full.pdf)'
+    url: https://www.biorxiv.org/content/10.1101/2025.02.05.636714v1.full.pdf
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/bowang-lab/scGPT-spatial)"
+    url: https://github.com/bowang-lab/scGPT-spatial
+  omic_modalities: '-'
+  pre_training_dataset: '-'
+  input_embedding: '-'
+  architecture: '-'
+  ssl_tasks: '-'
+  supervised_tasks: '-'
+
+- model: scCello
+  paper:
+    type: peer_reviewed
+    text: '[Yuan, Xinyu, et al. 2024](https://openreview.net/pdf?id=aeYNVtTo7o)'
+    url: https://openreview.net/pdf?id=aeYNVtTo7o
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/DeepGraphLearning/scCello)"
+    url: https://github.com/DeepGraphLearning/scCello
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 23M / cross-tissue, human ([CELLxGENE](https://cellxgene.cziscience.com/))
+  input_embedding: 'Ordering: rank-based'
+  architecture: Encoder
+  ssl_tasks: 'Multi-level pre-training: MLM with CE loss for gene level modeling; an ontologybased cell-type coherence loss for intra-cellular level modeling; a relational alignment loss to inject cell-type lineage from cell ontology graph for inter-cellular level modeling'
+  supervised_tasks: 'fine-tuning tasks: cell type classification; zero-shot tasks: cell type annotation, marker gene prediction, novel cell type prediction, cancer drug prediction'
+
 - model: scGREAT
   paper:
     type: peer_reviewed
@@ -13,6 +76,22 @@
   architecture: '-'
   ssl_tasks: '-'
   supervised_tasks: '-'
+
+- model: MAMMAL
+  paper:
+    type: preprint
+    text: '[Shoshan et al. 2024](https://arxiv.org/abs/2410.22367)'
+    url: https://arxiv.org/abs/2410.22367
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/BiomedSciAI/biomed-multi-alignment)"
+    url: https://github.com/BiomedSciAI/biomed-multi-alignment
+  omic_modalities: bulk/scRNA-seq, amino acid sequences, SMILES molecule sequences
+  pre_training_dataset: CellXGene Human
+  input_embedding: '-'
+  architecture: T5 Encoder-Decoder
+  ssl_tasks: Expression-ranked gene masking (CELLxGENE Human), Protein LM (Uniref90), Antibody LM (OAS), Antibody Denoising (OAS), Small-Molecule LM (ZINC), Protein Interaction LM (STRING)
+  supervised_tasks: Cell type annotation (zheng68k), Cancer drug response prediction (GDSC1/2/3), Brain Blood Barrier Penetration prediction (MoleculeNet), Small-Molecule toxicity prediction (MoleculeNet), drug clinical trial result prediction (MoleculeNet), Antibody-Antigen binding prediction (HER2), Targeted antibody generation (SAbDAb), Protein-Protein delta-delta G  prediction (SKEMPI v2), Drug-Target interaction prediction (PEER), TCR binding prediction (Weber et al)  
 
 - model: Nicheformer
   paper:
@@ -144,22 +223,6 @@
   ssl_tasks: '-'
   supervised_tasks: '-'
 
-
-- model: scCello
-  paper:
-    type: preprint
-    text: '[Xinyu Yuan et al. 2024](https://github.com/theislab/single-cell-transformer-papers/issues/32)'
-    url: https://github.com/theislab/single-cell-transformer-papers/issues/32
-  code:
-    type: '-'
-    text: "[ð\x9F\x94\x8DGitHub](https://github.com/DeepGraphLearning/scCello)"
-    url: 'https://github.com/DeepGraphLearning/scCello'
-  omic_modalities: '-'
-  pre_training_dataset: '-'
-  input_embedding: '-'
-  architecture: '-'
-  ssl_tasks: '-'
-  supervised_tasks: '-'
 
 - model: scGenePT
   paper:

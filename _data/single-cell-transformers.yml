@@ -1,3 +1,15 @@
+- model: The Complexity of Automated Cell Type Annotations with GPT-4
+  paper:
+    type: preprint
+    text: '[Soumya Luthra, et al. 2024](https://www.biorxiv.org/content/10.1101/2025.02.11.637659v2)'
+    url: https://www.biorxiv.org/content/10.1101/2025.02.11.637659v2
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/soulbio/cell_type_annotation)"
+    url: https://github.com/soulbio/cell_type_annotation
+
+
+
 - model: BioLLM
   paper:
     type: preprint

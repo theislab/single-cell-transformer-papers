@@ -26,22 +26,6 @@
   tasks: '-'
   notes: '-'
 
-
-- paper:
-    type: preprint
-    text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
-    url: https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf
-  code:
-    type: 'reproducible'
-    text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/ggit12/anndictionary/)'
-    url: 'https://github.com/ggit12/anndictionary/'
-  omic_modalities: '-'
-  evaluated_transformers: '-'
-  tasks: '-'
-  notes: '-'
-
-
-
 - paper:
     type: preprint
     text: '[George Crowley et al. 2024](https://www.biorxiv.org/content/10.1101/2024.10.10.617605v1.full.pdf)'
@@ -77,10 +61,10 @@
     type: 'reproducible'
     text: '[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/aaronwtr/PertEval)'
     url: 'https://github.com/aaronwtr/PertEval'
-  omic_modalities: '-'
-  evaluated_transformers: '-'
-  tasks: '-'
-  notes: '-'
+  omic_modalities: 'scRNA-seq'
+  evaluated_transformers: 'UCE, scBERT, scGPT, Geneformer, scFoundation'
+  tasks: 'Transcriptomic perturbation prediction'
+  notes: 'Introduces PertEval-scFM, a benchmark to assess the zero-shot utility of single-cell foundation model embeddings for transcriptomic perturbation prediction. Uses SPECTRA to generate train-test splits with increasing dissimilarity to evaluate robustness against distribution shift. Models are evaluated with MSE and AUSPC, with AUSPC reflecting robustness under distribution shift. Additional analyses include E-distance and predicted transcriptomic distributions across the top 20 DEGs. Findings suggest that single-cell foundation model embeddings capture average perturbation effects but generally lack robustness to distribution shift. Ongoing work demonstrates that the domain-specific model GEARS outperforms foundation model embeddings, indicating that masked-language modeling on gene expression data without domain-specific inductive biases is insufficient for accurate transcriptomic perturbation prediction.'
 
 
 
@@ -194,3 +178,15 @@
   evaluated_transformers: scGPT, Geneformer, scBERT
   tasks: Cell type annotation
   notes: Focused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly.
+- paper:
+    type: preprint
+    text: '[Csendes et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.30.615843v1)'
+    url: https://www.biorxiv.org/content/10.1101/2024.09.30.615843v1
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/turbine-ai/PerturbSeqPredBenchmark)"
+    url: https://github.com/turbine-ai/PerturbSeqPredBenchmark
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT
+  tasks: Genetic perturbation effect prediction
+  notes: Simple baseline models can outperform scGPT on perturbational downstream tasks. The most widely used benchmarking datasets contain significant biases, making them suboptimal for evaluation.
