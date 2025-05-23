@@ -1,4 +1,17 @@
 - paper:
+    type: peer_reviewed
+    text: '[Csendes et al. 2024](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-025-11600-2)'
+    url: https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-025-11600-2
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/turbine-ai/PerturbSeqPredBenchmark)"
+    url: https://github.com/turbine-ai/PerturbSeqPredBenchmark
+  omic_modalities: scRNA-seq
+  evaluated_transformers: scGPT, scFoundation
+  tasks: Genetic perturbation effect prediction
+  notes: Simple baseline models can outperform scGPT on perturbational downstream tasks. The most widely used benchmarking datasets contain significant biases, making them suboptimal for evaluation.
+
+- paper:
     type: preprint
     text: '[Kaspar Märtens et al. 2024](https://openreview.net/pdf?id=eb3ndUlkt4)'
     url: https://openreview.net/pdf?id=eb3ndUlkt4
@@ -178,15 +191,3 @@
   evaluated_transformers: scGPT, Geneformer, scBERT
   tasks: Cell type annotation
   notes: Focused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly.
-- paper:
-    type: preprint
-    text: '[Csendes et al. 2024](https://www.biorxiv.org/content/10.1101/2024.09.30.615843v1)'
-    url: https://www.biorxiv.org/content/10.1101/2024.09.30.615843v1
-  code:
-    type: reproducible
-    text: "[ð\x9F\x9B\_ï¸\x8FGitHub](https://github.com/turbine-ai/PerturbSeqPredBenchmark)"
-    url: https://github.com/turbine-ai/PerturbSeqPredBenchmark
-  omic_modalities: scRNA-seq
-  evaluated_transformers: scGPT
-  tasks: Genetic perturbation effect prediction
-  notes: Simple baseline models can outperform scGPT on perturbational downstream tasks. The most widely used benchmarking datasets contain significant biases, making them suboptimal for evaluation.
