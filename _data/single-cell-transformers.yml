@@ -494,11 +494,27 @@
   architecture: Encoder
   ssl_tasks: '-'
   supervised_tasks: 'Phenotype prediction: aggregated per sample cell embeddings are used to predict sample label (e.g., health condition)'
-- model: scPRINT
+- model: scPRINT-2
   paper:
     type: preprint
-    text: '[Kalfon et al. 2024](https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1)'
-    url: https://www.biorxiv.org/content/10.1101/2024.07.29.605556v1
+    text: '[Kalfon et al. 2025](https://www.biorxiv.org/content/10.64898/2025.12.11.693702v2)'
+    url: https://www.biorxiv.org/content/10.64898/2025.12.11.693702v2
+  code:
+    type: reproducible
+    text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/cantinilab/scPRINT-2)"
+    url: https://github.com/cantinilab/scPRINT-2
+  omic_modalities: scRNA-seq
+  pre_training_dataset: 350M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/)) and additional datasets
+  input_embedding: 'Other: [ESM-3](https://www.science.org/doi/10.1126/science.ads0018) based gene embeddings. Gene embeddings are randomly sampled and order determined by position on chromosomes'
+  architecture: XPressor
+  ssl_tasks: 'Multi task pre-training: denoising, bottleneck learning (+ many additional losses available)'
+  supervised_tasks: Cell label prediction (this supervised task is part of pre-training)
+  zero_shot_tasks: Read depth enhancement, gene expression imputation, batch integration, cell clustering, cell label prediction, GRN inference, species integration, counterfactual predictions
+- model: scPRINT
+  paper:
+    type: peer_reviewed
+    text: '[Kalfon et al. 2025](https://www.nature.com/articles/s41467-025-58699-1)'
+    url: https://www.nature.com/articles/s41467-025-58699-1
   code:
     type: reproducible
     text: "[ð\x9F\x9B\_ï¸\x8FGithub](https://github.com/cantinilab/scPRINT)"
@@ -507,8 +523,9 @@
   pre_training_dataset: 50M / cross-tissue, cross-species ([CELLxGENE](https://cellxgene.cziscience.com/))
   input_embedding: 'Other: [ESM-2](https://www.science.org/doi/10.1126/science.ade2574) based gene embeddings. Gene embeddings are randomly sampled and order determined by position on chromosomes'
   architecture: Encoder
-  ssl_tasks: 'Multi task Pre-training: Denoising, Botleneck learning (+ many additional losses available)'
-  supervised_tasks: Cell label prediction (these supervised tasks are part of the pre-training)
+  ssl_tasks: 'Multi task pre-training: denoising, bottleneck learning (+ many additional losses available)'
+  supervised_tasks: Cell label prediction (this supervised task is part of pre-training)
+  zero_shot_tasks: Read depth enhancement, gene expression imputation, batch integration, cell clustering, cell label prediction, GRN inference
 - model: scMulan
   paper:
     type: peer_reviewed

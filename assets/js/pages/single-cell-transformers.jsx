@@ -39,7 +39,8 @@ function SingleCellTransformers() {
                         'Input Embedding': processEmptyValue(item.input_embedding),
                         Architecture: processEmptyValue(item.architecture),
                         'SSL Tasks': processEmptyValue(item.ssl_tasks),
-                        'Supervised Tasks': processEmptyValue(item.supervised_tasks)
+                        'Supervised Tasks': processEmptyValue(item.supervised_tasks),
+                        'Zero-Shot Tasks': processEmptyValue(item.zero_shot_tasks)
                     };
                 });
                 
@@ -127,7 +128,8 @@ function SingleCellTransformers() {
                         'Input Embedding',
                         'Architecture',
                         'SSL Tasks',
-                        'Supervised Tasks'
+                        'Supervised Tasks',
+                        'Zero-Shot Tasks'
                     ]}
                 />
             </div>
